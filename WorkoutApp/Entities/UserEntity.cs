@@ -1,20 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
 using WorkoutApp.Abstractions;
 
 namespace WorkoutApp.Entities
 {
-    public class UserEntity : IIdentityAwareEntity
+    public class UserEntity : 
+        IdentityUser<int>, 
+        IIdentityAwareEntity,
+        IChangeAwareEntity,
+        IDeleteAwareEntity
     {
-        public int Id { get; set; }
-        
         public string FullName { get; set; }
-        
-        public string UserName { get; set; }
-        
-        public string Email { get; set; }
-        
-        public byte[] PasswordHash { get; set; }
 
         public byte[] PasswordSalt { get; set; }
 
@@ -27,7 +24,19 @@ namespace WorkoutApp.Entities
         public bool IsAdmin { get; set; }
 
         public DateTimeOffset? LastSignedInOn { get; set; }
+        
+        public DateTimeOffset CreatedOn { get; set; }
+        
+        public DateTimeOffset ModifiedOn { get; set; }
+        
+        public DateTimeOffset? DeletedOn { get; set; }
 
         public FileEntity ProfilePicture { get; set; }
+        
+        public ICollection<UserRoleRelationEntity> Roles { get; set; }
+
+        public ICollection<UserUserRelationEntity> RequestingUsers { get; set; }
+        
+        public ICollection<UserUserRelationEntity> RequestedUsers { get; set; }
     }
 }

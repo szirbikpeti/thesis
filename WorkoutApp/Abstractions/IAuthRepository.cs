@@ -6,11 +6,8 @@ namespace WorkoutApp.Abstractions
 {
   public interface IAuthRepository
   {
-    
-    Task<UserEntity> SignUpAsync(UserEntity user, string password, CancellationToken cancellationToken);
-    
-    Task<UserEntity> SignInAsync(string userName, string password, CancellationToken cancellationToken);
-    
     Task<bool> IsUserExistsAsync(string userName, CancellationToken cancellationToken);
+    
+    Task<bool> SaveChangesAsync(CancellationToken cancellationToken);
   }
 }

@@ -1,21 +1,37 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using WorkoutApp.Configurations;
 using WorkoutApp.Entities;
 
 namespace WorkoutApp.Data
 {
-    public class WorkoutDbContext : DbContext
+    public class WorkoutDbContext : IdentityDbContext<
+    UserEntity,
+    RoleEntity,
+    int,
+    UserClaimEntity,
+    UserRoleRelationEntity,
+    IdentityUserLogin<int>,
+    RoleClaimEntity,
+    IdentityUserToken<int>
+    >
     {
         public WorkoutDbContext(DbContextOptions<WorkoutDbContext> options) : base(options) {}
         
-        public DbSet<UserEntity> Users { get; set; }
         public DbSet<FileEntity> Files { get; set; }
         public DbSet<SetEntity> Sets { get; set; }
         public DbSet<ExerciseEntity> Exercises { get; set; }
         public DbSet<WorkoutEntity> Workouts { get; set; }
+        
+        public DbSet<UserUserRelationEntity> UserUserRelations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new UserUserRelationConfiguration());
         }
     }
 }

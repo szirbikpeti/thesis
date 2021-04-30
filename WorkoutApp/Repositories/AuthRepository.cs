@@ -17,53 +17,6 @@ namespace WorkoutApp.Repositories
     {
       _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
     }
-        
-    public async Task<UserEntity> SignUpAsync(
-      UserEntity newUser, 
-      string password, 
-      CancellationToken cancellationToken)
-    {
-      (newUser.PasswordHash, 
-        newUser.PasswordSalt) = CreateStorablePassword(password);
-
-      newUser.IsAdmin = true;
-            
-      await _dbContext.Users
-        .AddAsync(newUser, cancellationToken)
-        .ConfigureAwait(false);
-            
-      await _dbContext.SaveChangesAsync(cancellationToken)
-        .ConfigureAwait(false);
-
-      return newUser;
-    }
-
-    public async Task<UserEntity> SignInAsync(
-      string userName, 
-      string password, 
-      CancellationToken cancellationToken)
-    {
-      var user = await _dbContext.Users
-        .FirstOrDefaultAsync(_ => _
-            .UserName.ToLower()
-            .Equals(userName.ToLower().Trim()), 
-          cancellationToken);
-
-      if (user is null 
-          || !VerifyPassword(password, user.PasswordHash, user.PasswordSalt)) {
-        return null;
-      }
-      
-      user.LastSignedInOn = DateTimeOffset.Now;
-
-      _dbContext.Users.Update(user);
-      
-      await _dbContext
-        .SaveChangesAsync(cancellationToken)
-        .ConfigureAwait(false);
-
-      return user;
-    }
 
     public async Task<bool> IsUserExistsAsync(string userName, CancellationToken cancellationToken)
     {
@@ -72,25 +25,7 @@ namespace WorkoutApp.Repositories
         .ConfigureAwait(false);
     }
 
-    private static (byte[], byte[]) CreateStorablePassword(string password)
-    {
-      using var hmac = new System.Security.Cryptography.HMACSHA512();
-
-      var hash = hmac.ComputeHash(
-        System.Text.Encoding.UTF8.GetBytes(password));
-            
-      return (hash, hmac.Key);
-    }
-    
-    private static bool VerifyPassword(string password, byte[] passwordHash, byte[] passwordSalt)
-    {
-      using var hmac = new System.Security.Cryptography.HMACSHA512(passwordSalt);
-      var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-      
-      return !computedHash
-        .Where((hashChar, i) => 
-          hashChar != passwordHash[i])
-        .Any();
-    }
+    public async Task<bool> SaveChangesAsync(CancellationToken cancellationToken) 
+      => await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false) > 0;
   }
 }
