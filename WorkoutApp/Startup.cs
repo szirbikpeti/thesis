@@ -1,7 +1,8 @@
+using System;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -16,7 +17,7 @@ namespace WorkoutApp
   public class Startup
   {
     private IConfiguration Configuration { get; }
-    
+
     public Startup(IConfiguration configuration)
     {
       Configuration = configuration;
@@ -27,12 +28,27 @@ namespace WorkoutApp
       services.AddControllersWithViews();
       services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });
 
-      services.AddDbContext<WorkoutDbContext>(_ => _.UseSqlite(Configuration.GetConnectionString("WorkoutConnection")));
+      services.AddDbContext<WorkoutDbContext>(_ => 
+        _.UseNpgsql(Configuration.GetConnectionString("WorkoutConnection")));
       services.AddAutoMapper(typeof(Startup));
+
+      services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+        .AddCookie(options => {
+          options.Cookie.SameSite = SameSiteMode.Strict;
+          
+          options.ExpireTimeSpan = TimeSpan.FromHours(12);
+          options.SlidingExpiration = true;
+          
+          options.LoginPath = PathString.Empty;
+          options.LogoutPath = PathString.Empty;
+          options.AccessDeniedPath = PathString.Empty;
+          options.ReturnUrlParameter = PathString.Empty;
+        });
 
       services.AddCors();
       services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
       services.AddScoped<IAuthRepository, AuthRepository>();
+      services.AddScoped<IAdminRepository, AdminRepository>();
       services.AddScoped<IUserRepository, UserRepository>();
     }
 
@@ -40,8 +56,7 @@ namespace WorkoutApp
     {
       if (environment.IsDevelopment()) {
         appBuilder.UseDeveloperExceptionPage();
-      }
-      else {
+      } else {
         appBuilder.UseExceptionHandler("/Error");
         appBuilder.UseHsts();
       }
@@ -53,25 +68,26 @@ namespace WorkoutApp
         appBuilder.UseSpaStaticFiles();
       }
 
-      appBuilder.UseMiddleware<JwtMiddleware>();
+      // appBuilder.UseMiddleware<JwtMiddleware>();
 
       dbContext.Database.Migrate(); // TODO
 
       appBuilder.UseRouting();
+      
+      appBuilder.UseAuthentication();
+      appBuilder.UseAuthorization();
 
       appBuilder.UseCors(_ => _.AllowAnyOrigin()
         .AllowAnyHeader()
         .AllowAnyMethod());
 
-      appBuilder.UseEndpoints(endpoints =>
-      {
+      appBuilder.UseEndpoints(endpoints => {
         endpoints.MapControllerRoute(
           name: "default",
           pattern: "{controller}/{action=Index}/{id?}");
       });
 
-      appBuilder.UseSpa(spa =>
-      {
+      appBuilder.UseSpa(spa => {
         spa.Options.SourcePath = "ClientApp";
 
         if (environment.IsDevelopment()) {

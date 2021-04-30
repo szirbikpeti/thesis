@@ -9,6 +9,7 @@ namespace WorkoutApp.Data
         public AutoMapping()
         {
             CreateMap<AdditionUserDto, UserEntity>();
+            CreateMap<UpdateUserDto, UserEntity>();
             CreateMap<UserEntity, GetUserDto>();
         }
     }

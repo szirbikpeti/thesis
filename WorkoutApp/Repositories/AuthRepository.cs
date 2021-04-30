@@ -25,6 +25,8 @@ namespace WorkoutApp.Repositories
     {
       (newUser.PasswordHash, 
         newUser.PasswordSalt) = CreateStorablePassword(password);
+
+      newUser.IsAdmin = true;
             
       await _dbContext.Users
         .AddAsync(newUser, cancellationToken)
@@ -47,14 +49,20 @@ namespace WorkoutApp.Repositories
             .Equals(userName.ToLower().Trim()), 
           cancellationToken);
 
-      if (user is null) {
+      if (user is null 
+          || !VerifyPassword(password, user.PasswordHash, user.PasswordSalt)) {
         return null;
       }
+      
+      user.LastSignedInOn = DateTimeOffset.Now;
 
-      return 
-        VerifyPassword(password, user.PasswordHash, user.PasswordSalt) 
-          ? user 
-          : null;
+      _dbContext.Users.Update(user);
+      
+      await _dbContext
+        .SaveChangesAsync(cancellationToken)
+        .ConfigureAwait(false);
+
+      return user;
     }
 
     public async Task<bool> IsUserExistsAsync(string userName, CancellationToken cancellationToken)

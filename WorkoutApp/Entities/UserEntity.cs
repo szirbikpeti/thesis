@@ -28,6 +28,6 @@ namespace WorkoutApp.Entities
 
         public DateTimeOffset? LastSignedInOn { get; set; }
 
-        public FileEntity? ProfilePicture { get; set; }
+        public FileEntity ProfilePicture { get; set; }
     }
 }

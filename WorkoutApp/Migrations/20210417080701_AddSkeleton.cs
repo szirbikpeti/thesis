@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace WorkoutApp.Migrations
@@ -11,10 +12,10 @@ namespace WorkoutApp.Migrations
                 name: "Files",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Size = table.Column<int>(type: "INTEGER", nullable: false),
-                    Data = table.Column<byte[]>(type: "BLOB", nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Size = table.Column<int>(type: "integer", nullable: false),
+                    Data = table.Column<byte[]>(type: "bytea", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -25,10 +26,10 @@ namespace WorkoutApp.Migrations
                 name: "Workouts",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Date = table.Column<DateTimeOffset>(type: "TEXT", nullable: false),
-                    Type = table.Column<string>(type: "TEXT", nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Date = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    Type = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -39,18 +40,18 @@ namespace WorkoutApp.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    FullName = table.Column<string>(type: "TEXT", nullable: true),
-                    UserName = table.Column<string>(type: "TEXT", nullable: true),
-                    Email = table.Column<string>(type: "TEXT", nullable: true),
-                    PasswordHash = table.Column<byte[]>(type: "BLOB", nullable: true),
-                    PasswordSalt = table.Column<byte[]>(type: "BLOB", nullable: true),
-                    ProfilePictureId = table.Column<int>(type: "INTEGER", nullable: true),
-                    About = table.Column<string>(type: "TEXT", nullable: true),
-                    Birthday = table.Column<DateTimeOffset>(type: "TEXT", nullable: true),
-                    IsAdmin = table.Column<bool>(type: "INTEGER", nullable: false),
-                    LastSignedInOn = table.Column<DateTimeOffset>(type: "TEXT", nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    FullName = table.Column<string>(type: "text", nullable: true),
+                    UserName = table.Column<string>(type: "text", nullable: true),
+                    Email = table.Column<string>(type: "text", nullable: true),
+                    PasswordHash = table.Column<byte[]>(type: "bytea", nullable: true),
+                    PasswordSalt = table.Column<byte[]>(type: "bytea", nullable: true),
+                    ProfilePictureId = table.Column<int>(type: "integer", nullable: true),
+                    About = table.Column<string>(type: "text", nullable: true),
+                    Birthday = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    IsAdmin = table.Column<bool>(type: "boolean", nullable: false),
+                    LastSignedInOn = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -67,11 +68,11 @@ namespace WorkoutApp.Migrations
                 name: "Exercises",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    WorkoutId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", nullable: true),
-                    Equipment = table.Column<string>(type: "TEXT", nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    WorkoutId = table.Column<int>(type: "integer", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    Equipment = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -88,12 +89,12 @@ namespace WorkoutApp.Migrations
                 name: "Sets",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    ExerciseId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Reps = table.Column<int>(type: "INTEGER", nullable: false),
-                    Weight = table.Column<double>(type: "REAL", nullable: false),
-                    Duration = table.Column<TimeSpan>(type: "TEXT", nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    ExerciseId = table.Column<int>(type: "integer", nullable: false),
+                    Reps = table.Column<int>(type: "integer", nullable: false),
+                    Weight = table.Column<double>(type: "double precision", nullable: false),
+                    Duration = table.Column<TimeSpan>(type: "interval", nullable: true)
                 },
                 constraints: table =>
                 {
