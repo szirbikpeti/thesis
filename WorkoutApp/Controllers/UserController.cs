@@ -1,15 +1,18 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using WorkoutApp.Abstractions;
+using WorkoutApp.Data;
 using WorkoutApp.Dto;
+using WorkoutApp.Entities;
 
 namespace WorkoutApp.Controllers
 {
-  [Authorize]
+  [Microsoft.AspNetCore.Authorization.Authorize]
   [ApiController]
   [Route("api/user")]
   public class UserController : ControllerBase

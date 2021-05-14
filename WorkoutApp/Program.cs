@@ -10,11 +10,10 @@ namespace WorkoutApp
 {
   public class Program
   {
-
-    private const string LoggerFolder = "Logger/logs";
+    private const string LogFilesDirectoryName = "Logger/logs";
       
     private const string LogOutputTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff} " +
-                                                 "[{Level:u1}] ({RequestId}) {SourceContext}: {Message:lj}{NewLine}{Exception}";
+                                                 "[{Level:u1}] {SourceContext}: {Message:lj}{NewLine}{Exception}";
                  
     public static void Main(string[] args) =>
       CreateHostBuilder(args).Build().Run();
@@ -33,11 +32,8 @@ namespace WorkoutApp
             outputTemplate: LogOutputTemplate
             );
 
-          var today = DateTime.Today;
-          var logFileName = string.Empty + today.Year + today.Month + today.Day;
-
           loggerConfiguration.WriteTo.File(
-            path: Path.Combine(LoggerFolder, logFileName, ".log"),
+            path: Path.Combine(LogFilesDirectoryName, ".log"),
             outputTemplate: LogOutputTemplate,
             formatProvider: CultureInfo.InvariantCulture,
             buffered: true,

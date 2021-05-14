@@ -15,5 +15,10 @@ code {
   border-color: #1861ac;
 }
 
-html, body { height: 100%; }
+html, body {
+  height: 100%;
+  //background-image: url("assets/background.png");
+  //background-repeat: no-repeat;
+  //background-size: 100%;
+}
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

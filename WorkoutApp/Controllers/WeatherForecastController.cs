@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using WorkoutApp.Abstractions;
 
 namespace WorkoutApp.Controllers
 {
@@ -28,10 +29,10 @@ namespace WorkoutApp.Controllers
             _httpContextAccessor = httpContextAccessor;
         }
 
+        [Authorize(Policies.ManageUsers)]
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
         {
-            var user = _httpContextAccessor.HttpContext.User;
             var rng = new Random();
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
                 {

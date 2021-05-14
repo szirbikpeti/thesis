@@ -15,7 +15,11 @@ namespace WorkoutApp.Extensions
       CancellationToken cancellationToken)
     {
       return await userManager.Users
-        .FirstOrDefaultAsync(_ => (_.Id == id) && (_.DeletedOn == null), cancellationToken)
+        .Include(_ => _.Roles)
+        .ThenInclude(_ => _.Role)
+        .ThenInclude(_ => _.Claims)
+        .FirstOrDefaultAsync(_ => 
+          (_.Id == id) && (_.DeletedOn == null), cancellationToken)
         .ConfigureAwait(false);
     }
     
@@ -27,6 +31,9 @@ namespace WorkoutApp.Extensions
       var normalizedUserName = userManager.NormalizeName(userName);
       
       return await userManager.Users
+        .Include(_ => _.Roles)
+        .ThenInclude(_ => _.Role)
+        .ThenInclude(_ => _.Claims)
         .FirstOrDefaultAsync(_ => 
           (_.NormalizedUserName == normalizedUserName) 
             && (_.DeletedOn == null), 

@@ -67,6 +67,11 @@ namespace WorkoutApp
           context.Response.StatusCode = StatusCodes.Status401Unauthorized;
           return Task.CompletedTask;
         };
+
+        _.Events.OnRedirectToAccessDenied = context => {
+          context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+          return Task.CompletedTask;
+        };
         
         _.ExpireTimeSpan = TimeSpan.FromHours(SessionExpireTimeInHours);
         _.SlidingExpiration = true;
@@ -79,6 +84,27 @@ namespace WorkoutApp
       
       services.Configure<CookiePolicyOptions>(_ => {
         _.MinimumSameSitePolicy = SameSiteMode.Strict;
+      });
+
+      services.AddAuthentication();
+      services.AddAuthorization(options => {
+        options.AddPolicy(Policies.ManageUsers, 
+          _ => _.RequireClaim(Claims.Type, Claims.UserManagementPermission));
+        
+        options.AddPolicy(Policies.ListPosts, 
+          _ => _.RequireClaim(Claims.Type, Claims.PostListPermission));
+        
+        options.AddPolicy(Policies.ManageWorkouts, 
+          _ => _.RequireClaim(Claims.Type, Claims.WorkoutManagementPermission));
+        
+        options.AddPolicy(Policies.ManagePosts, 
+          _ => _.RequireClaim(Claims.Type, Claims.PostManagementPermission));
+
+        options.AddPolicy(Policies.AddCommentsToPost,
+          _ => _.RequireClaim(Claims.Type, Claims.CommentAddPermission));
+          
+        options.AddPolicy(Policies.SendMessages, 
+          _ => _.RequireClaim(Claims.Type, Claims.MessageSendPermission));
       });
 
       services.AddCors();

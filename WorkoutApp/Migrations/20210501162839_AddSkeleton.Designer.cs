@@ -10,7 +10,7 @@ using WorkoutApp.Data;
 namespace WorkoutApp.Migrations
 {
     [DbContext(typeof(WorkoutDbContext))]
-    [Migration("20210430115114_AddSkeleton")]
+    [Migration("20210501162839_AddSkeleton")]
     partial class AddSkeleton
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -118,14 +118,9 @@ namespace WorkoutApp.Migrations
                     b.Property<int>("RoleId")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("RoleId1")
-                        .HasColumnType("integer");
-
                     b.HasKey("Id");
 
                     b.HasIndex("RoleId");
-
-                    b.HasIndex("RoleId1");
 
                     b.ToTable("AspNetRoleClaims");
                 });
@@ -200,14 +195,9 @@ namespace WorkoutApp.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("UserId1")
-                        .HasColumnType("integer");
-
                     b.HasKey("Id");
 
                     b.HasIndex("UserId");
-
-                    b.HasIndex("UserId1");
 
                     b.ToTable("AspNetUserClaims");
                 });
@@ -248,9 +238,6 @@ namespace WorkoutApp.Migrations
                     b.Property<string>("FullName")
                         .HasColumnType("text");
 
-                    b.Property<bool>("IsAdmin")
-                        .HasColumnType("boolean");
-
                     b.Property<DateTimeOffset?>("LastSignedInOn")
                         .HasColumnType("timestamp with time zone");
 
@@ -273,9 +260,6 @@ namespace WorkoutApp.Migrations
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("text");
-
-                    b.Property<byte[]>("PasswordSalt")
-                        .HasColumnType("bytea");
 
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("text");
@@ -318,19 +302,9 @@ namespace WorkoutApp.Migrations
                     b.Property<int>("RoleId")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("RoleId1")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("UserId1")
-                        .HasColumnType("integer");
-
                     b.HasKey("UserId", "RoleId");
 
                     b.HasIndex("RoleId");
-
-                    b.HasIndex("RoleId1");
-
-                    b.HasIndex("UserId1");
 
                     b.ToTable("AspNetUserRoles");
                 });
@@ -399,15 +373,11 @@ namespace WorkoutApp.Migrations
 
             modelBuilder.Entity("WorkoutApp.Entities.RoleClaimEntity", b =>
                 {
-                    b.HasOne("WorkoutApp.Entities.RoleEntity", null)
-                        .WithMany()
+                    b.HasOne("WorkoutApp.Entities.RoleEntity", "Role")
+                        .WithMany("Claims")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("WorkoutApp.Entities.RoleEntity", "Role")
-                        .WithMany("Claims")
-                        .HasForeignKey("RoleId1");
 
                     b.Navigation("Role");
                 });
@@ -425,15 +395,11 @@ namespace WorkoutApp.Migrations
 
             modelBuilder.Entity("WorkoutApp.Entities.UserClaimEntity", b =>
                 {
-                    b.HasOne("WorkoutApp.Entities.UserEntity", null)
-                        .WithMany()
+                    b.HasOne("WorkoutApp.Entities.UserEntity", "User")
+                        .WithMany("Claims")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("WorkoutApp.Entities.UserEntity", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId1");
 
                     b.Navigation("User");
                 });
@@ -449,25 +415,17 @@ namespace WorkoutApp.Migrations
 
             modelBuilder.Entity("WorkoutApp.Entities.UserRoleRelationEntity", b =>
                 {
-                    b.HasOne("WorkoutApp.Entities.RoleEntity", null)
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("WorkoutApp.Entities.RoleEntity", "Role")
                         .WithMany("Users")
-                        .HasForeignKey("RoleId1");
-
-                    b.HasOne("WorkoutApp.Entities.UserEntity", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("WorkoutApp.Entities.UserEntity", "User")
                         .WithMany("Roles")
-                        .HasForeignKey("UserId1");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Role");
 
@@ -507,6 +465,8 @@ namespace WorkoutApp.Migrations
 
             modelBuilder.Entity("WorkoutApp.Entities.UserEntity", b =>
                 {
+                    b.Navigation("Claims");
+
                     b.Navigation("RequestedUsers");
 
                     b.Navigation("RequestingUsers");

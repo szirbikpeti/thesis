@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -27,17 +26,14 @@ namespace WorkoutApp.Controllers
       _admin = admin ?? throw new ArgumentNullException(nameof(admin));
     }
 
+    [Authorize(Policies.ManageUsers)]
     [HttpGet("{id}")]
-    public async Task<ActionResult<ICollection<GetUserDto>>> ListAsync(int id, CancellationToken cancellationToken)
+    public async Task<ActionResult<ICollection<GetUserDto>>> ListUsersAsync(int id, CancellationToken cancellationToken)
     {
       var fetchedAdminUser = await _user.GetByIdAsync(id, cancellationToken).ConfigureAwait(false);
 
       if (fetchedAdminUser is null) {
         return NotFound();
-      }
-
-      if (!fetchedAdminUser.IsAdmin) {
-        return Unauthorized();
       }
 
       var fetchedUsers = await _admin.ListAsync(cancellationToken);
