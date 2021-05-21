@@ -1,0 +1,20 @@
+﻿{
+  "GENERAL": {
+    "LANGUAGE": "Language",
+    "INFO": "Info",
+    "ERROR": "Error"
+  },
+  "USER_FORM": {
+    "LOGIN": "Log In",
+    "SIGNUP": "Sign Up",
+    "CANCEL": "Cancel",
+    "REGISTRATION": "Create New Account",
+    "FULLNAME": "Full Name",
+    "EMAIL": "Email Address",
+    "USERNAME": "User Name",
+    "PASSWORD": "Password",
+    "BIRTHDAY": "Birthday",
+    "SUCCESSFUL_SIGNUP": "Successful sign-up",
+    "UNSUCCESSFUL_LOGIN": "Unsuccessful login"
+  }
+}

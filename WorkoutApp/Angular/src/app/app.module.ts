@@ -11,12 +11,19 @@ import { FetchDataComponent } from './pages/fetch-data/fetch-data.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { MaterialModule } from "./material.module";
+import { I18nModule } from "./i18n/i18n.module";
+import {SignUpComponent} from "./pages/sign-up/sign-up.component";
+import {MAT_DATE_LOCALE} from "@angular/material/core";
+import {ToastrModule} from "ngx-toastr";
+import {DashboardComponent} from "./pages/dashboard/dashboard.component";
 
 @NgModule({
   declarations: [
     AppComponent,
     NavMenuComponent,
     HomeComponent,
+    SignUpComponent,
+    DashboardComponent,
     CounterComponent,
     FetchDataComponent
   ],
@@ -25,11 +32,19 @@ import { MaterialModule } from "./material.module";
     HttpClientModule,
     ReactiveFormsModule,
     FormsModule,
+    I18nModule,
     MaterialModule,
     BrowserAnimationsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    ToastrModule.forRoot({
+      preventDuplicates: true,
+      positionClass: 'toast-bottom-right',
+      timeOut: 3000
+    })
   ],
-  providers: [],
+  providers: [
+    {provide: MAT_DATE_LOCALE, useValue: 'hu-HU'}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

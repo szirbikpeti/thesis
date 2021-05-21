@@ -1,21 +1,85 @@
-﻿
+﻿::ng-deep .mat-form-field-underline {
+  display: none;
+}
+
+h2 {
+  font-size: 24px;
+}
+
+button {
+  font-size: 18px;
+}
+
+.signup-button {
+  background-color: #e1e1e1;
+}
+
 mat-card {
-  background-color: grey;
+  background-color: #bebfc6;
   margin-top: 65px;
-  margin-right: 50px;
+  margin-right: 60px;
   float: right;
-  width: 40%;
+  width: 35%;
   text-align: center;
+  //border: 1px solid black;
 }
 
 mat-form-field {
-  width: 85%;
+  background-color: #fff;
+  border: 1px solid #4742425b;
+  border-radius: 6px;
+  box-shadow: 0 0 10px #00000029;
+  height: 40px;
+  max-height: 40px;
+  width: 100%;
+}
+
+mat-form-field:hover {
+  border: 1px solid #47424299;
+}
+
+mat-form-field.mat-focused {
+  border: 1px solid #3298dc;
+  box-shadow: 0 0 10px #3298dc4d;
+}
+
+mat-form-field.ng-dirty.ng-invalid {
+  border: 1px solid #e00a0a;
+  box-shadow: 0 0 10px #e00a0a4d;
+}
+
+.control-container {
+  width: 100%;
+  display: flex;
+  overflow: hidden;
+  padding: 15px;
+}
+
+.center-input-field {
+  margin-top: -22px;
+  margin-left: 10px;
+}
+
+.content-container {
+  width: 50%;
+  float: left;
+  height: 80%;
+  text-align: center;
 }
 
 .title {
-  position: absolute;
-  bottom: 0;
-  margin-bottom: 50px;
+  width: fit-content;
+  text-align: left;
+  margin-top: 110px;
+  margin-left: 75px;
+  font-size: 30px;
+}
+
+@media (min-width: 1550px) {
+  mat-card {
+    width: 25%;
+    margin-right: 100px;
+  }
 }
 
 @media (max-width: 768px) {
@@ -23,5 +87,18 @@ mat-form-field {
     width: 80%;
     float: none;
     margin: 65px auto;
+  }
+
+  .content-container {
+    width: 80%;
+    float: none;
+    height: fit-content;
+    margin: 40px auto;
+  }
+
+  .title {
+    width: 100%;
+    margin: 0;
+    text-align: center;
   }
 }

@@ -9,6 +9,6 @@ namespace WorkoutApp.Abstractions
   {
     Task<UserEntity> GetByIdAsync(int id, CancellationToken cancellationToken = default);
     Task<UserEntity> UpdateAsync(int id,  UpdateUserDto updateUserDto, CancellationToken cancellationToken);
-    Task DeleteAsync(UserEntity user, CancellationToken cancellationToken);
+    Task<bool> DoDeleteAsync(int userId, CancellationToken cancellationToken);
   }
 }

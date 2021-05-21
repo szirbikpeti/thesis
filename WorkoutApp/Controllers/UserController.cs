@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using WorkoutApp.Abstractions;
-using WorkoutApp.Data;
 using WorkoutApp.Dto;
-using WorkoutApp.Entities;
 
 namespace WorkoutApp.Controllers
 {
@@ -61,13 +57,11 @@ namespace WorkoutApp.Controllers
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteAsync(int id, CancellationToken cancellationToken)
     {
-      var fetchedUser = await _user.GetByIdAsync(id, cancellationToken).ConfigureAwait(false);
+      var result = await _user.DoDeleteAsync(id, cancellationToken);
 
-      if (fetchedUser is null) {
+      if (!result) {
         return NotFound();
       }
-
-      await _user.DeleteAsync(fetchedUser, cancellationToken);
 
       return Ok();
     }

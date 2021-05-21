@@ -1,0 +1,45 @@
+h2 {
+  font-size: 24px;
+  margin-top: 10px;
+}
+
+button {
+  font-size: 18px;
+}
+
+mat-form-field {
+  background-color: #fff;
+  border: 1px solid #4742425b;
+  border-radius: 6px;
+  box-shadow: 0 0 10px #00000029;
+  height: 40px;
+  max-height: 40px;
+  width: 100%;
+}
+
+mat-form-field:hover {
+  border: 1px solid #47424299;
+}
+
+mat-form-field.mat-focused {
+  border: 1px solid #3298dc;
+  box-shadow: 0 0 10px #3298dc4d;
+}
+
+mat-form-field.ng-dirty.ng-invalid {
+  border: 1px solid #e00a0a;
+  box-shadow: 0 0 10px #e00a0a4d;
+}
+
+.control-container {
+  display: flex;
+  overflow: hidden;
+  padding: 15px;
+  width: 100%;
+}
+
+.center-input-field {
+  margin-top: -17px;
+  margin-left: 10px;
+}
+

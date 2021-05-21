@@ -1,0 +1,51 @@
+<button mat-icon-button style="float:right" (click)="close()"><mat-icon>close</mat-icon></button>
+<h2 mat-dialog-title>
+  {{'USER_FORM.SIGNUP' | translate}}
+</h2>
+<mat-dialog-content align="center">
+  <form [formGroup]="signUpForm" (ngSubmit)="submitSignUpForm()">
+    <div class="control-container">
+      <mat-form-field appearance="standard">
+        <div class="center-input-field">
+          <input matInput placeholder="{{'USER_FORM.FULLNAME' | translate}}" formControlName="fullName">
+        </div>
+      </mat-form-field>
+    </div>
+    <div class="control-container">
+      <mat-form-field appearance="standard">
+        <div class="center-input-field">
+          <input type="email"  matInput placeholder="{{'USER_FORM.EMAIL' | translate}}" formControlName="email">
+        </div>
+      </mat-form-field>
+    </div>
+    <div class="control-container">
+      <mat-form-field appearance="standard">
+        <div class="center-input-field">
+          <input matInput placeholder="{{'USER_FORM.USERNAME' | translate}}" formControlName="userName">
+        </div>
+      </mat-form-field>
+    </div>
+    <div class="control-container">
+      <mat-form-field appearance="standard">
+        <div class="center-input-field">
+          <input matInput type="password" placeholder="{{'USER_FORM.PASSWORD' | translate}}" formControlName="password">
+        </div>
+      </mat-form-field>
+    </div>
+    <div class="control-container">
+      <mat-form-field appearance="standard">
+        <div class="center-input-field">
+          <input
+            matInput
+            placeholder="{{'USER_FORM.BIRTHDAY' | translate}}"
+            formControlName="birthDay"
+            [matDatepicker]="birthdayValue"
+            (focus)="birthdayValue.open()">
+          <mat-datepicker #birthdayValue></mat-datepicker>
+        </div>
+      </mat-form-field>
+    </div>
+
+    <button type="submit" mat-button >{{'USER_FORM.SIGNUP' | translate}}</button>
+  </form>
+</mat-dialog-content>

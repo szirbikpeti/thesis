@@ -27,7 +27,7 @@ namespace WorkoutApp
     private const string NpmScriptCommand = "start";
 
     private const int RequiredMinimumPasswordLength = 6;
-    private const int SessionExpireTimeInHours = 12;
+    private const int SessionExpireTimeInHours = 7;
     private IConfiguration Configuration { get; }
 
     public Startup(IConfiguration configuration)

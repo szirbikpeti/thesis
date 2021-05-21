@@ -34,6 +34,8 @@
           <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
           <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
         </Content>
+        <Content Include="Angular\src\assets\i18n\en.json" />
+        <Content Include="Angular\src\assets\i18n\hu.json" />
         <None Remove="$(SpaRoot)**" />
         <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
     </ItemGroup>
@@ -46,6 +48,7 @@
     <ItemGroup>
       <Folder Include="Angular\src\app\enums" />
       <Folder Include="Angular\src\app\pages" />
+      <Folder Include="Angular\src\app\requests" />
       <Folder Include="Angular\src\app\services" />
       <Folder Include="Logger" />
     </ItemGroup>

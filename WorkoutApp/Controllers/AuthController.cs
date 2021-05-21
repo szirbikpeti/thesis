@@ -59,7 +59,7 @@ namespace WorkoutApp.Controllers
     }
 
     [HttpPost("signup")]
-    public async Task<ActionResult<GetUserDto>> SignUpAsync(
+    public async Task<IActionResult> SignUpAsync(
       [FromBody] [Required] AdditionUserDto newUser,
       CancellationToken cancellationToken)
     {
@@ -94,10 +94,8 @@ namespace WorkoutApp.Controllers
       await _auth.SaveChangesAsync(cancellationToken)
         .ConfigureAwait(false);
 
-      var userDto = _mapper.Map<GetUserDto>(createdUser);
-
       _logger.Log(LogLevel.Information, $"Signed up with name: {newUser.UserName}");
-      return Ok(userDto);
+      return Ok();
     }
 
     [HttpPost("signin")]
@@ -111,6 +109,7 @@ namespace WorkoutApp.Controllers
         isPersistent: false, lockoutOnFailure: true);
 
       if (!result.Succeeded) {
+        _logger.Log(LogLevel.Information, "User was not found or password was invalid.");
         return Unauthorized("User was not found or password was invalid.");
       }
 

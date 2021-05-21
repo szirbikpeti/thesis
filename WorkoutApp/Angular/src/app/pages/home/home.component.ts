@@ -1,4 +1,12 @@
 import {Component, OnInit} from '@angular/core';
+import {TranslateService} from "@ngx-translate/core";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {UserService} from "../../services/user.service";
+import {StateService} from "../../services/state.service";
+import {SignUpComponent} from "../sign-up/sign-up.component";
+import {MatDialog} from "@angular/material/dialog";
+import {ToastrService} from "ngx-toastr";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-home',
@@ -6,7 +14,43 @@ import {Component, OnInit} from '@angular/core';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit{
-  ngOnInit(): void {
+  loginForm: FormGroup;
 
+  constructor(private fb: FormBuilder, private _user: UserService, private dialog: MatDialog,
+              private _state: StateService, private _toast: ToastrService, private router: Router,
+              public _translate: TranslateService) {
+  }
+
+  ngOnInit(): void {
+    this._user.logout().subscribe(() => null);
+
+    this.loginForm = this.fb.group({
+      userName: ['', Validators.required],
+      password: ['', Validators.required],
+    });
+  }
+
+  submitLoginForm() {
+    if (this.loginForm.invalid) {
+      return;
+    }
+
+    this._user.login(this.loginForm.value)
+      .subscribe(user => {
+        this._state.user = user;
+        this.router.navigateByUrl('dashboard');
+        }, () => {
+        this._toast.error(
+          this._translate.instant('USER_FORM.UNSUCCESSFUL_LOGIN'),
+          this._translate.instant('GENERAL.ERROR'));
+      });
+  }
+
+  openSignUpModal() {
+    this.dialog.open(SignUpComponent, {
+      width: '425px',
+      height: '500px',
+      disableClose: true
+    });
   }
 }

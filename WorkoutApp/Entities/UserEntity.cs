@@ -29,6 +29,8 @@ namespace WorkoutApp.Entities
 
         public FileEntity ProfilePicture { get; set; }
         
+        public ICollection<WorkoutEntity> Workouts { get; set; }
+        
         public ICollection<UserClaimEntity> Claims { get; set; }
         
         public ICollection<UserRoleRelationEntity> Roles { get; set; }

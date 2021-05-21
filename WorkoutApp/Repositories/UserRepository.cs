@@ -8,6 +8,7 @@ using WorkoutApp.Abstractions;
 using WorkoutApp.Data;
 using WorkoutApp.Dto;
 using WorkoutApp.Entities;
+using WorkoutApp.Extensions;
 
 namespace WorkoutApp.Repositories
 {
@@ -24,14 +25,13 @@ namespace WorkoutApp.Repositories
 
     public async Task<UserEntity> GetByIdAsync(int id, CancellationToken cancellationToken = default)
     {
-      return await _dbContext.Users
-        .FirstOrDefaultAsync(_ => _.Id == id, cancellationToken)
+      return await _dbContext.GetByIdAsync<UserEntity>(id, cancellationToken)
         .ConfigureAwait(false);
     }
 
     public async Task<UserEntity> UpdateAsync(int id,  UpdateUserDto updateUserDto, CancellationToken cancellationToken)
     {
-      var fetchedUser = await GetByIdAsync(id, cancellationToken).ConfigureAwait(false);
+      var fetchedUser = await _dbContext.GetByIdAsync<UserEntity>(id, cancellationToken).ConfigureAwait(false);
 
       if (fetchedUser is null) {
         return null;
@@ -43,17 +43,24 @@ namespace WorkoutApp.Repositories
         .SaveChangesAsync(cancellationToken)
         .ConfigureAwait(false);
 
-      var newlyFetchedUser = await GetByIdAsync(id, cancellationToken).ConfigureAwait(false);
+      var newlyFetchedUser = await _dbContext.GetByIdAsync<UserEntity>(id, cancellationToken).ConfigureAwait(false);
 
       return newlyFetchedUser;
     }
 
-    public async Task DeleteAsync(UserEntity user, CancellationToken cancellationToken)
+    public async Task<bool> DoDeleteAsync(int userId, CancellationToken cancellationToken)
     {
-      _dbContext.Remove(user);
-
-      await _dbContext.SaveChangesAsync(cancellationToken)
+      var fetchedUser = await _dbContext.GetByIdAsync<UserEntity>(userId, cancellationToken)
         .ConfigureAwait(false);
+
+      if (fetchedUser is null) {
+        return false;
+      }
+      
+      _dbContext.Remove(fetchedUser);
+
+      return await _dbContext.SaveChangesAsync(cancellationToken)
+        .ConfigureAwait(false) > 0;
     }
   }
 }

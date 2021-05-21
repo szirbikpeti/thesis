@@ -1,0 +1,20 @@
+﻿{
+  "GENERAL": {
+    "LANGUAGE": "Nyelv",
+    "INFO": "Információ",
+    "ERROR": "Hiba"
+  },
+  "USER_FORM": {
+    "LOGIN": "Bejelentkezés",
+    "SIGNUP": "Regisztráció",
+    "CANCEL": "Mégse",
+    "REGISTRATION": "Új fiók létrehozása",
+    "FULLNAME": "Teljes név",
+    "EMAIL": "Email-cím",
+    "USERNAME": "Felhasználónév",
+    "PASSWORD": "Jelszó",
+    "BIRTHDAY": "Születésnap",
+    "SUCCESSFUL_SIGNUP": "Sikeres regisztráció",
+    "UNSUCCESSFUL_LOGIN": "Sikertelen bejelentkezés"
+  }
+}

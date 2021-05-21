@@ -11,6 +11,8 @@ namespace WorkoutApp.Data
             CreateMap<AdditionUserDto, UserEntity>();
             CreateMap<UpdateUserDto, UserEntity>();
             CreateMap<UserEntity, GetUserDto>();
+            CreateMap<WorkoutDto, WorkoutEntity>();
+            CreateMap<WorkoutEntity, WorkoutDto>();
         }
     }
 }

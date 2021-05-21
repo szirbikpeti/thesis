@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
+import {TranslateService} from "@ngx-translate/core";
+import {StateService} from "../../services/state.service";
 
 @Component({
   selector: 'app-nav-menu',
@@ -6,13 +8,16 @@ import { Component } from '@angular/core';
   styleUrls: ['./nav-menu.component.scss']
 })
 export class NavMenuComponent {
-  isExpanded = false;
 
-  collapse() {
-    this.isExpanded = false;
+  constructor(private _translate: TranslateService, private _state: StateService) {
   }
 
-  toggle() {
-    this.isExpanded = !this.isExpanded;
+  currentLanguage(): string {
+    return this._state.language.value;
+  }
+
+  switchLanguage(event: any): void {
+    this._translate.use(event.value);
+    this._state.language = event.value;
   }
 }
