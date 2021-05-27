@@ -52,7 +52,9 @@ namespace WorkoutApp
           _.Password.RequireDigit = false;
           _.Password.RequireNonAlphanumeric = false;
           _.Password.RequiredLength = RequiredMinimumPasswordLength;
-      })
+
+          _.Lockout.MaxFailedAccessAttempts = 5;
+        })
         .AddEntityFrameworkStores<WorkoutDbContext>()
         .AddDefaultTokenProviders();
       
@@ -108,10 +110,12 @@ namespace WorkoutApp
       });
 
       services.AddCors();
+      services.AddHttpContextAccessor();
       services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
       services.AddScoped<IAuthRepository, AuthRepository>();
       services.AddScoped<IAdminRepository, AdminRepository>();
       services.AddScoped<IUserRepository, UserRepository>();
+      services.AddScoped<IWorkoutRepository, WorkoutRepository>();
     }
 
     public void Configure(IApplicationBuilder appBuilder, IWebHostEnvironment environment, WorkoutDbContext dbContext)

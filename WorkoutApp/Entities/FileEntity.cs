@@ -1,4 +1,5 @@
-﻿using WorkoutApp.Abstractions;
+﻿using System;
+using WorkoutApp.Abstractions;
 
 namespace WorkoutApp.Entities
 {
@@ -9,5 +10,7 @@ namespace WorkoutApp.Entities
         public int Size { get; set; }
 
         public byte[] Data { get; set; }
+
+        public DateTimeOffset UploadedOn { get; set; }
     }
 }

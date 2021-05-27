@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
@@ -9,6 +10,10 @@ namespace WorkoutApp.Extensions
 {
   public static class UserManagerExtension
   {
+    public static int GetUserIdAsInt(
+      this UserManager<UserEntity> userManager, 
+      ClaimsPrincipal principal) => int.Parse(userManager.GetUserId(principal));
+
     public static async Task<UserEntity> FindByIdWithAdditionalDataAsync(
       this UserManager<UserEntity> userManager, 
       int id, 

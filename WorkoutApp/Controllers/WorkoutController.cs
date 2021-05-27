@@ -6,10 +6,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using WorkoutApp.Abstractions;
 using WorkoutApp.Dto;
 using WorkoutApp.Entities;
+using WorkoutApp.Extensions;
 
 namespace WorkoutApp.Controllers
 {
@@ -19,20 +21,23 @@ namespace WorkoutApp.Controllers
   public class WorkoutController : ControllerBase
   {
     private readonly IMapper _mapper;
+    private readonly UserManager<UserEntity> _userManager;
     private readonly IWorkoutRepository _workout;
 
-    public WorkoutController(IMapper mapper, IWorkoutRepository workout)
+    public WorkoutController(IMapper mapper, UserManager<UserEntity> userManager, IWorkoutRepository workout)
     {
       _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+      _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
       _workout = workout ?? throw new ArgumentNullException(nameof(workout));
     }
 
-    [HttpGet("{userId}")]
+    [HttpGet]
     public async Task<ActionResult<ICollection<WorkoutDto>>> ListAsync(
-      int userId,
       CancellationToken cancellationToken)
     {
-      var fetchedWorkouts = await _workout.ListAsync(userId, cancellationToken)
+      var currentUserId = _userManager.GetUserIdAsInt(HttpContext.User);
+      
+      var fetchedWorkouts = await _workout.ListAsync(currentUserId, cancellationToken)
         .ConfigureAwait(false);
 
       var workoutDtoList = _mapper.Map<WorkoutDto>(fetchedWorkouts);
@@ -40,19 +45,38 @@ namespace WorkoutApp.Controllers
       return Ok(workoutDtoList);
     }
 
-    [HttpPost("add/{userId}")]
+    [HttpPost]
     public async Task<IActionResult> AddAsync(
-      int userId,
       [FromBody] [Required] WorkoutDto newWorkoutDto,
       CancellationToken cancellationToken)
     {
+      var currentUserId = _userManager.GetUserIdAsInt(HttpContext.User);
+      
       var mappedWorkout = _mapper.Map<WorkoutEntity>(newWorkoutDto);
-      mappedWorkout.UserId = userId;
+      mappedWorkout.UserId = currentUserId;
 
       await _workout.DoAddAsync(mappedWorkout, cancellationToken)
         .ConfigureAwait(false);
 
       return Ok();
+    }
+
+    [HttpPatch("{workoutId}")]
+    public async Task<ActionResult<WorkoutDto>> UpdateAsync(
+      [FromRoute] [Required] int workoutId,
+      [FromBody] [Required] WorkoutDto updatedWorkoutDto,
+      CancellationToken cancellationToken)
+    {
+      var workout = await _workout.DoUpdateAsync(workoutId, updatedWorkoutDto, cancellationToken)
+        .ConfigureAwait(false);
+
+      if (workout is null) {
+        return NotFound();
+      }
+
+      var workoutDto = _mapper.Map<WorkoutDto>(workout);
+  
+      return Ok(workoutDto);
     }
   }
 }

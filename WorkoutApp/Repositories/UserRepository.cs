@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using WorkoutApp.Abstractions;
 using WorkoutApp.Data;
 using WorkoutApp.Dto;
@@ -12,7 +10,7 @@ using WorkoutApp.Extensions;
 
 namespace WorkoutApp.Repositories
 {
-  public class UserRepository : IUserRepository
+  public class UserRepository : IUserRepository // TODO - delete and extend user manager instead
   {
     private readonly WorkoutDbContext _dbContext;
     private readonly IMapper _mapper;
@@ -57,7 +55,7 @@ namespace WorkoutApp.Repositories
         return false;
       }
       
-      _dbContext.Remove(fetchedUser);
+      _dbContext.DoDelete(fetchedUser);
 
       return await _dbContext.SaveChangesAsync(cancellationToken)
         .ConfigureAwait(false) > 0;

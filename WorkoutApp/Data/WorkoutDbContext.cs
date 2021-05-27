@@ -36,6 +36,12 @@ namespace WorkoutApp.Data
             modelBuilder.ApplyConfiguration(new RoleClaimConfiguration());
             modelBuilder.ApplyConfiguration(new UserUserRelationConfiguration());
             modelBuilder.ApplyConfiguration(new UserRoleRelationConfiguration());
+
+            modelBuilder.Entity<UserEntity>()
+                .HasQueryFilter(_ => _.DeletedOn == null);
+
+            modelBuilder.Entity<WorkoutEntity>()
+                .HasQueryFilter(_ => _.DeletedOn == null);
         }
     }
 }

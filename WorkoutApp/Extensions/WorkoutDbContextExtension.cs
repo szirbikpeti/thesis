@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using WorkoutApp.Abstractions;
@@ -14,6 +15,18 @@ namespace WorkoutApp.Extensions
       return await dbContext.Set<TEntity>()
         .FirstOrDefaultAsync(_ => _.Id == id, cancellationToken)
         .ConfigureAwait(false);
+    }
+    
+    public static void DoDelete<TEntity>(this WorkoutDbContext dbContext, TEntity entity)
+      where TEntity : class, IDeleteAwareEntity
+    {
+      if (entity is null) {
+        throw new ArgumentNullException(nameof(entity));
+      }
+
+      entity.DeletedOn = DateTimeOffset.Now;
+
+      dbContext.Set<TEntity>().Update(entity);
     }
   }
 }

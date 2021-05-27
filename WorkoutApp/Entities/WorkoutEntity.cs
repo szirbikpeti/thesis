@@ -4,7 +4,7 @@ using WorkoutApp.Abstractions;
 
 namespace WorkoutApp.Entities
 {
-    public class WorkoutEntity : IIdentityAwareEntity
+    public class WorkoutEntity : IIdentityAwareEntity, IChangeAwareEntity, IDeleteAwareEntity
     {
         public int Id { get; set; }
         
@@ -13,6 +13,12 @@ namespace WorkoutApp.Entities
         public DateTimeOffset Date { get; set; }
 
         public string Type { get; set; }
+        
+        public DateTimeOffset CreatedOn { get; set; }
+        
+        public DateTimeOffset ModifiedOn { get; set; }
+        
+        public DateTimeOffset? DeletedOn { get; set; }
 
         public UserEntity User { get; set; }
         

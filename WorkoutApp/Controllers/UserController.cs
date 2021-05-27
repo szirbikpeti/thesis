@@ -2,9 +2,12 @@
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using WorkoutApp.Abstractions;
 using WorkoutApp.Dto;
+using WorkoutApp.Entities;
+using WorkoutApp.Extensions;
 
 namespace WorkoutApp.Controllers
 {
@@ -14,18 +17,22 @@ namespace WorkoutApp.Controllers
   public class UserController : ControllerBase
   {
     private readonly IMapper _mapper;
+    private readonly UserManager<UserEntity> _userManager;
     private readonly IUserRepository _user;
 
-    public UserController(IMapper mapper, IUserRepository user)
+    public UserController(IMapper mapper,  UserManager<UserEntity> userManager, IUserRepository user)
     {
       _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+      _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
       _user = user ?? throw new ArgumentNullException(nameof(user));
     }
 
-    [HttpGet("{id}")]
-    public async Task<ActionResult<GetUserDto>> GetByIdAsync(int id, CancellationToken cancellationToken)
+    [HttpGet]
+    public async Task<ActionResult<GetUserDto>> GetByIdAsync(CancellationToken cancellationToken) // TODO: delete this function
     {
-      var fetchedUser = await _user.GetByIdAsync(id, cancellationToken);
+      var currentUserId = _userManager.GetUserIdAsInt(HttpContext.User);
+      
+      var fetchedUser = await _user.GetByIdAsync(currentUserId, cancellationToken);
 
       if (fetchedUser is null) {
         return NotFound();
@@ -36,13 +43,14 @@ namespace WorkoutApp.Controllers
       return Ok(userDto);
     }
 
-    [HttpPut("{id}")]
+    [HttpPut]
     public async Task<ActionResult<GetUserDto>> UpdateAsync(
-      int id, 
       UpdateUserDto updateUserDto, 
       CancellationToken cancellationToken)
     {
-      var user = await _user.UpdateAsync(id, updateUserDto, cancellationToken)
+      var currentUserId = _userManager.GetUserIdAsInt(HttpContext.User);
+      
+      var user = await _user.UpdateAsync(currentUserId, updateUserDto, cancellationToken)
         .ConfigureAwait(false);
 
       if (user is null) {
@@ -54,10 +62,12 @@ namespace WorkoutApp.Controllers
       return Ok(userDto);
     }
 
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteAsync(int id, CancellationToken cancellationToken)
+    [HttpDelete]
+    public async Task<IActionResult> DeleteAsync(CancellationToken cancellationToken)
     {
-      var result = await _user.DoDeleteAsync(id, cancellationToken);
+      var currentUserId = _userManager.GetUserIdAsInt(HttpContext.User);
+      
+      var result = await _user.DoDeleteAsync(currentUserId, cancellationToken);
 
       if (!result) {
         return NotFound();
