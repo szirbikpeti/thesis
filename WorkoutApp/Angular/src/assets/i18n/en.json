@@ -1,8 +1,15 @@
 ﻿{
   "GENERAL": {
+    "MOTTO_PART_1": "Workout tracking,",
+    "MOTTO_PART_2": "as you haven't done before",
     "LANGUAGE": "Language",
     "INFO": "Info",
     "ERROR": "Error"
+  },
+  "NAV": {
+    "LOG_OUT": "Log out",
+    "DASHBOARD": "Dashboard",
+    "NEW_WORKOUT": "Create new workout"
   },
   "USER_FORM": {
     "LOGIN": "Log In",

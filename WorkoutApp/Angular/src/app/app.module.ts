@@ -16,6 +16,8 @@ import {SignUpComponent} from "./pages/sign-up/sign-up.component";
 import {MAT_DATE_LOCALE} from "@angular/material/core";
 import {ToastrModule} from "ngx-toastr";
 import {DashboardComponent} from "./pages/dashboard/dashboard.component";
+import {NewWorkoutComponent} from "./pages/new-workout/new-workout.component";
+import {ProfileComponent} from "./pages/profile/profile.component";
 
 @NgModule({
   declarations: [
@@ -24,6 +26,8 @@ import {DashboardComponent} from "./pages/dashboard/dashboard.component";
     HomeComponent,
     SignUpComponent,
     DashboardComponent,
+    NewWorkoutComponent,
+    ProfileComponent,
     CounterComponent,
     FetchDataComponent
   ],

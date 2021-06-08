@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {MatDialogRef} from "@angular/material/dialog";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {UserService} from "../../services/user.service";
 import {ToastrService} from "ngx-toastr";
 import {TranslateService} from "@ngx-translate/core";
+import {AuthService} from "../../services/auth.service";
 
 @Component({
   selector: 'app-sign-up',
@@ -13,7 +13,7 @@ import {TranslateService} from "@ngx-translate/core";
 export class SignUpComponent implements OnInit {
   signUpForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private _user: UserService,
+  constructor(private fb: FormBuilder, private _auth: AuthService,
               private _toast: ToastrService, private _translate: TranslateService,
               private dialogRef: MatDialogRef<SignUpComponent>) { }
 
@@ -28,8 +28,7 @@ export class SignUpComponent implements OnInit {
   }
 
   submitSignUpForm() {
-    console.log(this.signUpForm.value);
-    this._user.signUp(this.signUpForm.value)
+    this._auth.signUp(this.signUpForm.value)
       .subscribe(() => {
         this._toast.success(this._translate.instant('USER_FORM.SUCCESSFUL_SIGNUP', 'GENERAL.INFO'));
         close();

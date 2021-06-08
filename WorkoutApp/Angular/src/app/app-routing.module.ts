@@ -4,12 +4,38 @@ import { CounterComponent } from "./pages/counter/counter.component";
 import { HomeComponent } from "./pages/home/home.component";
 import { FetchDataComponent } from "./pages/fetch-data/fetch-data.component";
 import { DashboardComponent } from "./pages/dashboard/dashboard.component";
+import {NavMenuComponent} from "./pages/nav-menu/nav-menu.component";
+import {NewWorkoutComponent} from "./pages/new-workout/new-workout.component";
+import {ProfileComponent} from "./pages/profile/profile.component";
 
 const routes: Routes = [
-  // {path: '', component: HomeComponent},
-  // {path: 'dashboard', component: DashboardComponent},
-  {path: '', component: DashboardComponent},
-  {path: 'counter', component: CounterComponent},
+  {
+    path: '',
+    redirectTo: '/home',
+    pathMatch: 'full'
+  },
+  {
+    path: '',
+    component: NavMenuComponent,
+    children : [
+      {
+        path: 'dashboard',
+        component: DashboardComponent
+      },
+      {
+        path: 'profile',
+        component: ProfileComponent
+      },
+      {
+        path: 'new-workout',
+        component: NewWorkoutComponent
+      },
+    ]
+  },
+  {
+    path: 'home',
+    component: HomeComponent
+  },
   {path: 'fetch-data', component: FetchDataComponent},
 ];
 

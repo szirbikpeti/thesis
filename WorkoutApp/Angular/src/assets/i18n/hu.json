@@ -1,8 +1,15 @@
 ﻿{
   "GENERAL": {
+    "MOTTO_PART_1": "Edzés követés,",
+    "MOTTO_PART_2": "ahogy még nem csináltad",
     "LANGUAGE": "Nyelv",
     "INFO": "Információ",
     "ERROR": "Hiba"
+  },
+  "NAV": {
+    "LOG_OUT": "Kijelentkezés",
+    "DASHBOARD": "Dashboard",
+    "NEW_WORKOUT": "Új edzés felvétel"
   },
   "USER_FORM": {
     "LOGIN": "Bejelentkezés",

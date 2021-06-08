@@ -35,15 +35,6 @@ namespace WorkoutApp.Controllers
     [HttpGet]
     public async Task<ActionResult<ICollection<GetUserDto>>> ListUsersAsync(CancellationToken cancellationToken)
     {
-      var currentUserId = _userManager.GetUserIdAsInt(HttpContext.User);
-      
-      var fetchedAdminUser = await _user.GetByIdAsync(currentUserId, cancellationToken)
-        .ConfigureAwait(false);
-
-      if (fetchedAdminUser is null) {
-        return NotFound();
-      }
-
       var fetchedUsers = await _admin.ListAsync(cancellationToken);
 
       var users = _mapper.Map<ICollection<GetUserDto>>(fetchedUsers);

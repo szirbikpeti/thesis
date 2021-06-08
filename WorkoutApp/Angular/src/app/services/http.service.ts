@@ -21,7 +21,7 @@ export class HttpService {
 
     let options: Object = {
       headers: new HttpHeaders({
-        // 'Authorization': 'Bearer ' + this._state.token.valu
+        'Content-Type': 'application/json',
       })
     };
 

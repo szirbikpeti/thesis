@@ -7,6 +7,7 @@ import {SignUpComponent} from "../sign-up/sign-up.component";
 import {MatDialog} from "@angular/material/dialog";
 import {ToastrService} from "ngx-toastr";
 import {Router} from "@angular/router";
+import {AuthService} from "../../services/auth.service";
 
 @Component({
   selector: 'app-home',
@@ -16,13 +17,13 @@ import {Router} from "@angular/router";
 export class HomeComponent implements OnInit{
   loginForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private _user: UserService, private dialog: MatDialog,
+  constructor(private fb: FormBuilder, private _auth: AuthService, private dialog: MatDialog,
               private _state: StateService, private _toast: ToastrService, private router: Router,
               public _translate: TranslateService) {
   }
 
   ngOnInit(): void {
-    this._user.logout().subscribe(() => null);
+    this._auth.signOut();
 
     this.loginForm = this.fb.group({
       userName: ['', Validators.required],
@@ -35,10 +36,10 @@ export class HomeComponent implements OnInit{
       return;
     }
 
-    this._user.login(this.loginForm.value)
+    this._auth.login(this.loginForm.value)
       .subscribe(user => {
         this._state.user = user;
-        this.router.navigateByUrl('dashboard');
+        this.router.navigate(['/dashboard']);
         }, () => {
         this._toast.error(
           this._translate.instant('USER_FORM.UNSUCCESSFUL_LOGIN'),

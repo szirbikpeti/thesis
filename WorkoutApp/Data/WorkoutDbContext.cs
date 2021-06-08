@@ -42,6 +42,9 @@ namespace WorkoutApp.Data
 
             modelBuilder.Entity<WorkoutEntity>()
                 .HasQueryFilter(_ => _.DeletedOn == null);
+
+            modelBuilder.Entity<ExerciseEntity>()
+                .HasQueryFilter(_ => _.DeletedOn == null);
         }
     }
 }

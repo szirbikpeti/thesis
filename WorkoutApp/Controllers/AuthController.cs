@@ -95,6 +95,7 @@ namespace WorkoutApp.Controllers
         .ConfigureAwait(false);
 
       _logger.Log(LogLevel.Information, $"Signed up with name: {newUser.UserName}");
+      
       return Ok();
     }
 
