@@ -7,15 +7,19 @@ namespace WorkoutApp.Dto
   {
   
     [Required]
-    public string FullName { get; set; }
+    public string FullName { get; set; } = null!;
 
     [Required]
     [EmailAddress]
-    public string Email { get; set; }
+    public string Email { get; set; } = null!;
 
-    [Required]
-    public string About { get; set; }
+    public string About { get; set; } = null!;
+    
+    public int ProfilePictureId { get; set; }
     
     public DateTimeOffset? Birthday { get; set; }
+    
+    public UpdatePasswordDto PasswordChange { get; set; } = null!;
+    
   }
 }

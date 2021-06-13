@@ -6,6 +6,7 @@ export interface UserModel {
   userName: string,
   email: string,
   about: string,
+  permissions: string[],
   profilePicture: FileModel,
   birthDay?: Date,
   lastSignInOn: Date

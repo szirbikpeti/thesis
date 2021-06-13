@@ -6,7 +6,7 @@ using WorkoutApp.Entities;
 
 namespace WorkoutApp.Data
 {
-    public class WorkoutDbContext : IdentityDbContext<
+    public sealed class WorkoutDbContext : IdentityDbContext<
     UserEntity,
     RoleEntity,
     int,
@@ -14,23 +14,23 @@ namespace WorkoutApp.Data
     UserRoleRelationEntity,
     IdentityUserLogin<int>,
     RoleClaimEntity,
-    IdentityUserToken<int>
-    >
+    IdentityUserToken<int>>
     {
         public WorkoutDbContext(DbContextOptions<WorkoutDbContext> options) : base(options) {}
         
-        public DbSet<FileEntity> Files { get; set; }
-        public DbSet<SetEntity> Sets { get; set; }
-        public DbSet<ExerciseEntity> Exercises { get; set; }
-        public DbSet<WorkoutEntity> Workouts { get; set; }
+        public DbSet<FileEntity> Files { get; set; } = null!;
+        public DbSet<SetEntity> Sets { get; set; } = null!;
+        public DbSet<ExerciseEntity> Exercises { get; set; } = null!;
+        public DbSet<WorkoutEntity> Workouts { get; set; } = null!;
         
-        public DbSet<UserUserRelationEntity> UserUserRelations { get; set; }
+        public DbSet<UserUserRelationEntity> UserUserRelations { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new FileConfiguration());
             modelBuilder.ApplyConfiguration(new RoleConfiguration());
             modelBuilder.ApplyConfiguration(new UserClaimConfiguration());
             modelBuilder.ApplyConfiguration(new RoleClaimConfiguration());

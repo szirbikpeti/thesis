@@ -8,9 +8,9 @@ namespace WorkoutApp.Dto
     {
         public int Id { get; set; }
 
-        public string About { get; set; }
+        public string About { get; set; } = null!;
 
-        // public GetFileDto ProfilePicture { get; set; }
+        public GetFileDto ProfilePicture { get; set; } = null!;
         
         public DateTimeOffset LastSignedInOn { get; set; }
 

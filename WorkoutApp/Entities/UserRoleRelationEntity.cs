@@ -4,7 +4,7 @@ using WorkoutApp.Abstractions;
 
 namespace WorkoutApp.Entities
 {
-  public class UserRoleRelationEntity : IdentityUserRole<int>, IRelationAwareEntity
+  public sealed class UserRoleRelationEntity : IdentityUserRole<int>, IRelationAwareEntity
   {
     [NotMapped]
     public int LeftId
@@ -19,9 +19,9 @@ namespace WorkoutApp.Entities
       get => RoleId;
       set => RoleId = value;
     }
+
+    public UserEntity User { get; set; } = null!;
     
-    public UserEntity User { get; set; }
-    
-    public RoleEntity Role { get; set; }
+    public RoleEntity Role { get; set; } = null!;
   }
 }

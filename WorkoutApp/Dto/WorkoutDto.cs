@@ -10,9 +10,9 @@ namespace WorkoutApp.Dto
     public DateTimeOffset Date { get; set; }
 
     [Required]
-    public string Type { get; set; }
+    public string Type { get; set; } = null!;
 
     [Required]
-    public ICollection<ExerciseDto> Exercises { get; set; }
+    public ICollection<ExerciseDto> Exercises { get; set; } = null!;
   }
 }

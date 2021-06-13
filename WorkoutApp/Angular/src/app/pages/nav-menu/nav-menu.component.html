@@ -1,26 +1,122 @@
-<header>
-  <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-    <div class="container">
-      <a class="navbar-brand" [routerLink]="['/']"><strong class="first-char">W</strong>orkout <strong class="first-char">T</strong>racking</a>
-      <div>
-        <ul class="navbar-nav flex-grow">
-          <li>
-            <span>{{'GENERAL.LANGUAGE' | translate}} </span>
-            <mat-select style="width: 70%; margin-left: 5px" (selectionChange)="switchLanguage($event)" [value]="currentLanguage()">
-              <mat-option value="hu">HU</mat-option>
-              <mat-option value="en">EN</mat-option>
-            </mat-select>
-          </li>
-<!--          <li class="nav-item" [routerLinkActive]="['link-active']">-->
-<!--            <a class="nav-link text-dark" [routerLink]="['/counter']"-->
-<!--              >Counter asd</a>-->
-<!--          </li>-->
-<!--          <li class="nav-item" [routerLinkActive]="['link-active']">-->
-<!--            <a class="nav-link text-dark" [routerLink]="['/fetch-data']"-->
-<!--              >Fetch data</a>-->
-<!--          </li>-->
-        </ul>
-      </div>
+<mat-sidenav-container *ngIf="authenticationConfirmed" class="sidenav-container" style="background: #f1f2f3">
+  <mat-sidenav  #drawer class="sidenav" fixedInViewport
+               [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+               [mode]="(isHandset$ | async) ? 'over' : 'side'"
+               [opened]="(isHandset$ | async) === false">
+    <div class="wt-container">
+      <h1 class="wt"><strong class="first-char">W</strong>orkout <strong class="first-char">T</strong>racking</h1>
     </div>
-  </nav>
-</header>
+    <hr>
+    <mat-nav-list>
+      <a (click)="toggleDrawerWhenHandset()" routerLink="/dashboard" mat-list-item
+         href="#" routerLinkActive="active">
+        <div class="menu-icon-container">
+          <img src="../../../assets/dashboard.svg" class="menu-icon">
+        </div>
+        <span [translate]="'NAV.DASHBOARD'"></span>
+      </a>
+      <mat-divider *ngIf="_auth.hasPermission('workout.management')"></mat-divider>
+      <a *ngIf="_auth.hasPermission('workout.management')" (click)="toggleDrawerWhenHandset()" routerLink="/new-workout"
+         mat-list-item href="#" routerLinkActive="active">
+        <div class="menu-icon-container">
+          <img src="../../../assets/new-workout.svg" class="menu-icon">
+        </div>
+        <span [translate]="'NAV.NEW_WORKOUT'"></span>
+      </a>
+<!--      <mat-divider *ngIf="_auth.hasPermission('options.management')"></mat-divider>-->
+      <mat-divider></mat-divider>
+<!--      <a *ngIf="_auth.hasPermission('options.management')" routerLinkActive="active"-->
+      <a routerLinkActive="active"
+         (click)="toggleDrawerWhenHandset()" routerLink="/settings" mat-list-item href="#">
+        <div class="menu-icon-container">
+          <img src="../../../assets/settings.svg" class="menu-icon">
+        </div>
+        <span [translate]="'NAV.SETTINGS'"></span>
+      </a>
+      <mat-divider class="last-divider"></mat-divider>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar class="mat-elevation-z4">
+      <button
+        type="button"
+        class="item-left menu-button"
+        mat-icon-button
+        (click)="toggleSideNav()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span class="filler"></span>
+
+      <div style="margin-top: 7px;">
+        <mat-form-field class="item-right lang">
+          <mat-select [value]="currentLanguage()" (valueChange)="switchLanguage($event)">
+            <mat-option value="en">
+              English
+            </mat-option>
+            <mat-option value="hu">
+              Magyar
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+<!--      <div-->
+<!--        *ngIf="!(_notification.notifications | async) || ((_notification.notifications | async) && unreadNotifications.length === 0)">-->
+<!--        <img src="../../../assets/notifications-yellow-icon.svg" [matMenuTriggerFor]="menu"-->
+<!--             class="clickable notification-icon">-->
+<!--      </div>-->
+
+<!--      <div *ngIf="(_notification.notifications | async) && unreadNotifications.length > 0"-->
+<!--           [@notificationAnimation]="notificationAnimationState"-->
+<!--           (@notificationAnimation.done)="onAnimationEnd($event)">-->
+<!--        <img src="../../../assets/notifications-yellow-icon.svg" [matMenuTriggerFor]="menu"-->
+<!--             class="clickable notification-icon">-->
+<!--      </div>-->
+
+<!--      <mat-menu #menu="matMenu" xPosition="after">-->
+<!--        <div class="mat-menu">-->
+<!--          <div class="mat-menu-header text-center">-->
+<!--            {{'NOTIFICATION.NOTIFICATIONS' | translate}} ({{(_notification.notifications | async).length}})-->
+<!--          </div>-->
+<!--          <div mat-menu-item class="menu-item clickable {{noti.deletedOn === undefined ? 'unread' : 'deleted'}}"-->
+<!--               *ngFor="let noti of _notification.notifications | async"-->
+<!--               (click)="openNotification(noti)">-->
+<!--            <div style="overflow: hidden;">-->
+<!--              <span style="float: left; font-weight: bold; padding-left: 10px;" [ngSwitch]="noti.triggeredByUser.user">-->
+<!--                <span *ngSwitchCase="'system@penny.hu'">{{'NOTIFICATION.SYSTEM_MESSAGE' | translate}}</span>-->
+<!--                <span *ngSwitchDefault>{{noti.triggeredByUser.user}}</span>-->
+<!--              </span>-->
+<!--              <br>-->
+<!--              <div class="noti-container">-->
+<!--                <div class="noti-change">{{noti.changedEntityName | truncatetext: 30}}</div>-->
+<!--                <div class="noti-type">-->
+<!--                  {{'NOTIFICATION.' + noti.type | translate}}-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            <mat-divider class="noti-divider"></mat-divider>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </mat-menu>-->
+
+      <div class="username-container">
+        <div class="clickable username"
+             (click)="editProfile()">
+          {{currentUser.userName}}</div>
+      </div>
+      <div class="mobile-profile">
+        <img *ngIf="!isNull(currentUser.profilePicture)"
+             [src]="getPicture(this.currentUser.profilePicture.data)"
+             alt="Nincs kép"
+             (click)="editProfile()"
+             class="profile-picture"/>
+      </div>
+
+      <div class="clickable log-out" (click)="signOut()">{{'NAV.LOG_OUT' | translate}}</div>
+
+    </mat-toolbar>
+    <div class="main-content">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

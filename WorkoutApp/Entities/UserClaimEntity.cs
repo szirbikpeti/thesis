@@ -2,8 +2,8 @@
 
 namespace WorkoutApp.Entities
 {
-  public class UserClaimEntity : IdentityUserClaim<int>
+  public sealed class UserClaimEntity : IdentityUserClaim<int>
   {
-    public UserEntity User { get; set; }
+    public UserEntity User { get; set; } = null!;
   }
 }

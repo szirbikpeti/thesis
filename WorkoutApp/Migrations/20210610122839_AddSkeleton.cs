@@ -29,26 +29,14 @@ namespace WorkoutApp.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: false),
                     Size = table.Column<int>(type: "integer", nullable: false),
-                    Data = table.Column<byte[]>(type: "bytea", nullable: true)
+                    Data = table.Column<byte[]>(type: "bytea", nullable: false),
+                    UploadedOn = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Files", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Workouts",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Date = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    Type = table.Column<string>(type: "text", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Workouts", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -78,9 +66,9 @@ namespace WorkoutApp.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    FullName = table.Column<string>(type: "text", nullable: true),
-                    ProfilePictureId = table.Column<int>(type: "integer", nullable: true),
-                    About = table.Column<string>(type: "text", nullable: true),
+                    FullName = table.Column<string>(type: "text", nullable: false),
+                    ProfilePictureId = table.Column<int>(type: "integer", nullable: false),
+                    About = table.Column<string>(type: "text", nullable: false),
                     Birthday = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     LastSignedInOn = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     CreatedOn = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
@@ -110,27 +98,6 @@ namespace WorkoutApp.Migrations
                         principalTable: "Files",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Exercises",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    WorkoutId = table.Column<int>(type: "integer", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: true),
-                    Equipment = table.Column<string>(type: "text", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Exercises", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Exercises_Workouts_WorkoutId",
-                        column: x => x.WorkoutId,
-                        principalTable: "Workouts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -243,6 +210,52 @@ namespace WorkoutApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Workouts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UserId = table.Column<int>(type: "integer", nullable: false),
+                    Date = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    Type = table.Column<string>(type: "text", nullable: false),
+                    CreatedOn = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    ModifiedOn = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    DeletedOn = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Workouts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Workouts_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Exercises",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    WorkoutId = table.Column<int>(type: "integer", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Equipment = table.Column<string>(type: "text", nullable: false),
+                    DeletedOn = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Exercises", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Exercises_Workouts_WorkoutId",
+                        column: x => x.WorkoutId,
+                        principalTable: "Workouts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Sets",
                 columns: table => new
                 {
@@ -298,7 +311,8 @@ namespace WorkoutApp.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUsers_ProfilePictureId",
                 table: "AspNetUsers",
-                column: "ProfilePictureId");
+                column: "ProfilePictureId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
@@ -320,6 +334,11 @@ namespace WorkoutApp.Migrations
                 name: "IX_UserUserRelations_RequestedUserId",
                 table: "UserUserRelations",
                 column: "RequestedUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Workouts_UserId",
+                table: "Workouts",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -352,10 +371,10 @@ namespace WorkoutApp.Migrations
                 name: "Exercises");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "Workouts");
 
             migrationBuilder.DropTable(
-                name: "Workouts");
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "Files");

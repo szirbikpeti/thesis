@@ -3,4 +3,5 @@ export enum Resource {
   LOGIN = "auth/signin/",
   LOGOUT = "auth/",
   USER = 'user/',
+  FILE = 'file/',
 }

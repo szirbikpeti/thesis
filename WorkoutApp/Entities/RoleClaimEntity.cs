@@ -4,6 +4,6 @@ namespace WorkoutApp.Entities
 {
   public class RoleClaimEntity : IdentityRoleClaim<int>
   {
-    public RoleEntity Role { get; set; }
+    public RoleEntity Role { get; set; } = null!;
   }
 }

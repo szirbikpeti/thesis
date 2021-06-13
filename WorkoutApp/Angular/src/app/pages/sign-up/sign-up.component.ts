@@ -30,8 +30,11 @@ export class SignUpComponent implements OnInit {
   submitSignUpForm() {
     this._auth.signUp(this.signUpForm.value)
       .subscribe(() => {
-        this._toast.success(this._translate.instant('USER_FORM.SUCCESSFUL_SIGNUP', 'GENERAL.INFO'));
         close();
+
+        this._toast.success(
+          this._translate.instant('USER_FORM.SUCCESSFUL_SIGNUP'),
+          this._translate.instant( 'GENERAL.INFO'));
       });
   }
 

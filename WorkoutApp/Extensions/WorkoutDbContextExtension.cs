@@ -9,7 +9,7 @@ namespace WorkoutApp.Extensions
 {
   public static class WorkoutDbContextExtension
   {
-    public static async Task<TEntity> GetByIdAsync<TEntity>(this WorkoutDbContext dbContext, int id, CancellationToken cancellationToken) 
+    public static async Task<TEntity?> GetByIdAsync<TEntity>(this WorkoutDbContext dbContext, int id, CancellationToken cancellationToken) 
       where TEntity : class, IIdentityAwareEntity
     {
       return await dbContext.Set<TEntity>()

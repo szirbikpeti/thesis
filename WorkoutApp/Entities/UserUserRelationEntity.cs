@@ -23,8 +23,8 @@ namespace WorkoutApp.Entities
       set => RequestedUserId = value;
     }
     
-    public UserEntity RequestingUser { get; set; }
+    public UserEntity RequestingUser { get; set; } = null!;
     
-    public UserEntity RequestedUser { get; set; }
+    public UserEntity RequestedUser { get; set; } = null!;
   }
 }

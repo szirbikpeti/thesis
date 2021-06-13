@@ -10,11 +10,11 @@ namespace WorkoutApp.Entities
 
         public int WorkoutId { get; set; }
 
-        public string Name { get; set; }
+        public string Name { get; set; } = null!;
 
-        public string Equipment { get; set; }
+        public string Equipment { get; set; } = null!;
 
-        public WorkoutEntity Workout { get; set; }
+        public WorkoutEntity Workout { get; set; } = null!;
 
         public ICollection<SetEntity> Sets { get; set; } = null!;
         

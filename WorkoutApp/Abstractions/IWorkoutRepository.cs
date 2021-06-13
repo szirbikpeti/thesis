@@ -13,7 +13,7 @@ namespace WorkoutApp.Abstractions
     
     Task DoAddAsync(WorkoutEntity workout, CancellationToken cancellationToken);
     
-    Task<WorkoutEntity> DoUpdateAsync(int workoutId, WorkoutDto workoutDto, CancellationToken cancellationToken);
+    Task<WorkoutEntity?> DoUpdateAsync(int workoutId, WorkoutDto workoutDto, CancellationToken cancellationToken);
     
     Task<bool> DoDeleteAsync(int workoutId, CancellationToken cancellationToken);
   }

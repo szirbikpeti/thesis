@@ -11,11 +11,11 @@ namespace WorkoutApp.Entities
         IChangeAwareEntity,
         IDeleteAwareEntity
     {
-        public string FullName { get; set; }
+        public string FullName { get; set; } = null!;
 
-        public int? ProfilePictureId { get; set; }
+        public int ProfilePictureId { get; set; }
 
-        public string About { get; set; }
+        public string About { get; set; } = null!;
 
         public DateTimeOffset? Birthday { get; set; }
 
@@ -27,16 +27,16 @@ namespace WorkoutApp.Entities
         
         public DateTimeOffset? DeletedOn { get; set; }
 
-        public FileEntity ProfilePicture { get; set; }
+        public FileEntity ProfilePicture { get; set; } = null!;
         
-        public ICollection<WorkoutEntity> Workouts { get; set; }
+        public ICollection<WorkoutEntity> Workouts { get; set; } = null!;
+
+        public ICollection<UserClaimEntity> Claims { get; set; } = null!;
         
-        public ICollection<UserClaimEntity> Claims { get; set; }
+        public ICollection<UserRoleRelationEntity> Roles { get; set; } = null!;
         
-        public ICollection<UserRoleRelationEntity> Roles { get; set; }
+        public ICollection<UserUserRelationEntity> RequestingUsers { get; set; } = null!;
         
-        public ICollection<UserUserRelationEntity> RequestingUsers { get; set; }
-        
-        public ICollection<UserUserRelationEntity> RequestedUsers { get; set; }
+        public ICollection<UserUserRelationEntity> RequestedUsers { get; set; } = null!;
     }
 }

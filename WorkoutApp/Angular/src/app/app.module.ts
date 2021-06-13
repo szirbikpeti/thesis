@@ -18,6 +18,7 @@ import {ToastrModule} from "ngx-toastr";
 import {DashboardComponent} from "./pages/dashboard/dashboard.component";
 import {NewWorkoutComponent} from "./pages/new-workout/new-workout.component";
 import {ProfileComponent} from "./pages/profile/profile.component";
+import {ConfirmationDialogComponent} from "./pages/confirmation-dialog/confirmation-dialog.component";
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import {ProfileComponent} from "./pages/profile/profile.component";
     DashboardComponent,
     NewWorkoutComponent,
     ProfileComponent,
+    ConfirmationDialogComponent,
     CounterComponent,
     FetchDataComponent
   ],

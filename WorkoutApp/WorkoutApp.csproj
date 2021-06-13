@@ -11,6 +11,12 @@
         <!-- Set this to true if you enable server-side prerendering -->
         <BuildServerSideRenderer>false</BuildServerSideRenderer>
     </PropertyGroup>
+	
+	  <PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>netcoreapp5.0</TargetFramework>
+		<Nullable>enable</Nullable>
+	  </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
@@ -48,7 +54,6 @@
     <ItemGroup>
       <Folder Include="Angular\src\app\enums" />
       <Folder Include="Angular\src\app\pages" />
-      <Folder Include="Angular\src\app\requests" />
       <Folder Include="Angular\src\app\services" />
       <Folder Include="Logger" />
     </ItemGroup>

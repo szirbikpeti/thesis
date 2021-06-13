@@ -43,7 +43,7 @@ namespace WorkoutApp.Repositories
         .SaveChangesAsync(cancellationToken);
     }
 
-    public async Task<WorkoutEntity> DoUpdateAsync(int id,  WorkoutDto workoutDto, CancellationToken cancellationToken)
+    public async Task<WorkoutEntity?> DoUpdateAsync(int id,  WorkoutDto workoutDto, CancellationToken cancellationToken)
     {
       var fetchedWorkout = await _dbContext.GetByIdAsync<WorkoutEntity>(id, cancellationToken)
         .ConfigureAwait(false);

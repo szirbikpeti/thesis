@@ -7,8 +7,8 @@ namespace WorkoutApp.Abstractions
 {
   public interface IUserRepository
   {
-    Task<UserEntity> GetByIdAsync(int id, CancellationToken cancellationToken = default);
-    Task<UserEntity> UpdateAsync(int id,  UpdateUserDto updateUserDto, CancellationToken cancellationToken);
+    Task<UserEntity?> GetByIdAsync(int id, CancellationToken cancellationToken = default);
+    Task<UserEntity?> UpdateAsync(UserEntity currentUser,  UpdateUserDto updateUserDto, CancellationToken cancellationToken);
     Task<bool> DoDeleteAsync(int userId, CancellationToken cancellationToken);
   }
 }

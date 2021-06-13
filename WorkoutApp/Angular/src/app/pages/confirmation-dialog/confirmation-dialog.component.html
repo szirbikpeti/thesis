@@ -1,0 +1,9 @@
+<mat-dialog-content>
+	<div>
+    {{'GENERAL.ARE_YOU_SURE' | translate}}
+	</div>
+</mat-dialog-content>
+<mat-dialog-actions>
+	<button mat-raised-button (click)="onConfirmClick()" class="confirm-button" tabindex="1">{{'GENERAL.YES' | translate}}</button>
+	<button mat-raised-button mat-dialog-close class="cancel-button">{{'GENERAL.CANCEL' | translate}}</button>
+</mat-dialog-actions>

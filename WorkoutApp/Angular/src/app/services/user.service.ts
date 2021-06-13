@@ -2,6 +2,9 @@ import {Injectable} from '@angular/core';
 import {HttpService} from "./http.service";
 import {Resource} from "../enums/resource";
 import {Method} from "../enums/method";
+import {Observable} from "rxjs";
+import {UserModel} from "../models/UserModel";
+import {UserEditRequest} from "../requests/UserEditRequest";
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +14,11 @@ export class UserService {
   constructor(private _http: HttpService) {
   }
 
-  update(user: any): any {  // TODO
-    return this._http.request(Resource.USER, Method.PUT);
+  update(userData: UserEditRequest): Observable<UserModel> {
+    return this._http.request(Resource.USER, Method.PUT, userData);
+  }
+
+  delete(): Observable<any> {
+    return this._http.request(Resource.USER, Method.DELETE);
   }
 }

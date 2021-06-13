@@ -6,11 +6,11 @@ namespace WorkoutApp.Dto
     {
         [Required]
         [MinLength(3)]
-        public string UserName { get; set; }
+        public string UserName { get; set; } = null!;
         
         [Required]
         [MinLength(6)]
         [MaxLength(50)]
-        public string Password { get; set; }
+        public string Password { get; set; } = null!;
     }
 }

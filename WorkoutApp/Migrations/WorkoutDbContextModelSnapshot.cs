@@ -66,10 +66,15 @@ namespace WorkoutApp.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<DateTimeOffset?>("DeletedOn")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Equipment")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("WorkoutId")
@@ -90,10 +95,18 @@ namespace WorkoutApp.Migrations
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<byte[]>("Data")
+                        .IsRequired()
                         .HasColumnType("bytea");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<int>("Size")
                         .HasColumnType("integer");
+
+                    b.Property<DateTimeOffset>("UploadedOn")
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -208,6 +221,7 @@ namespace WorkoutApp.Migrations
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("About")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("AccessFailedCount")
@@ -234,6 +248,7 @@ namespace WorkoutApp.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<string>("FullName")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTimeOffset?>("LastSignedInOn")
@@ -265,7 +280,7 @@ namespace WorkoutApp.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("boolean");
 
-                    b.Property<int?>("ProfilePictureId")
+                    b.Property<int>("ProfilePictureId")
                         .HasColumnType("integer");
 
                     b.Property<string>("SecurityStamp")
@@ -287,7 +302,8 @@ namespace WorkoutApp.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex");
 
-                    b.HasIndex("ProfilePictureId");
+                    b.HasIndex("ProfilePictureId")
+                        .IsUnique();
 
                     b.ToTable("AspNetUsers");
                 });
@@ -329,13 +345,28 @@ namespace WorkoutApp.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<DateTimeOffset>("Date")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<DateTimeOffset?>("DeletedOn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTimeOffset>("ModifiedOn")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Type")
+                        .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Workouts");
                 });
@@ -405,8 +436,10 @@ namespace WorkoutApp.Migrations
             modelBuilder.Entity("WorkoutApp.Entities.UserEntity", b =>
                 {
                     b.HasOne("WorkoutApp.Entities.FileEntity", "ProfilePicture")
-                        .WithMany()
-                        .HasForeignKey("ProfilePictureId");
+                        .WithOne("ProfilePictureOfUser")
+                        .HasForeignKey("WorkoutApp.Entities.UserEntity", "ProfilePictureId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("ProfilePicture");
                 });
@@ -449,9 +482,25 @@ namespace WorkoutApp.Migrations
                     b.Navigation("RequestingUser");
                 });
 
+            modelBuilder.Entity("WorkoutApp.Entities.WorkoutEntity", b =>
+                {
+                    b.HasOne("WorkoutApp.Entities.UserEntity", "User")
+                        .WithMany("Workouts")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("WorkoutApp.Entities.ExerciseEntity", b =>
                 {
                     b.Navigation("Sets");
+                });
+
+            modelBuilder.Entity("WorkoutApp.Entities.FileEntity", b =>
+                {
+                    b.Navigation("ProfilePictureOfUser");
                 });
 
             modelBuilder.Entity("WorkoutApp.Entities.RoleEntity", b =>
@@ -470,6 +519,8 @@ namespace WorkoutApp.Migrations
                     b.Navigation("RequestingUsers");
 
                     b.Navigation("Roles");
+
+                    b.Navigation("Workouts");
                 });
 
             modelBuilder.Entity("WorkoutApp.Entities.WorkoutEntity", b =>

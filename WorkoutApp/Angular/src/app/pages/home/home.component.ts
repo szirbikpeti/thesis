@@ -23,8 +23,6 @@ export class HomeComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this._auth.signOut();
-
     this.loginForm = this.fb.group({
       userName: ['', Validators.required],
       password: ['', Validators.required],
@@ -36,7 +34,7 @@ export class HomeComponent implements OnInit{
       return;
     }
 
-    this._auth.login(this.loginForm.value)
+    this._auth.signIn(this.loginForm.value)
       .subscribe(user => {
         this._state.user = user;
         this.router.navigate(['/dashboard']);

@@ -14,7 +14,7 @@ namespace WorkoutApp.Extensions
       this UserManager<UserEntity> userManager, 
       ClaimsPrincipal principal) => int.Parse(userManager.GetUserId(principal));
 
-    public static async Task<UserEntity> FindByIdWithAdditionalDataAsync(
+    public static async Task<UserEntity?> FindByIdWithAdditionalDataAsync(
       this UserManager<UserEntity> userManager, 
       int id, 
       CancellationToken cancellationToken)
@@ -28,7 +28,7 @@ namespace WorkoutApp.Extensions
         .ConfigureAwait(false);
     }
     
-    public static async Task<UserEntity> FindByNameWithAdditionalDataAsync(
+    public static async Task<UserEntity?> FindByNameWithAdditionalDataAsync(
       this UserManager<UserEntity> userManager, 
       string userName, 
       CancellationToken cancellationToken)

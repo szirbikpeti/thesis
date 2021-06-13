@@ -6,8 +6,8 @@ namespace WorkoutApp.Entities
 {
   public class RoleEntity : IdentityRole<int>, IIdentityAwareEntity
   {
-    public ICollection<RoleClaimEntity> Claims { get; set; }
+    public ICollection<RoleClaimEntity> Claims { get; set; } = null!;
     
-    public ICollection<UserRoleRelationEntity> Users { get; set; }
+    public ICollection<UserRoleRelationEntity> Users { get; set; } = null!;
   }
 }

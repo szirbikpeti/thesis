@@ -1,3 +1,108 @@
-<div>
+<div class="content">
+    <h1>{{'PAGE.PROFILE' | translate}}</h1>
 
+    <form [formGroup]="userForm" (ngSubmit)="uploadProfilePicture()">
+      <div>
+        <div style="margin-left: 160px; margin-bottom: -30px; height: 30px;">
+          <mat-icon *ngIf="!isNull(this.profilePicture)" style="cursor: pointer;"
+                    (click)="removeNewPicture()">close</mat-icon>
+        </div>
+        <div>
+          <img *ngIf="!isNull(currentUser.profilePicture) && isNull(this.profilePicture)"
+               (click)="changePicture()"
+               [src]="getPicture(this.currentUser.profilePicture.data)"
+               alt="No image"
+               class="profile-picture"/>
+          <img *ngIf="!isNull(this.profilePicture)"
+               (click)="changePicture()"
+               [src]="this.newProfilePicture"
+               alt="No new image"
+               class="profile-picture" />
+          <input (change)="onFileSelected($event)" type="file" accept="image/png, image/jpeg"
+                 style="display: none;" #fileInput/>
+        </div>
+      </div>
+      <div class="control-pair-container">
+        <div class="pair-left">
+          <div class="placeholder">{{'USER_FORM.FULLNAME' | translate}} *</div>
+          <mat-form-field>
+            <div class="center-input-field">
+              <input matInput formControlName="fullName">
+            </div>
+          </mat-form-field>
+        </div>
+        <div class="pair-right">
+          <div class="placeholder">{{'USER_FORM.USERNAME' | translate}} *</div>
+          <mat-form-field>
+            <div class="center-input-field">
+              <input matInput formControlName="userName">
+            </div>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="control-pair-container">
+        <div class="pair-left">
+          <div class="placeholder">{{'USER_FORM.EMAIL' | translate}} *</div>
+          <mat-form-field>
+            <div class="center-input-field">
+              <input type="email" matInput formControlName="email">
+            </div>
+          </mat-form-field>
+        </div>
+        <div class="pair-right">
+          <div class="placeholder">{{'USER_FORM.BIRTHDAY' | translate}}</div>
+          <mat-form-field>
+            <div class="center-input-field">
+              <input
+                matInput
+                formControlName="birthday"
+                [matDatepicker]="birthdayValue"
+                (focus)="birthdayValue.open()">
+              <mat-datepicker #birthdayValue></mat-datepicker>
+            </div>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="control-pair-container" formGroupName="passwordChange">
+        <div class="pair-left">
+          <div class="placeholder">{{'USER_FORM.OLD_PASSWORD' | translate}}</div>
+          <mat-form-field>
+            <div class="center-input-field">
+              <input type="password" matInput formControlName="oldPassword">
+            </div>
+          </mat-form-field>
+        </div>
+        <div class="pair-right">
+          <div class="placeholder">{{'USER_FORM.NEW_PASSWORD' | translate}}</div>
+          <mat-form-field>
+            <div class="center-input-field">
+              <input type="password" matInput formControlName="newPassword">
+            </div>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="control-pair-container">
+        <div>
+          <div class="placeholder">{{'USER_FORM.ABOUT' | translate}}</div>
+          <mat-form-field id="textarea">
+            <div class="center-input-field">
+              <textarea style="resize: none;" matInput formControlName="about"></textarea>
+            </div>
+          </mat-form-field>
+        </div>
+      </div>
+      <div>
+        <mat-error>{{wrong_old_pw}}</mat-error>
+        <mat-error *ngIf="userForm.invalid">A csillaggal jelölt mezők megfelelően kitöltendők!</mat-error>
+        <button type="button" (click)="deleteUser()" class="delete-button" mat-button>
+          {{'GENERAL.DELETE' | translate}}
+        </button>
+        <button class="add-button" [disabled]="userForm.invalid" mat-button>
+          {{'GENERAL.SAVE' | translate}}
+        </button>
+      </div>
+    </form>
 </div>

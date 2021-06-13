@@ -4,24 +4,37 @@
     "MOTTO_PART_2": "as you haven't done before",
     "LANGUAGE": "Language",
     "INFO": "Info",
-    "ERROR": "Error"
+    "ERROR": "Error",
+    "SAVE": "Save",
+    "DELETE": "Delete",
+    "YES": "Yes",
+    "CANCEL": "Cancel",
+    "ARE_YOU_SURE": "Are you sure?"
   },
   "NAV": {
     "LOG_OUT": "Log out",
     "DASHBOARD": "Dashboard",
     "NEW_WORKOUT": "Create new workout"
   },
+  "PAGE": {
+    "PROFILE": "Profile"
+  },
   "USER_FORM": {
     "LOGIN": "Log In",
     "SIGNUP": "Sign Up",
-    "CANCEL": "Cancel",
     "REGISTRATION": "Create New Account",
     "FULLNAME": "Full Name",
     "EMAIL": "Email Address",
     "USERNAME": "User Name",
     "PASSWORD": "Password",
+    "OLD_PASSWORD": "Old Password",
+    "NEW_PASSWORD": "New Password",
     "BIRTHDAY": "Birthday",
+    "ABOUT": "About",
     "SUCCESSFUL_SIGNUP": "Successful sign-up",
-    "UNSUCCESSFUL_LOGIN": "Unsuccessful login"
+    "UNSUCCESSFUL_LOGIN": "Unsuccessful login",
+    "SUCCESSFUL_UPDATE":  "Successful update",
+    "UNSUCCESSFUL_UPDATE":  "Unsuccessful update",
+    "SUCCESSFUL_DELETE":  "Successful delete"
   }
 }

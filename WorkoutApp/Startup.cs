@@ -115,6 +115,7 @@ namespace WorkoutApp
       services.AddScoped<IAuthRepository, AuthRepository>();
       services.AddScoped<IAdminRepository, AdminRepository>();
       services.AddScoped<IUserRepository, UserRepository>();
+      services.AddScoped<IFileRepository, FileRepository>();
       services.AddScoped<IWorkoutRepository, WorkoutRepository>();
     }
 

@@ -4,24 +4,37 @@
     "MOTTO_PART_2": "ahogy még nem csináltad",
     "LANGUAGE": "Nyelv",
     "INFO": "Információ",
-    "ERROR": "Hiba"
+    "ERROR": "Hiba",
+    "SAVE": "Mentés",
+    "DELETE": "Törlés",
+    "YES": "Igen",
+    "CANCEL": "Mégse",
+    "ARE_YOU_SURE": "Biztos benne?"
   },
   "NAV": {
     "LOG_OUT": "Kijelentkezés",
     "DASHBOARD": "Dashboard",
     "NEW_WORKOUT": "Új edzés felvétel"
   },
+  "PAGE": {
+    "PROFILE": "Adataim"
+  },
   "USER_FORM": {
     "LOGIN": "Bejelentkezés",
     "SIGNUP": "Regisztráció",
-    "CANCEL": "Mégse",
     "REGISTRATION": "Új fiók létrehozása",
     "FULLNAME": "Teljes név",
     "EMAIL": "Email-cím",
     "USERNAME": "Felhasználónév",
     "PASSWORD": "Jelszó",
+    "OLD_PASSWORD": "Régi jelszó",
+    "NEW_PASSWORD": "Új jelszó",
     "BIRTHDAY": "Születésnap",
+    "ABOUT": "Magamról",
     "SUCCESSFUL_SIGNUP": "Sikeres regisztráció",
-    "UNSUCCESSFUL_LOGIN": "Sikertelen bejelentkezés"
+    "UNSUCCESSFUL_LOGIN": "Sikertelen bejelentkezés",
+    "SUCCESSFUL_UPDATE": "Sikeres módosítás",
+    "UNSUCCESSFUL_UPDATE": "Sikertelen módosítás",
+    "SUCCESSFUL_DELETE":  "Sikeres törlés"
   }
 }

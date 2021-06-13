@@ -10,7 +10,6 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -32,6 +31,7 @@ namespace WorkoutApp.Controllers
     private readonly IAuthRepository _auth;
     private readonly IMapper _mapper;
     private readonly IConfiguration _configuration;
+    private readonly IFileRepository _file;
     private readonly UserManager<UserEntity> _userManager;
     private readonly SignInManager<UserEntity> _signInManager;
     private readonly WorkoutDbContext _dbContext;
@@ -42,6 +42,7 @@ namespace WorkoutApp.Controllers
       IAuthRepository auth, 
       IMapper mapper, 
       IConfiguration configuration,
+      IFileRepository file,
       UserManager<UserEntity> userManager,
       SignInManager<UserEntity> signInManager,
       WorkoutDbContext dbContext, 
@@ -51,6 +52,7 @@ namespace WorkoutApp.Controllers
       _auth = auth ?? throw new ArgumentNullException(nameof(auth));
       _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
       _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+      _file = file ?? throw new ArgumentNullException(nameof(file));
       _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
       _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
       _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
@@ -74,6 +76,8 @@ namespace WorkoutApp.Controllers
       }
 
       var mappedUser = _mapper.Map<UserEntity>(newUser);
+      mappedUser.About = string.Empty;
+      mappedUser.ProfilePictureId = 1;
 
       await _userManager.CreateAsync(mappedUser).ConfigureAwait(false);
 
@@ -88,9 +92,9 @@ namespace WorkoutApp.Controllers
         .FindByIdWithAdditionalDataAsync(mappedUser.Id, cancellationToken)
         .ConfigureAwait(false);
       
-      createdUser.CreatedOn = DateTimeOffset.Now;
-      createdUser.ModifiedOn = DateTimeOffset.Now;
-      
+      createdUser!.CreatedOn = DateTimeOffset.Now;
+      createdUser!.ModifiedOn = DateTimeOffset.Now;
+
       await _auth.SaveChangesAsync(cancellationToken)
         .ConfigureAwait(false);
 
@@ -118,11 +122,14 @@ namespace WorkoutApp.Controllers
         .FindByNameWithAdditionalDataAsync(accessUser.UserName, cancellationToken)
         .ConfigureAwait(false);
       
-      user.LastSignedInOn = DateTimeOffset.Now;
+      user!.LastSignedInOn = DateTimeOffset.Now;
 
       await _auth.SaveChangesAsync(cancellationToken);
 
       HttpContext.User = await _signInManager.CreateUserPrincipalAsync(user)
+        .ConfigureAwait(false);
+      
+      user!.ProfilePicture = await _file.DoGetAsync(user.ProfilePictureId, cancellationToken)
         .ConfigureAwait(false);
 
       var userDto = _mapper.Map<GetUserDto>(user);

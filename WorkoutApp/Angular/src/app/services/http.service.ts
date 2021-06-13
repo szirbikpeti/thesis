@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { Resource } from '../enums/resource';
 import { Observable } from 'rxjs';
 import {Method} from "../enums/method";
+import {isNull} from "../utility";
 
 @Injectable({
   providedIn: 'root'
@@ -32,18 +33,18 @@ export class HttpService {
     return this.http.request(method, apiURL, options);
   }
 
-  requestWithFormData(resource: Resource, payload: File, url: string): Observable<any> {
+  requestWithFileUpload(resource: Resource, method: Method, payload: File, fileName?: string): Observable<any> {
     let formData = new FormData();
-    const apiURL = this.baseUrl + 'api/' + resource + url;
+    const apiURL = this.baseUrl + 'api/' + resource;
 
-    formData.set('picture', payload, 'profile-picture.png');
+    const name = isNull(fileName) ? payload.name : fileName;
+
+    formData.set('file', payload, name);
 
     let options: Object = {
-      headers: new HttpHeaders({
-        // 'Authorization': 'Bearer ' + this._state.token.value
-      })
+      body: formData
     };
 
-    return this.http.put(apiURL, formData, options);
+    return this.http.request(method, apiURL, options);
   }
 }

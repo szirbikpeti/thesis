@@ -12,7 +12,7 @@ namespace WorkoutApp.Entities
 
         public DateTimeOffset Date { get; set; }
 
-        public string Type { get; set; }
+        public string Type { get; set; } = null!;
         
         public DateTimeOffset CreatedOn { get; set; }
         
@@ -20,8 +20,8 @@ namespace WorkoutApp.Entities
         
         public DateTimeOffset? DeletedOn { get; set; }
 
-        public UserEntity User { get; set; }
+        public UserEntity User { get; set; } = null!;
         
-        public ICollection<ExerciseEntity> Exercises { get; set; }
+        public ICollection<ExerciseEntity> Exercises { get; set; } = null!;
     }
 }

@@ -1,0 +1,131 @@
+.content {
+  text-align: center;
+  ::ng-deep .mat-form-field-underline {
+    display: none;
+  }
+}
+
+mat-form-field {
+  background-color: #fff;
+  border: 1px solid #4742425b;
+  border-radius: 5px;
+  box-shadow: 0 0 10px #00000029;
+  font-size: 14px;
+  height: 40px;
+  max-height: 40px;
+  width: 330px;
+}
+
+mat-form-field:hover {
+  border: 1px solid #47424299;
+}
+
+mat-form-field.mat-focused {
+  border: 1px solid #47424299;
+  box-shadow: 0 0 10px #3298dc4d;
+}
+
+mat-form-field.ng-dirty.ng-invalid {
+  border: 1px solid #e00a0a;
+  box-shadow: 0 0 10px #e00a0a4d;
+}
+
+#textarea {
+  height: 200px;
+  max-height: 200px;
+  width: 690px;
+}
+
+textarea {
+  height: 200px;
+  max-height: 200px;
+}
+
+.add-button {
+  font-size: 18px;
+  outline: none;
+  background-color: #363636;
+  color: red;
+  padding: 5px 40px 5px 40px;
+  margin-bottom: 15px;
+}
+
+.delete-button {
+  font-size: 15px;
+  outline: none;
+  color: red;
+  border: 1px solid red;
+  padding: 3px 20px 3px 20px;
+  margin-right: 10px;
+}
+
+.control-pair-container {
+  display: inline-flex;
+  overflow: hidden;
+  padding: 15px;
+}
+
+.pair-left {
+  float: left;
+  padding-right: 30px;
+}
+
+.pair-right {
+  display: block;
+}
+
+.placeholder {
+  text-align: left;
+  font-size: 12px;
+  margin-bottom: 3px;
+  margin-left: 5px;
+}
+
+.center-input-field {
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-top: -5px;
+}
+
+.icon {
+  float: left;
+  margin-right: 5px;
+  width: 15px;
+  height: 15px;
+}
+
+.profile-picture {
+  cursor: pointer;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+}
+
+.profile-picture:hover {
+  border: 1px solid #47424299;
+  box-shadow: 0 0 10px #4742424d;
+}
+
+@media screen and (max-width: 990px) {
+  mat-form-field {
+    width: 280px;
+  }
+
+  #textarea {
+    width: 590px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .control-pair-container {
+    display: inline-block;
+  }
+
+  .pair-left {
+    margin-bottom: 1rem;
+  }
+
+  #textarea {
+    width: 280px;
+  }
+}
