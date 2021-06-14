@@ -4,4 +4,5 @@ export enum Resource {
   LOGOUT = "auth/",
   USER = 'user/',
   FILE = 'file/',
+  WORKOUT = 'workout/',
 }

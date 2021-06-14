@@ -6,8 +6,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './pages/nav-menu/nav-menu.component';
 import { HomeComponent } from './pages/home/home.component';
-import { CounterComponent } from './pages/counter/counter.component';
-import { FetchDataComponent } from './pages/fetch-data/fetch-data.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { MaterialModule } from "./material.module";
@@ -29,9 +27,7 @@ import {ConfirmationDialogComponent} from "./pages/confirmation-dialog/confirmat
     DashboardComponent,
     NewWorkoutComponent,
     ProfileComponent,
-    ConfirmationDialogComponent,
-    CounterComponent,
-    FetchDataComponent
+    ConfirmationDialogComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

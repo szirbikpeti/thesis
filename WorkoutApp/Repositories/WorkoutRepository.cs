@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -33,14 +34,32 @@ namespace WorkoutApp.Repositories
         .ConfigureAwait(false);
     }
 
-    public async Task DoAddAsync(WorkoutEntity workout, CancellationToken cancellationToken)
+    public async Task DoAddAsync(WorkoutEntity workout, IReadOnlyCollection<int> fileIds, CancellationToken cancellationToken)
     {
       await _dbContext.Workouts
         .AddAsync(workout, cancellationToken)
         .ConfigureAwait(false);
-
+      
       await _dbContext
         .SaveChangesAsync(cancellationToken);
+
+      if (fileIds.Count > 0) {
+        var createdWorkout = await _dbContext.Workouts.Where(_ => _.CreatedOn == workout.CreatedOn)
+          .FirstOrDefaultAsync(cancellationToken)
+          .ConfigureAwait(false);
+        
+        var entities = fileIds.Select(_ => new WorkoutFileRelationEntity {
+          LeftId = createdWorkout!.Id,
+          RightId = _
+        });
+
+        await _dbContext.WorkoutFileRelations
+          .AddRangeAsync(entities, cancellationToken)
+          .ConfigureAwait(false);
+        
+        await _dbContext
+          .SaveChangesAsync(cancellationToken);
+      }
     }
 
     public async Task<WorkoutEntity?> DoUpdateAsync(int id,  WorkoutDto workoutDto, CancellationToken cancellationToken)

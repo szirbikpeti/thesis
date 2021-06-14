@@ -45,5 +45,19 @@ namespace WorkoutApp.Extensions
           cancellationToken)
         .ConfigureAwait(false);
     }
+    public static async Task<bool> IsUserExistsAsync(
+      this UserManager<UserEntity> userManager, 
+      string userName, 
+      CancellationToken cancellationToken)
+    {
+      var normalizedUserName = userManager.NormalizeName(userName);
+      
+      return await userManager.Users
+        .AnyAsync(_ => 
+          (_.NormalizedUserName == normalizedUserName) 
+            && (_.DeletedOn == null), 
+          cancellationToken)
+        .ConfigureAwait(false);
+    }
   }
 }

@@ -36,5 +36,20 @@
     "SUCCESSFUL_UPDATE": "Sikeres módosítás",
     "UNSUCCESSFUL_UPDATE": "Sikertelen módosítás",
     "SUCCESSFUL_DELETE":  "Sikeres törlés"
+  },
+  "WORKOUT_FORM": {
+    "TITLE": "Új edzés",
+    "DATE": "Dátum",
+    "TYPE": "Edzés típus",
+    "EXERCISE": "Gyakorlat",
+    "EXERCISES": "Gyakorlatok",
+    "EXERCISE_NAME": "Gyakorlat neve",
+    "EXERCISE_EQUIPMENT": "Felszerelés",
+    "SET": "Set-ek",
+    "SET_REPS": "Ismétlés szám",
+    "SET_WEIGHT": "Súly",
+    "SET_DURATION": "Időtartam",
+    "ATTACHMENTS": "Csatolmányok",
+    "SAVE": "Edzés hozzáadása"
   }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.ComponentModel.DataAnnotations;
 
 namespace WorkoutApp.Dto
@@ -14,5 +15,7 @@ namespace WorkoutApp.Dto
 
     [Required]
     public ICollection<ExerciseDto> Exercises { get; set; } = null!;
+    
+    public IReadOnlyCollection<int> FileIds { get; set; } = ImmutableList<int>.Empty;
   }
 }

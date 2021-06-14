@@ -23,6 +23,7 @@ namespace WorkoutApp.Data
         public DbSet<ExerciseEntity> Exercises { get; set; } = null!;
         public DbSet<WorkoutEntity> Workouts { get; set; } = null!;
         
+        public DbSet<WorkoutFileRelationEntity> WorkoutFileRelations { get; set; } = null!;
         public DbSet<UserUserRelationEntity> UserUserRelations { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -30,10 +31,14 @@ namespace WorkoutApp.Data
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.ApplyConfiguration(new UserConfiguration());
-            modelBuilder.ApplyConfiguration(new FileConfiguration());
             modelBuilder.ApplyConfiguration(new RoleConfiguration());
+            modelBuilder.ApplyConfiguration(new FileConfiguration());
+            modelBuilder.ApplyConfiguration(new WorkoutConfiguration());
+            modelBuilder.ApplyConfiguration(new ExerciseConfiguration());
+            modelBuilder.ApplyConfiguration(new SetConfiguration());
             modelBuilder.ApplyConfiguration(new UserClaimConfiguration());
             modelBuilder.ApplyConfiguration(new RoleClaimConfiguration());
+            modelBuilder.ApplyConfiguration(new WorkoutFileRelationConfiguration());
             modelBuilder.ApplyConfiguration(new UserUserRelationConfiguration());
             modelBuilder.ApplyConfiguration(new UserRoleRelationConfiguration());
 
@@ -41,9 +46,6 @@ namespace WorkoutApp.Data
                 .HasQueryFilter(_ => _.DeletedOn == null);
 
             modelBuilder.Entity<WorkoutEntity>()
-                .HasQueryFilter(_ => _.DeletedOn == null);
-
-            modelBuilder.Entity<ExerciseEntity>()
                 .HasQueryFilter(_ => _.DeletedOn == null);
         }
     }

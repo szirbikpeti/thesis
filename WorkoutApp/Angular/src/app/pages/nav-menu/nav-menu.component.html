@@ -8,6 +8,16 @@
     </div>
     <hr>
     <mat-nav-list>
+      <div class="profile-mobile">
+        <img *ngIf="!isNull(currentUser.profilePicture)"
+             [src]="getPicture(this.currentUser.profilePicture.data)"
+             alt="Nincs kép"
+             (click)="editProfile()"
+             class="profile-picture-mobile"/>
+        <div class="clickable username"
+             (click)="editProfile()">
+          {{currentUser.userName}}</div>
+      </div>
       <a (click)="toggleDrawerWhenHandset()" routerLink="/dashboard" mat-list-item
          href="#" routerLinkActive="active">
         <div class="menu-icon-container">

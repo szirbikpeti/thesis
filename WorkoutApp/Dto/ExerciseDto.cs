@@ -8,8 +8,10 @@ namespace WorkoutApp.Dto
     [Required]
     public string Name { get; set; } = null!;
 
+    [Required]
     public string Equipment { get; set; } = null!;
 
-    [Required] public ICollection<SetDto> Sets { get; set; } = null!;
+    [Required] 
+    public ICollection<SetDto> Sets { get; set; } = null!;
   }
 }

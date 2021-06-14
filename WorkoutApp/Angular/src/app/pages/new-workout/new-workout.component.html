@@ -1,1 +1,150 @@
-<p>new-workout works!</p>
+<div class="title">{{'WORKOUT_FORM.TITLE' | translate}}</div>
+
+<div class="content">
+  <form [formGroup]="workoutForm" (ngSubmit)="uploadAttachments()">
+    <div class="control-pair-container">
+      <div class="pair-left">
+        <div class="placeholder">{{'WORKOUT_FORM.DATE' | translate}}</div>
+        <mat-form-field>
+          <div class="center-input-field">
+            <input
+              matInput
+              formControlName="date"
+              [matDatepicker]="workoutDate"
+              (focus)="workoutDate.open()">
+            <mat-datepicker #workoutDate></mat-datepicker>
+          </div>
+        </mat-form-field>
+      </div>
+      <div class="pair-right">
+        <div class="placeholder">{{'WORKOUT_FORM.TYPE' | translate}}</div>
+        <mat-form-field>
+          <div class="center-input-field">
+            <input matInput formControlName="type">
+          </div>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="exercise-subtitle">{{'WORKOUT_FORM.EXERCISES' | translate}}
+      <button type="button" mat-icon-button (click)="addNewExercise()"><mat-icon>add</mat-icon></button>
+    </div>
+
+    <div class="exercises" formArrayName="exercises">
+      <div *ngFor="let exercise of exercises.controls; let exerciseIndex = index;">
+        <div [formGroupName]="exerciseIndex">
+          <mat-divider></mat-divider>
+          <div class="exercise-index">
+            {{'WORKOUT_FORM.EXERCISE' | translate}} {{exerciseIndex + 1}}
+            <button *ngIf="exercises.length !== 1" mat-icon-button
+                    (click)="deleteExercise(exerciseIndex)" type="button">
+              <mat-icon>delete_forever</mat-icon>
+            </button>
+          </div>
+          <div class="control-pair-container">
+            <div class="pair-left">
+              <div class="placeholder">{{'WORKOUT_FORM.EXERCISE_NAME' | translate}}</div>
+              <mat-form-field>
+                <div class="center-input-field">
+                  <input matInput formControlName="name">
+                </div>
+              </mat-form-field>
+            </div>
+            <div class="pair-right">
+              <div class="placeholder">{{'WORKOUT_FORM.EXERCISE_EQUIPMENT' | translate}}</div>
+              <mat-form-field>
+                <div class="center-input-field">
+                  <input matInput formControlName="equipment">
+                </div>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="set-subtitle">{{'WORKOUT_FORM.SET' | translate}}
+            <button type="button" mat-icon-button (click)="addNewSet(exerciseIndex)"><mat-icon>add</mat-icon></button>
+          </div>
+
+          <div formArrayName="sets">
+            <div *ngFor="let set of getSet(exerciseIndex).controls; let setIndex = index;">
+              <div class="row set-container" [formGroupName]="setIndex">
+                <div >
+                  <div class="placeholder">{{'WORKOUT_FORM.SET_REPS' | translate}}</div>
+                  <mat-form-field class="small-mat-form-field">
+                    <div class="center-input-field">
+                      <input type="number" matInput formControlName="reps">
+                    </div>
+                  </mat-form-field>
+                </div>
+                <div>
+                  <div class="placeholder">{{'WORKOUT_FORM.SET_WEIGHT' | translate}}</div>
+                  <mat-form-field class="small-mat-form-field">
+                    <div class="center-input-field">
+                      <input type="number" matInput formControlName="weight">
+                    </div>
+                  </mat-form-field>
+                </div>
+                <div>
+                  <div class="placeholder">{{'WORKOUT_FORM.SET_DURATION' | translate}}</div>
+                  <mat-form-field>
+                    <div class="center-input-field">
+                      <input type="number" matInput formControlName="duration">
+                    </div>
+                  </mat-form-field>
+                </div>
+                <button *ngIf="getSet(exerciseIndex).length !== 1" mat-icon-button type="button"
+                        class="delete-set-button" (click)="deleteSet(exerciseIndex, setIndex)">
+                  <mat-icon>delete_forever</mat-icon>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="attachment-subtitle">{{'WORKOUT_FORM.ATTACHMENTS' | translate}}
+      <button type="button" mat-icon-button (click)="addAttachment()"><mat-icon>add</mat-icon></button>
+
+      <input (change)="onFileSelected($event)" type="file" accept="image/png, image/jpeg, video/*"
+             multiple style="display: none;" #fileInput/>
+    </div>
+    <table *ngIf="selectedFiles.length > 0" mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+      <ng-container matColumnDef="position">
+        <th mat-header-cell *matHeaderCellDef> # </th>
+        <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+      </ng-container>
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> File Name </th>
+        <td mat-cell *matCellDef="let element"> {{element.file.name}} </td>
+      </ng-container>
+      <ng-container matColumnDef="type">
+        <th mat-header-cell *matHeaderCellDef> Type </th>
+        <td mat-cell *matCellDef="let element"> {{element.file.type}} </td>
+      </ng-container>
+      <ng-container matColumnDef="preview">
+        <th mat-header-cell *matHeaderCellDef> Preview </th>
+        <td mat-cell *matCellDef="let element">
+          <img *ngIf="!element.file.type.startsWith('video')" [src]="element.preview"
+               alt="No image"
+               style="width: 40px; height: 40px"/>
+          <video *ngIf="element.file.type.startsWith('video')" [src]="element.preview"
+               style="width: 40px; height: 40px"></video>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="operation">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-icon-button (click)="deleteSelectedAttachment(element.position)"><mat-icon>delete_forever</mat-icon></button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+
+    <button mat-button type="submit" class="add-button">
+      {{'WORKOUT_FORM.SAVE' | translate}}
+    </button>
+  </form>
+</div>

@@ -13,6 +13,10 @@ namespace WorkoutApp.Data
             CreateMap<UserEntity, GetUserDto>();
             CreateMap<WorkoutDto, WorkoutEntity>();
             CreateMap<WorkoutEntity, WorkoutDto>();
+            CreateMap<ExerciseDto, ExerciseEntity>();
+            CreateMap<ExerciseEntity, ExerciseDto>();
+            CreateMap<SetDto, SetEntity>();
+            CreateMap<SetEntity, SetDto>();
             CreateMap<GetFileDto, FileEntity>();
             CreateMap<FileEntity, GetFileDto>();
         }

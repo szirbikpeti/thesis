@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WorkoutApp.Data;
 
 namespace WorkoutApp.Migrations
 {
     [DbContext(typeof(WorkoutDbContext))]
-    partial class WorkoutDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210614070510_AddWorkoutFileRelationEntity")]
+    partial class AddWorkoutFileRelationEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -409,7 +411,7 @@ namespace WorkoutApp.Migrations
                     b.HasOne("WorkoutApp.Entities.WorkoutEntity", "Workout")
                         .WithMany("Exercises")
                         .HasForeignKey("WorkoutId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Workout");
@@ -431,7 +433,7 @@ namespace WorkoutApp.Migrations
                     b.HasOne("WorkoutApp.Entities.ExerciseEntity", "Exercise")
                         .WithMany("Sets")
                         .HasForeignKey("ExerciseId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Exercise");
@@ -502,7 +504,7 @@ namespace WorkoutApp.Migrations
                     b.HasOne("WorkoutApp.Entities.UserEntity", "User")
                         .WithMany("Workouts")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");

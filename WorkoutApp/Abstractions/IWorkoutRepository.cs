@@ -11,7 +11,7 @@ namespace WorkoutApp.Abstractions
 
     Task<ICollection<WorkoutEntity>> ListAsync(int userId, CancellationToken cancellationToken);
     
-    Task DoAddAsync(WorkoutEntity workout, CancellationToken cancellationToken);
+    Task DoAddAsync(WorkoutEntity workout, IReadOnlyCollection<int> fileIds, CancellationToken cancellationToken);
     
     Task<WorkoutEntity?> DoUpdateAsync(int workoutId, WorkoutDto workoutDto, CancellationToken cancellationToken);
     

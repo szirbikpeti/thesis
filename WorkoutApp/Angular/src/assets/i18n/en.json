@@ -36,5 +36,20 @@
     "SUCCESSFUL_UPDATE":  "Successful update",
     "UNSUCCESSFUL_UPDATE":  "Unsuccessful update",
     "SUCCESSFUL_DELETE":  "Successful delete"
+  },
+  "WORKOUT_FORM": {
+    "TITLE": "New workout",
+    "DATE": "Date",
+    "TYPE": "Workout type",
+    "EXERCISE": "Exercise",
+    "EXERCISES": "Exercises",
+    "EXERCISE_NAME": "Exercise name",
+    "EXERCISE_EQUIPMENT": "Equipment",
+    "SET": "Sets",
+    "SET_REPS": "Reps",
+    "SET_WEIGHT": "Weight",
+    "SET_DURATION": "Duration",
+    "ATTACHMENTS": "Attachments",
+    "SAVE": "Add workout"
   }
 }

@@ -112,7 +112,6 @@ namespace WorkoutApp
       services.AddCors();
       services.AddHttpContextAccessor();
       services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-      services.AddScoped<IAuthRepository, AuthRepository>();
       services.AddScoped<IAdminRepository, AdminRepository>();
       services.AddScoped<IUserRepository, UserRepository>();
       services.AddScoped<IFileRepository, FileRepository>();
@@ -136,8 +135,6 @@ namespace WorkoutApp
       if (!environment.IsDevelopment()) {
         appBuilder.UseSpaStaticFiles();
       }
-
-      // appBuilder.UseMiddleware<JwtMiddleware>();
 
       dbContext.Database.Migrate(); // TODO
 

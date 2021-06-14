@@ -56,9 +56,7 @@ export class ProfileComponent implements OnInit {
 
   uploadProfilePicture(): void {
     if (!isNull(this.newProfilePicture)) {
-      const calledMethod = this.currentUser.profilePicture.id == '1' ? 'upload' : 'uploadProfilePicture';
-
-      this._file[calledMethod](this.profilePicture, 'profile-picture.png').subscribe(file => {
+      this._file.uploadProfilePicture(this.profilePicture, 'profile-picture.png').subscribe(file => {
         this.submitUserForm(file.id);
       });
     } else {
@@ -114,8 +112,6 @@ export class ProfileComponent implements OnInit {
   }
 
   onFileSelected(event) {
-    console.log(event.target.files[0]);
-
     if(event.target.files.length > 0) {
       this.profilePicture = event.target.files[0];
     }

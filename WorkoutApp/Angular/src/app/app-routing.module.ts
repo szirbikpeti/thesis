@@ -36,7 +36,11 @@ const routes: Routes = [
     path: 'home',
     component: HomeComponent
   },
-  {path: 'fetch-data', component: FetchDataComponent},
+  {
+    path : '**',
+    pathMatch: 'full',
+    redirectTo: ''
+  }
 ];
 
 @NgModule({

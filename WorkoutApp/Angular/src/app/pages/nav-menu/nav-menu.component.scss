@@ -5,6 +5,7 @@
 }
 
 .wt-container {
+  width: 95%;
   text-align: center;
 }
 
@@ -14,11 +15,27 @@
   transform: rotate(15deg);
 }
 
+hr {
+  width: 85%;
+}
+
 .profile-picture {
-  cursor: pointer;
-  width: 40px;
-  height: 40px;
   border-radius: 50%;
+  cursor: pointer;
+  height: 40px;
+  width: 40px;
+}
+
+.profile-picture-mobile {
+  border-radius: 50%;
+  cursor: pointer;
+  height: 100px;
+  width: 100px;
+}
+
+.profile-mobile {
+  display: none;
+  text-align: center;
 }
 
 .sidenav-container {
@@ -59,9 +76,9 @@ mat-nav-list {
 }
 
 mat-divider {
-  margin-left: 85px;
+  margin-left: 75px;
   padding: 2px;
-  width: 60%;
+  width: 65%;
 }
 
 .sidenav {
@@ -80,8 +97,8 @@ mat-divider {
   border-radius: 50%;
   display: grid;
   justify-content: center;
-  min-height: 53px;
-  min-width: 53px;
+  min-height: 50px;
+  min-width: 50px;
 }
 
 .mat-toolbar {
@@ -131,7 +148,7 @@ a:active {
   font-weight: bold;
 
   .menu-icon-container {
-    background-color: #ffc900;
+    background-color: red;
   }
 }
 
@@ -139,7 +156,7 @@ a:active {
 .menu-icon-container:active,
 a:active {
   .menu-icon-container {
-    background-color: #ffc900;
+    background-color: #ff3131;
   }
 }
 
@@ -295,6 +312,7 @@ a:active {
   margin: 0 15px;
 }
 
+.username:hover,
 .log-out:hover {
   text-decoration: underline #fff;
 }
@@ -357,17 +375,13 @@ a:active {
     font-size: 11px;
   }
 
-  .username {
-    font-size: 11px;
-    margin: 0 10px;
-  }
-
   .username-container {
     display: none;
   }
 
-  .username-container-mobile {
-    display: block;
+  .username {
+    font-size: 17px;
+    margin: 5px 0 35px 0;
   }
 
   .log-out {
@@ -388,6 +402,10 @@ a:active {
   .sidenav mat-nav-list {
     height: auto;
     margin: 50px 10px;
+  }
+
+  .profile-mobile {
+    display: block;
   }
 }
 

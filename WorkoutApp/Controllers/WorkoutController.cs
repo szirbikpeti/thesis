@@ -54,8 +54,10 @@ namespace WorkoutApp.Controllers
       
       var mappedWorkout = _mapper.Map<WorkoutEntity>(newWorkoutDto);
       mappedWorkout.UserId = currentUserId;
+      mappedWorkout.CreatedOn = DateTimeOffset.Now;
+      mappedWorkout.ModifiedOn = DateTimeOffset.Now;
 
-      await _workout.DoAddAsync(mappedWorkout, cancellationToken)
+      await _workout.DoAddAsync(mappedWorkout, newWorkoutDto.FileIds, cancellationToken)
         .ConfigureAwait(false);
 
       return Ok();

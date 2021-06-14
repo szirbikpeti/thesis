@@ -28,7 +28,6 @@ namespace WorkoutApp.Controllers
   [Route("api/auth")]
   public class AuthController : ControllerBase
   {
-    private readonly IAuthRepository _auth;
     private readonly IMapper _mapper;
     private readonly IConfiguration _configuration;
     private readonly IFileRepository _file;
@@ -39,7 +38,6 @@ namespace WorkoutApp.Controllers
     private readonly ILogger<AuthController> _logger;
 
     public AuthController(
-      IAuthRepository auth, 
       IMapper mapper, 
       IConfiguration configuration,
       IFileRepository file,
@@ -49,7 +47,6 @@ namespace WorkoutApp.Controllers
       RoleManager<RoleEntity> roleManager,
       ILogger<AuthController> logger)
     {
-      _auth = auth ?? throw new ArgumentNullException(nameof(auth));
       _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
       _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
       _file = file ?? throw new ArgumentNullException(nameof(file));
@@ -67,7 +64,7 @@ namespace WorkoutApp.Controllers
     {
       _logger.Log(LogLevel.Information, $"Starting sign up with name: {newUser.UserName}");
       
-      var result = await _auth.IsUserExistsAsync(newUser.UserName, cancellationToken);
+      var result = await _userManager.IsUserExistsAsync(newUser.UserName, cancellationToken);
 
       if (result) {
         _logger.Log(LogLevel.Information, $"Username: ({newUser.UserName}) already exists");
@@ -77,7 +74,6 @@ namespace WorkoutApp.Controllers
 
       var mappedUser = _mapper.Map<UserEntity>(newUser);
       mappedUser.About = string.Empty;
-      mappedUser.ProfilePictureId = 1;
 
       await _userManager.CreateAsync(mappedUser).ConfigureAwait(false);
 
@@ -95,7 +91,7 @@ namespace WorkoutApp.Controllers
       createdUser!.CreatedOn = DateTimeOffset.Now;
       createdUser!.ModifiedOn = DateTimeOffset.Now;
 
-      await _auth.SaveChangesAsync(cancellationToken)
+      await _dbContext.SaveChangesAsync(cancellationToken)
         .ConfigureAwait(false);
 
       _logger.Log(LogLevel.Information, $"Signed up with name: {newUser.UserName}");
@@ -124,7 +120,8 @@ namespace WorkoutApp.Controllers
       
       user!.LastSignedInOn = DateTimeOffset.Now;
 
-      await _auth.SaveChangesAsync(cancellationToken);
+      await _dbContext.SaveChangesAsync(cancellationToken)
+        .ConfigureAwait(false);
 
       HttpContext.User = await _signInManager.CreateUserPrincipalAsync(user)
         .ConfigureAwait(false);
@@ -184,7 +181,8 @@ namespace WorkoutApp.Controllers
         await _dbContext.RoleClaims.AddRangeAsync(claims, cancellationToken).ConfigureAwait(false);
       }
 
-      await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+      await _dbContext.SaveChangesAsync(cancellationToken)
+        .ConfigureAwait(false);
       return Ok();
     }
 

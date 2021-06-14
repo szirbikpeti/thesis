@@ -3,5 +3,6 @@
   email: string;
   userName: string;
   password: string;
+  profilePictureId: string;
   birthday: Date;
 }

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using WorkoutApp.Abstractions;
 
 namespace WorkoutApp.Entities
@@ -16,5 +18,7 @@ namespace WorkoutApp.Entities
         public DateTimeOffset UploadedOn { get; set; }
         
         public UserEntity? ProfilePictureOfUser { get; set; }
+
+        public ICollection<WorkoutFileRelationEntity> Workouts { get; set; } = null!;
     }
 }

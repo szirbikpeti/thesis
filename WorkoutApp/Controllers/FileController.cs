@@ -11,7 +11,6 @@ using WorkoutApp.Entities;
 
 namespace WorkoutApp.Controllers
 {
-  // [Microsoft.AspNetCore.Authorization.Authorize]
   [ApiController]
   [Route("api/file")]
   public class FileController : ControllerBase
@@ -30,10 +29,6 @@ namespace WorkoutApp.Controllers
     [HttpPost]
     public async Task<ActionResult<GetFileDto>> AddAsync(IFormFile file, CancellationToken cancellationToken)
     {
-      if (file == null) {
-        throw new ArgumentNullException(nameof(file));
-      }
-
       var fileEntity = await _file.DoAddAsync(file, cancellationToken)
         .ConfigureAwait(false);
 
@@ -42,13 +37,10 @@ namespace WorkoutApp.Controllers
       return Ok(fileDto);
     }
 
+    [Microsoft.AspNetCore.Authorization.Authorize]
     [HttpPatch]
     public async Task<ActionResult<GetFileDto>> UpdateAsync(IFormFile file, CancellationToken cancellationToken)
     {
-      if (file == null) {
-        throw new ArgumentNullException(nameof(file));
-      }
-
       var currentUser = await _userManager.GetUserAsync(HttpContext.User)
         .ConfigureAwait(false);
 

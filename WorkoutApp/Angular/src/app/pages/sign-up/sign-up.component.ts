@@ -4,6 +4,8 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ToastrService} from "ngx-toastr";
 import {TranslateService} from "@ngx-translate/core";
 import {AuthService} from "../../services/auth.service";
+import {FileService} from "../../services/file.service";
+import {SignUpRequest} from "../../requests/SignUpRequest";
 
 @Component({
   selector: 'app-sign-up',
@@ -13,7 +15,7 @@ import {AuthService} from "../../services/auth.service";
 export class SignUpComponent implements OnInit {
   signUpForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private _auth: AuthService,
+  constructor(private fb: FormBuilder, private _auth: AuthService, public _file: FileService,
               private _toast: ToastrService, private _translate: TranslateService,
               private dialogRef: MatDialogRef<SignUpComponent>) { }
 
@@ -27,10 +29,43 @@ export class SignUpComponent implements OnInit {
     });
   }
 
-  submitSignUpForm() {
-    this._auth.signUp(this.signUpForm.value)
+  uploadDefaultProfilePicture() {
+    const that = this;
+    const getFileBlob = function (url, cb) {
+      const xhr = new XMLHttpRequest();
+      xhr.open("GET", url);
+      xhr.responseType = "blob";
+      xhr.addEventListener('load', function() {
+        cb(xhr.response);
+      });
+      xhr.send();
+    };
+
+    const blobToFile = function (blob, name) {
+      blob.lastModifiedDate = new Date();
+      blob.name = name;
+      return blob;
+    };
+
+    const getFileObject = function(filePathOrUrl, cb) {
+      getFileBlob(filePathOrUrl, function (blob) {
+        cb(blobToFile(blob, 'profile-picture.png'));
+      });
+    };
+
+    getFileObject('../../../assets/avatar.png', function (fileObject) {
+      console.log(fileObject);
+      that._file.upload(fileObject).subscribe(file => that.submitSignUpForm(file.id));
+    });
+  }
+
+  private submitSignUpForm(fileId: string) {
+    const signUpRequest: SignUpRequest = this.signUpForm.getRawValue();
+    signUpRequest.profilePictureId = fileId;
+
+    this._auth.signUp(signUpRequest)
       .subscribe(() => {
-        close();
+        this.dialogRef.close();
 
         this._toast.success(
           this._translate.instant('USER_FORM.SUCCESSFUL_SIGNUP'),
