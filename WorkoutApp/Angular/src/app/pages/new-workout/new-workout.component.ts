@@ -8,6 +8,9 @@ import {Observable, zip} from "rxjs";
 import {WorkoutRequest} from "../../requests/WorkoutRequest";
 import {MatTableDataSource} from "@angular/material/table";
 import {FileTableModel} from "../../models/FileTableModel";
+import {isNull} from "../../utility";
+import {ToastrService} from "ngx-toastr";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-new-workout',
@@ -25,7 +28,8 @@ export class NewWorkoutComponent implements OnInit {
   displayedColumns: string[] = ['position', 'name', 'type', 'preview', 'operation'];
 
   constructor(private fb: FormBuilder, private _workout: WorkoutService,
-              private _file: FileService, private _translate: TranslateService) { }
+              private _file: FileService, private _translate: TranslateService,
+              private _toast: ToastrService, private router: Router) { }
 
   ngOnInit(): void {
     this.workoutForm = this.fb.group({
@@ -106,14 +110,30 @@ export class NewWorkoutComponent implements OnInit {
       const fileIds = uploadedFiles.map(file => file.id);
       this.submitWorkoutForm(fileIds);
     });
+
+    if (this.selectedFiles.length === 0) {
+      this.submitWorkoutForm();
+    }
   }
 
-  private submitWorkoutForm(fileIds: string[]): void {
+  private submitWorkoutForm(fileIds: string[] = null): void {
     const workoutRequest: WorkoutRequest = this.workoutForm.getRawValue();
-    workoutRequest.fileIds = fileIds;
 
-    this._workout.create(workoutRequest)
-      .subscribe(() => console.log("sikeres mentés"));
+    if (!isNull(fileIds)){
+      workoutRequest.fileIds = fileIds;
+    }
+
+    this._workout.create(workoutRequest).subscribe(() => {
+      this._toast.success(
+        this._translate.instant('WORKOUT_FORM.SUCCESSFUL_ADDITION'),
+        this._translate.instant( 'GENERAL.INFO'));
+
+      this.router.navigate(['/dashboard']);
+    }, () => {
+      this._toast.success(
+        this._translate.instant('WORKOUT_FORM.UNSUCCESSFUL_ADDITION'),
+        this._translate.instant( 'GENERAL.ERROR'));
+    });
   }
 
   get exercises(): FormArray {return this.workoutForm.get('exercises') as FormArray;}

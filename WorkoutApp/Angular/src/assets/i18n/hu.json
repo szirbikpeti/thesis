@@ -9,7 +9,8 @@
     "DELETE": "Törlés",
     "YES": "Igen",
     "CANCEL": "Mégse",
-    "ARE_YOU_SURE": "Biztos benne?"
+    "ARE_YOU_SURE": "Biztos benne?",
+    "INVALID_FORM": "Érvénytelen beviteli mező(k)"
   },
   "NAV": {
     "LOG_OUT": "Kijelentkezés",
@@ -50,6 +51,8 @@
     "SET_WEIGHT": "Súly",
     "SET_DURATION": "Időtartam",
     "ATTACHMENTS": "Csatolmányok",
-    "SAVE": "Edzés hozzáadása"
+    "SAVE": "Edzés hozzáadása",
+    "SUCCESSFUL_ADDITION": "Sikeres edzés hozzáadás",
+    "UNSUCCESSFUL_ADDITION": "Sikertelen edzés hozzáadás"
   }
 }

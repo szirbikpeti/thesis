@@ -52,4 +52,13 @@ export class HomeComponent implements OnInit{
       disableClose: true
     });
   }
+
+  currentLanguage(): string {
+    return this._state.language.value;
+  }
+
+  switchLanguage(language: any): void {
+    this._translate.use(language);
+    this._state.language = language;
+  }
 }

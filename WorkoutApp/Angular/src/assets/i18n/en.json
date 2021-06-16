@@ -9,7 +9,8 @@
     "DELETE": "Delete",
     "YES": "Yes",
     "CANCEL": "Cancel",
-    "ARE_YOU_SURE": "Are you sure?"
+    "ARE_YOU_SURE": "Are you sure?",
+    "INVALID_FORM": "Invalid input field(s)"
   },
   "NAV": {
     "LOG_OUT": "Log out",
@@ -34,7 +35,7 @@
     "SUCCESSFUL_SIGNUP": "Successful sign-up",
     "UNSUCCESSFUL_LOGIN": "Unsuccessful login",
     "SUCCESSFUL_UPDATE":  "Successful update",
-    "UNSUCCESSFUL_UPDATE":  "Unsuccessful update",
+    "UNSUCCESSFUL_UPDATE": "Unsuccessful update",
     "SUCCESSFUL_DELETE":  "Successful delete"
   },
   "WORKOUT_FORM": {
@@ -50,6 +51,8 @@
     "SET_WEIGHT": "Weight",
     "SET_DURATION": "Duration",
     "ATTACHMENTS": "Attachments",
-    "SAVE": "Add workout"
+    "SAVE": "Add workout",
+    "SUCCESSFUL_ADDITION": "Successful workout addition",
+    "UNSUCCESSFUL_ADDITION": "Unsuccessful workout addition"
   }
 }

@@ -21,7 +21,6 @@ mat-card {
   float: right;
   width: 35%;
   text-align: center;
-  //border: 1px solid black;
 }
 
 mat-form-field {
@@ -70,9 +69,49 @@ mat-form-field.ng-dirty.ng-invalid {
 .title {
   width: fit-content;
   text-align: left;
-  margin-top: 110px;
-  margin-left: 75px;
+  margin: 110px 0 35px 75px;
   font-size: 30px;
+}
+
+.control-pair-container {
+  display: inline-flex;
+  overflow: hidden;
+  padding: 15px;
+}
+
+.pair-left {
+  text-align: left;
+  width: 190px;
+  padding-right: 30px;
+}
+
+.pair-right {
+  display: block;
+  text-align: left;
+  width: 190px;
+}
+
+.feature-list-container {
+  margin-bottom: 10px;
+}
+
+.feature-item {
+  margin-left: 10px;
+  display: inline-block;
+}
+
+.biceps-image {
+  height: 35px;
+  width: 35px;
+  margin-bottom: 15px;
+}
+
+.lang {
+  width: 80px;
+  padding-left: 5px;
+  background-color: #cfcfd6;
+  border: 0;
+  box-shadow: none;
 }
 
 @media (min-width: 1550px) {
@@ -86,7 +125,7 @@ mat-form-field.ng-dirty.ng-invalid {
   mat-card {
     width: 80%;
     float: none;
-    margin: 65px auto;
+    margin: 40px auto;
   }
 
   .content-container {
@@ -100,5 +139,28 @@ mat-form-field.ng-dirty.ng-invalid {
     width: 100%;
     margin: 0;
     text-align: center;
+  }
+}
+
+@media (max-width: 460px) {
+  .pair-left {
+    text-align: left;
+    width: 125px;
+    padding-right: 10px;
+  }
+
+  .pair-right {
+    width: 125px;
+  }
+
+  .biceps-image {
+    height: 24px;
+    width: 24px;
+    margin-bottom: 20px;
+  }
+
+  .feature-item {
+    font-size: 13px;
+    width: 50%;
   }
 }

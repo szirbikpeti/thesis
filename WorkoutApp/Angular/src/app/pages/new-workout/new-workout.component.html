@@ -4,12 +4,12 @@
   <form [formGroup]="workoutForm" (ngSubmit)="uploadAttachments()">
     <div class="control-pair-container">
       <div class="pair-left">
-        <div class="placeholder">{{'WORKOUT_FORM.DATE' | translate}}</div>
+        <div class="placeholder placeholder-mobile">{{'WORKOUT_FORM.DATE' | translate}}</div>
         <mat-form-field>
           <div class="center-input-field">
             <input
               matInput
-              formControlName="date"
+              formControlName="date"n
               [matDatepicker]="workoutDate"
               (focus)="workoutDate.open()">
             <mat-datepicker #workoutDate></mat-datepicker>
@@ -17,7 +17,7 @@
         </mat-form-field>
       </div>
       <div class="pair-right">
-        <div class="placeholder">{{'WORKOUT_FORM.TYPE' | translate}}</div>
+        <div class="placeholder placeholder-mobile">{{'WORKOUT_FORM.TYPE' | translate}}</div>
         <mat-form-field>
           <div class="center-input-field">
             <input matInput formControlName="type">
@@ -43,7 +43,7 @@
           </div>
           <div class="control-pair-container">
             <div class="pair-left">
-              <div class="placeholder">{{'WORKOUT_FORM.EXERCISE_NAME' | translate}}</div>
+              <div class="placeholder placeholder-mobile">{{'WORKOUT_FORM.EXERCISE_NAME' | translate}}</div>
               <mat-form-field>
                 <div class="center-input-field">
                   <input matInput formControlName="name">
@@ -51,7 +51,7 @@
               </mat-form-field>
             </div>
             <div class="pair-right">
-              <div class="placeholder">{{'WORKOUT_FORM.EXERCISE_EQUIPMENT' | translate}}</div>
+              <div class="placeholder placeholder-mobile">{{'WORKOUT_FORM.EXERCISE_EQUIPMENT' | translate}}</div>
               <mat-form-field>
                 <div class="center-input-field">
                   <input matInput formControlName="equipment">
@@ -85,7 +85,7 @@
                 </div>
                 <div>
                   <div class="placeholder">{{'WORKOUT_FORM.SET_DURATION' | translate}}</div>
-                  <mat-form-field>
+                  <mat-form-field class="small-mat-form-field">
                     <div class="center-input-field">
                       <input type="number" matInput formControlName="duration">
                     </div>
@@ -143,8 +143,11 @@
     </table>
 
 
-    <button mat-button type="submit" class="add-button">
-      {{'WORKOUT_FORM.SAVE' | translate}}
-    </button>
+    <div class="add-button-container">
+      <mat-error *ngIf="workoutForm.invalid">{{'GENERAL.INVALID_FORM' | translate}}</mat-error>
+      <button mat-button type="submit" class="add-button">
+        {{'WORKOUT_FORM.SAVE' | translate}}
+      </button>
+    </div>
   </form>
 </div>

@@ -1,3 +1,10 @@
+.content {
+  margin-left: 50px;
+  ::ng-deep .mat-form-field-underline {
+    display: none;
+  }
+}
+
 .title {
   margin-left: 45px;
   margin-bottom: 40px;
@@ -34,13 +41,6 @@
 
 mat-divider {
   width: 90%;
-}
-
-.content {
-  margin-left: 50px;
-  ::ng-deep .mat-form-field-underline {
-    display: none;
-  }
 }
 
 mat-form-field {
@@ -80,7 +80,6 @@ mat-form-field.ng-dirty.ng-invalid {
 }
 
 .pair-left {
-  float: left;
   padding-right: 80px;
 }
 
@@ -102,8 +101,12 @@ mat-form-field.ng-dirty.ng-invalid {
 }
 
 .delete-set-button {
-  margin-left: 15px;
   margin-top: 22px;
+}
+
+.add-button-container {
+  margin-top: 20px;
+  margin-bottom: 15px;
 }
 
 .add-button {
@@ -112,8 +115,7 @@ mat-form-field.ng-dirty.ng-invalid {
   background-color: #363636;
   color: red;
   padding: 5px 30px 5px 30px;
-  margin-top: 20px;
-  margin-bottom: 15px;
+  margin-top: 5px;
 }
 
 table {
@@ -123,4 +125,59 @@ table {
 img:hover {
   width: 100px;
   height: 100px;
+}
+
+@media screen and (max-width: 830px) {
+  .pair-left {
+    padding-right: 30px;
+  }
+}
+
+@media screen and (max-width: 780px) {
+  .pair-left {
+    padding-right: 0;
+    margin: 0 auto;
+  }
+
+  .control-pair-container {
+    display: block;
+  }
+
+  .content {
+    text-align: center;
+  }
+
+  .placeholder-mobile {
+    width: 330px;
+    margin: 0 auto;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .title {
+    margin-top: 20px;
+  }
+
+  .control-pair-container {
+    display: block;
+  }
+
+  .content {
+    text-align: center;
+  }
+
+  .placeholder-mobile {
+    width: 330px;
+    margin: 0 auto;
+  }
+}
+
+@media screen and (max-width: 460px) {
+  .placeholder-mobile {
+    width: 80%;
+  }
+
+  mat-form-field {
+    width: 80%;
+  }
 }
