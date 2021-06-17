@@ -5,6 +5,8 @@ import { DashboardComponent } from "./pages/dashboard/dashboard.component";
 import {NavMenuComponent} from "./pages/nav-menu/nav-menu.component";
 import {NewWorkoutComponent} from "./pages/new-workout/new-workout.component";
 import {ProfileComponent} from "./pages/profile/profile.component";
+import {SignOffGuard} from "./guards/sign-off.guard";
+import {AuthGuard} from "./guards/auth.guard";
 
 const routes: Routes = [
   {
@@ -15,6 +17,7 @@ const routes: Routes = [
   {
     path: '',
     component: NavMenuComponent,
+    canActivate: [AuthGuard],
     children : [
       {
         path: 'dashboard',
@@ -32,7 +35,8 @@ const routes: Routes = [
   },
   {
     path: 'home',
-    component: HomeComponent
+    component: HomeComponent,
+    canActivate: [SignOffGuard]
   },
   {
     path : '**',

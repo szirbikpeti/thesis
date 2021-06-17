@@ -17,6 +17,7 @@ import {DashboardComponent} from "./pages/dashboard/dashboard.component";
 import {NewWorkoutComponent} from "./pages/new-workout/new-workout.component";
 import {ProfileComponent} from "./pages/profile/profile.component";
 import {ConfirmationDialogComponent} from "./pages/confirmation-dialog/confirmation-dialog.component";
+import {GuardsModule} from "./guards.module";
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import {ConfirmationDialogComponent} from "./pages/confirmation-dialog/confirmat
     HttpClientModule,
     ReactiveFormsModule,
     FormsModule,
+    GuardsModule,
     I18nModule,
     MaterialModule,
     BrowserAnimationsModule,
