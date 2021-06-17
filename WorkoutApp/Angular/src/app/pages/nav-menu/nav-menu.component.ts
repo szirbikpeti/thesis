@@ -35,6 +35,7 @@ export class NavMenuComponent {
               private _translate: TranslateService, private _state: StateService,
               public router: Router, public sanitizer: DomSanitizer) {
     _state.user.subscribe(storedUser => this.currentUser = storedUser);
+    this.isHandset$.subscribe((next) => this.isHandset = next);
   }
 
   currentLanguage(): string {
@@ -59,14 +60,11 @@ export class NavMenuComponent {
   }
 
   toggleSideNav() {
-    if (window.innerWidth > 950) {
-      document.getElementsByClassName('menu-button')[0]
-        .setAttribute("style", "left: " + (!this.sideNav.opened ? 325 : 40) + "px");
-    }
     this.sideNav.toggle();
   }
 
   editProfile(): void {
+    this.toggleDrawerWhenHandset();
     this.router.navigate(['/profile']);
   }
 }

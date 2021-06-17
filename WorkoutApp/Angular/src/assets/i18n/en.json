@@ -12,6 +12,13 @@
     "ARE_YOU_SURE": "Are you sure?",
     "INVALID_FORM": "Invalid input field(s)"
   },
+  "HOME": {
+    "ADD_WORKOUTS": "Adding workouts",
+    "POST_WORKOUTS": "Posting workouts",
+    "MAKE_FRIENDS": "Making friends",
+    "MAKE_STATISTICS": "Making statistics",
+    "MULTILINGUALISM": "Multilingualism"
+  },
   "NAV": {
     "LOG_OUT": "Log out",
     "DASHBOARD": "Dashboard",

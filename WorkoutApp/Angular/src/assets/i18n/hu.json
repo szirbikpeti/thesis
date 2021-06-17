@@ -12,6 +12,13 @@
     "ARE_YOU_SURE": "Biztos benne?",
     "INVALID_FORM": "Érvénytelen beviteli mező(k)"
   },
+  "HOME": {
+    "ADD_WORKOUTS": "Edzések rögzítése",
+    "POST_WORKOUTS": "Edzések posztolása",
+    "MAKE_FRIENDS": "Barátság kötés",
+    "MAKE_STATISTICS": "Statisztika készítése",
+    "MULTILINGUALISM": "Többnyelvűség"
+  },
   "NAV": {
     "LOG_OUT": "Kijelentkezés",
     "DASHBOARD": "Dashboard",

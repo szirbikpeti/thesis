@@ -161,9 +161,16 @@ a:active {
 }
 
 .menu-button {
-  left: 325px;
   position: fixed;
   top: 5px;
+}
+
+.menu-button-1 {
+  left: 325px;
+}
+
+.menu-button-2 {
+  left: 40px;
 }
 
 .main-content {

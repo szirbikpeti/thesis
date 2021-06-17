@@ -114,6 +114,15 @@ mat-form-field.ng-dirty.ng-invalid {
   box-shadow: none;
 }
 
+.lang:hover {
+  border: 0;
+}
+
+.lang.mat-focused {
+  border: 0;
+  box-shadow: none;
+}
+
 @media (min-width: 1550px) {
   mat-card {
     width: 25%;

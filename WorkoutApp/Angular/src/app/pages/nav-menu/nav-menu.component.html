@@ -1,6 +1,5 @@
 <mat-sidenav-container *ngIf="authenticationConfirmed" class="sidenav-container" style="background: #f1f2f3">
   <mat-sidenav  #drawer class="sidenav" fixedInViewport
-               [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
                [mode]="(isHandset$ | async) ? 'over' : 'side'"
                [opened]="(isHandset$ | async) === false">
     <div class="wt-container">
@@ -51,6 +50,7 @@
       <button
         type="button"
         class="item-left menu-button"
+        [ngClass]="this.sideNav?.opened ? 'menu-button-1' : 'menu-button-2'"
         mat-icon-button
         (click)="toggleSideNav()">
         <mat-icon>menu</mat-icon>
