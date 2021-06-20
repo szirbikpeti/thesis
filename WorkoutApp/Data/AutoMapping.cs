@@ -8,11 +8,12 @@ namespace WorkoutApp.Data
     {
         public AutoMapping()
         {
-            CreateMap<AdditionUserDto, UserEntity>();
+            CreateMap<UserAdditionDto, UserEntity>();
             CreateMap<UpdateUserDto, UserEntity>();
             CreateMap<UserEntity, GetUserDto>();
-            CreateMap<WorkoutDto, WorkoutEntity>();
-            CreateMap<WorkoutEntity, WorkoutDto>();
+            CreateMap<WorkoutAdditionDto, WorkoutEntity>();
+            CreateMap<WorkoutModificationDto, WorkoutEntity>();
+            CreateMap<WorkoutEntity, GetWorkoutDto>();
             CreateMap<ExerciseDto, ExerciseEntity>();
             CreateMap<ExerciseEntity, ExerciseDto>();
             CreateMap<SetDto, SetEntity>();

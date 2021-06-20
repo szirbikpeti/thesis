@@ -24,6 +24,6 @@ namespace WorkoutApp.Entities
         
         public ICollection<ExerciseEntity> Exercises { get; set; } = null!;
         
-        public ICollection<WorkoutFileRelationEntity> Files { get; set; } = null!;
+        public ICollection<WorkoutFileRelationEntity> FileRelationEntities { get; set; } = null!;
     }
 }

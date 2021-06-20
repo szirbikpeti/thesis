@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using WorkoutApp.Abstractions;
 using WorkoutApp.Data;
 using WorkoutApp.Dto;
@@ -16,7 +18,7 @@ namespace WorkoutApp.Repositories
     private readonly UserManager<UserEntity> _userManager;
     private readonly WorkoutDbContext _dbContext;
     private readonly IMapper _mapper;
-    
+
     public UserRepository(UserManager<UserEntity> userManager, WorkoutDbContext dbContext, IMapper mapper)
     {
       _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
@@ -30,10 +32,11 @@ namespace WorkoutApp.Repositories
         .ConfigureAwait(false);
     }
 
-    public async Task<UserEntity?> UpdateAsync(UserEntity currentUser, UpdateUserDto updateUserDto, CancellationToken cancellationToken)
+    public async Task<UserEntity?> DoUpdateAsync(UserEntity currentUser, UpdateUserDto updateUserDto,
+      CancellationToken cancellationToken)
     {
       _mapper.Map(updateUserDto, currentUser);
-      
+
       currentUser.ModifiedOn = DateTimeOffset.Now;
 
       await _dbContext
@@ -46,7 +49,37 @@ namespace WorkoutApp.Repositories
       return newlyFetchedUser;
     }
 
-    public async Task<bool> DoDeleteAsync(int userId, CancellationToken cancellationToken)
+    public async Task DoFollowUserAsync(int currentUserId, int requestedUserId, CancellationToken cancellationToken)
+    {
+      var newEntity = new UserUserRelationEntity {
+        LeftId = currentUserId,
+        RightId = requestedUserId
+      };
+
+      await _dbContext.UserUserRelations
+        .AddAsync(newEntity, cancellationToken)
+        .ConfigureAwait(false);
+      
+      await _dbContext
+        .SaveChangesAsync(cancellationToken)
+        .ConfigureAwait(false);
+    }
+
+    public async Task DoUnFollowUserAsync(int currentUserId, int requestedUserId, CancellationToken cancellationToken)
+    {
+      var removedEntity = await _dbContext.UserUserRelations
+        .Where(_ => _.RequestingUserId == currentUserId 
+                    && _.RequestedUserId == requestedUserId)
+        .FirstOrDefaultAsync(cancellationToken);
+
+      _dbContext.UserUserRelations.Remove(removedEntity!);
+      
+      await _dbContext
+        .SaveChangesAsync(cancellationToken)
+        .ConfigureAwait(false);
+    }
+
+  public async Task<bool> DoDeleteAsync(int userId, CancellationToken cancellationToken)
     {
       var fetchedUser = await _dbContext.GetByIdAsync<UserEntity>(userId, cancellationToken)
         .ConfigureAwait(false);

@@ -10,7 +10,9 @@
     "YES": "Yes",
     "CANCEL": "Cancel",
     "ARE_YOU_SURE": "Are you sure?",
-    "INVALID_FORM": "Invalid input field(s)"
+    "INVALID_FORM": "Invalid input field(s)",
+    "TODAY": "Today",
+    "YESTERDAY": "Yesterday"
   },
   "HOME": {
     "ADD_WORKOUTS": "Adding workouts",
@@ -22,7 +24,8 @@
   "NAV": {
     "LOG_OUT": "Log out",
     "DASHBOARD": "Dashboard",
-    "NEW_WORKOUT": "Create new workout"
+    "NEW_WORKOUT": "Create new workout",
+    "FRIEND_SEARCH": "Friend search"
   },
   "PAGE": {
     "PROFILE": "Profile"
@@ -46,9 +49,11 @@
     "SUCCESSFUL_DELETE":  "Successful delete"
   },
   "WORKOUT_FORM": {
-    "TITLE": "New workout",
+    "ADD_TITLE": "New workout",
+    "MODIFY_TITLE": "Workout modification",
     "DATE": "Date",
     "TYPE": "Workout type",
+    "MODIFIED_ON": "Modified on",
     "EXERCISE": "Exercise",
     "EXERCISES": "Exercises",
     "EXERCISE_NAME": "Exercise name",
@@ -58,8 +63,17 @@
     "SET_WEIGHT": "Weight",
     "SET_DURATION": "Duration",
     "ATTACHMENTS": "Attachments",
-    "SAVE": "Add workout",
+    "ADD": "Add workout",
+    "MODIFY": "Modify workout",
     "SUCCESSFUL_ADDITION": "Successful workout addition",
-    "UNSUCCESSFUL_ADDITION": "Unsuccessful workout addition"
+    "UNSUCCESSFUL_ADDITION": "Unsuccessful workout addition",
+    "SUCCESSFUL_MODIFICATION": "Successful workout modification",
+    "UNSUCCESSFUL_MODIFICATION": "Unsuccessful workout modification"
+  },
+  "FRIEND": {
+    "SEARCH": "Search",
+    "FOLLOW": "Follow",
+    "UNDO_FOLLOW": "Undo",
+    "UNFOLLOW": "Unfollow"
   }
 }

@@ -25,12 +25,44 @@ namespace WorkoutApp.Repositories
       _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
     }
 
+    private async Task<WorkoutEntity?> FindWorkoutByIdWithAdditionalDataAsync(int id, CancellationToken cancellationToken)
+    {
+      return await _dbContext.Workouts
+        .AsNoTracking()
+        .AsSplitQuery()
+        .Include(_ => _.Exercises)
+        .ThenInclude(_ => _.Sets)
+        .Include(_ => _.FileRelationEntities)
+        .FirstOrDefaultAsync(_ => _.Id == id, cancellationToken)
+        .ConfigureAwait(false);
+    }
+
     public async Task<ICollection<WorkoutEntity>> ListAsync(int userId, CancellationToken cancellationToken)
     {
       return await _dbContext.Workouts
+        .AsNoTracking()
+        .AsSplitQuery()
         .Where(_ => _.UserId == userId)
-        .OrderBy(_ => _.Date)
+        .Include(_ => _.Exercises)
+        .ThenInclude(_ => _.Sets)
+        .Include(_ => _.FileRelationEntities)
+        .ThenInclude(_ => _.File)
+        .OrderByDescending(_ => _.Date)
         .ToListAsync(cancellationToken)
+        .ConfigureAwait(false);
+    }
+    
+    public async Task<WorkoutEntity?> DoGetAsync(int workoutId, CancellationToken cancellationToken)
+    {
+      return await _dbContext.Workouts
+        .AsNoTracking()
+        .AsSplitQuery()
+        .Where(_ => _.Id == workoutId)
+        .Include(_ => _.Exercises)
+        .ThenInclude(_ => _.Sets)
+        .Include(_ => _.FileRelationEntities)
+        .ThenInclude(_ => _.File)
+        .FirstOrDefaultAsync(cancellationToken)
         .ConfigureAwait(false);
     }
 
@@ -41,30 +73,32 @@ namespace WorkoutApp.Repositories
         .ConfigureAwait(false);
       
       await _dbContext
-        .SaveChangesAsync(cancellationToken);
+        .SaveChangesAsync(cancellationToken)
+        .ConfigureAwait(false);
 
       if (fileIds.Count > 0) {
         var createdWorkout = await _dbContext.Workouts.Where(_ => _.CreatedOn == workout.CreatedOn)
           .FirstOrDefaultAsync(cancellationToken)
           .ConfigureAwait(false);
         
-        var entities = fileIds.Select(_ => new WorkoutFileRelationEntity {
+        var newEntities = fileIds.Select(_ => new WorkoutFileRelationEntity {
           LeftId = createdWorkout!.Id,
           RightId = _
         });
 
         await _dbContext.WorkoutFileRelations
-          .AddRangeAsync(entities, cancellationToken)
+          .AddRangeAsync(newEntities, cancellationToken)
           .ConfigureAwait(false);
-        
+
         await _dbContext
-          .SaveChangesAsync(cancellationToken);
+          .SaveChangesAsync(cancellationToken)
+          .ConfigureAwait(false);
       }
     }
 
-    public async Task<WorkoutEntity?> DoUpdateAsync(int id,  WorkoutDto workoutDto, CancellationToken cancellationToken)
+    public async Task<WorkoutEntity?> DoUpdateAsync(int id, WorkoutModificationDto workoutDto, CancellationToken cancellationToken)
     {
-      var fetchedWorkout = await _dbContext.GetByIdAsync<WorkoutEntity>(id, cancellationToken)
+      var fetchedWorkout = await FindWorkoutByIdWithAdditionalDataAsync(id, cancellationToken)
         .ConfigureAwait(false);
 
       if (fetchedWorkout is null) {
@@ -72,15 +106,33 @@ namespace WorkoutApp.Repositories
       }
 
       _mapper.Map(workoutDto, fetchedWorkout);
+      
+      fetchedWorkout.ModifiedOn = DateTimeOffset.Now;
 
+      var removedFileIds = fetchedWorkout.FileRelationEntities.Select(_ => _.FileId).Except(workoutDto.FileIds);
+      var removedEntities = fetchedWorkout.FileRelationEntities
+        .Where(_ => _.WorkoutId == fetchedWorkout.Id && removedFileIds.Contains(_.FileId)); 
+      
+      _dbContext.WorkoutFileRelations.RemoveRange(removedEntities);
+
+      var newFileIds = workoutDto.FileIds.Except(fetchedWorkout.FileRelationEntities.Select(_ => _.FileId));
+      var newEntities = newFileIds.Select(_ => new WorkoutFileRelationEntity {
+        LeftId = fetchedWorkout.Id,
+        RightId = _
+      });
+      
+      await _dbContext.WorkoutFileRelations
+        .AddRangeAsync(newEntities, cancellationToken)
+        .ConfigureAwait(false);
+      
       await _dbContext
         .SaveChangesAsync(cancellationToken)
         .ConfigureAwait(false);
 
-      var newlyFetchedUser = await _dbContext.GetByIdAsync<WorkoutEntity>(id, cancellationToken)
+      var newlyFetchedWorkout = await _dbContext.GetByIdAsync<WorkoutEntity>(id, cancellationToken)
         .ConfigureAwait(false);
 
-      return newlyFetchedUser;
+      return newlyFetchedWorkout;
     }
 
     public async Task<bool> DoDeleteAsync(int workoutId, CancellationToken cancellationToken)

@@ -1,4 +1,4 @@
-<div class="title">{{'WORKOUT_FORM.TITLE' | translate}}</div>
+<div class="title">{{'WORKOUT_FORM.ADD_TITLE' | translate}}</div>
 
 <div class="content">
   <form [formGroup]="workoutForm" (ngSubmit)="uploadAttachments()">
@@ -146,7 +146,7 @@
     <div class="add-button-container">
       <mat-error *ngIf="workoutForm.invalid">{{'GENERAL.INVALID_FORM' | translate}}</mat-error>
       <button mat-button type="submit" class="add-button">
-        {{'WORKOUT_FORM.SAVE' | translate}}
+        {{'WORKOUT_FORM.ADD' | translate}}
       </button>
     </div>
   </form>

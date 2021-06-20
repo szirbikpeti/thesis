@@ -2,7 +2,7 @@
 
 namespace WorkoutApp.Dto
 {
-    public class AdditionUserDto : BaseUserDto
+    public class UserAdditionDto : BaseUserDto
     {
         [Required]
         [MinLength(6)]

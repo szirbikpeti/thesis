@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Identity;
 using WorkoutApp.Abstractions;
 
 namespace WorkoutApp.Entities
 {
-    public class UserEntity : 
-        IdentityUser<int>, 
+    [SuppressMessage("CodeAnalysis", "CA2227", Justification = "Required by Entity Framework")]
+    public class UserEntity : IdentityUser<int>, 
         IIdentityAwareEntity,
         IChangeAwareEntity,
         IDeleteAwareEntity

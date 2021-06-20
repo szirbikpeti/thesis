@@ -10,7 +10,9 @@
     "YES": "Igen",
     "CANCEL": "Mégse",
     "ARE_YOU_SURE": "Biztos benne?",
-    "INVALID_FORM": "Érvénytelen beviteli mező(k)"
+    "INVALID_FORM": "Érvénytelen beviteli mező(k)",
+    "TODAY": "Ma",
+    "YESTERDAY": "Tegnap"
   },
   "HOME": {
     "ADD_WORKOUTS": "Edzések rögzítése",
@@ -22,7 +24,8 @@
   "NAV": {
     "LOG_OUT": "Kijelentkezés",
     "DASHBOARD": "Dashboard",
-    "NEW_WORKOUT": "Új edzés felvétel"
+    "NEW_WORKOUT": "Új edzés felvétel",
+    "FRIEND_SEARCH": "Barát keresés"
   },
   "PAGE": {
     "PROFILE": "Adataim"
@@ -46,9 +49,11 @@
     "SUCCESSFUL_DELETE":  "Sikeres törlés"
   },
   "WORKOUT_FORM": {
-    "TITLE": "Új edzés",
+    "ADD_TITLE": "Új edzés",
+    "MODIFY_TITLE": "Edzés módosítás",
     "DATE": "Dátum",
     "TYPE": "Edzés típus",
+    "MODIFIED_ON": "Módosítva",
     "EXERCISE": "Gyakorlat",
     "EXERCISES": "Gyakorlatok",
     "EXERCISE_NAME": "Gyakorlat neve",
@@ -58,8 +63,17 @@
     "SET_WEIGHT": "Súly",
     "SET_DURATION": "Időtartam",
     "ATTACHMENTS": "Csatolmányok",
-    "SAVE": "Edzés hozzáadása",
+    "ADD": "Edzés hozzáadása",
+    "MODIFY": "Edzés módosítás",
     "SUCCESSFUL_ADDITION": "Sikeres edzés hozzáadás",
-    "UNSUCCESSFUL_ADDITION": "Sikertelen edzés hozzáadás"
+    "UNSUCCESSFUL_ADDITION": "Sikertelen edzés hozzáadás",
+    "SUCCESSFUL_MODIFICATION": "Sikeres edzés módosítás",
+    "UNSUCCESSFUL_MODIFICATION": "Sikertelen edzés módosítás"
+  },
+  "FRIEND": {
+    "SEARCH": "Keresés",
+    "FOLLOW": "Követés",
+    "UNDO_FOLLOW": "Visszavon",
+    "UNFOLLOW": "Követés visszavonása"
   }
 }

@@ -24,12 +24,12 @@ namespace WorkoutApp.Configurations
         .ValueGeneratedNever();
 
       builder.HasOne(_ => _.Workout)
-        .WithMany(_ => _.Files)
+        .WithMany(_ => _.FileRelationEntities)
         .HasForeignKey(_ => _.WorkoutId)
         .OnDelete(DeleteBehavior.Restrict);
 
       builder.HasOne(_ => _.File)
-        .WithMany(_ => _.Workouts)
+        .WithMany(_ => _.WorkoutRelationEntities)
         .HasForeignKey(_ => _.FileId)
         .OnDelete(DeleteBehavior.Restrict);
     }

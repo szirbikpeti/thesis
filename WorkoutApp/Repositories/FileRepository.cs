@@ -38,6 +38,7 @@ namespace WorkoutApp.Repositories
 
       var fileEntity = new FileEntity {
         Name = file.FileName,
+        Format = file.ContentType,
         Size = fileData.Length,
         Data = fileData,
         UploadedOn = DateTimeOffset.Now
@@ -67,6 +68,7 @@ namespace WorkoutApp.Repositories
         .ConfigureAwait(false);
 
       fileEntity!.Name = file.FileName;
+      fileEntity!.Format = file.ContentType;
       fileEntity!.Size = fileData.Length;
       fileEntity!.Data = fileData;
       fileEntity!.UploadedOn = DateTimeOffset.Now;

@@ -1,0 +1,188 @@
+.content {
+  margin-left: 50px;
+  ::ng-deep .mat-form-field-underline {
+    display: none;
+  }
+}
+
+.title {
+  margin-left: 35px;
+  margin-bottom: 40px;
+  font-size: 36px;
+}
+
+.exercise-subtitle {
+  margin-top: 30px;
+  font-size: 28px;
+}
+
+.set-subtitle {
+  margin-top: 15px;
+  margin-left: 15px;
+  font-size: 20px;
+}
+
+.attachment-subtitle {
+  font-size: 28px;
+}
+
+.exercise-index {
+  margin: 40px 0 0 10px;
+  font-size: 22px;
+}
+
+.exercises {
+  margin-bottom: 50px;
+}
+
+.set-container {
+  margin: 0 10px 20px 35px;
+}
+
+mat-divider {
+  width: 90%;
+}
+
+mat-form-field {
+  background-color: #fff;
+  border: 1px solid #4742425b;
+  border-radius: 5px;
+  box-shadow: 0 0 10px #00000029;
+  font-size: 14px;
+  height: 40px;
+  max-height: 40px;
+  width: 330px;
+}
+
+.small-mat-form-field {
+  margin-right: 15px;
+  width: 125px;
+}
+
+mat-form-field:hover {
+  border: 1px solid #47424299;
+}
+
+mat-form-field.mat-focused {
+  border: 1px solid #47424299;
+  box-shadow: 0 0 10px #3298dc4d;
+}
+
+mat-form-field.ng-dirty.ng-invalid {
+  border: 1px solid #e00a0a;
+  box-shadow: 0 0 10px #e00a0a4d;
+}
+
+.control-pair-container {
+  display: inline-flex;
+  overflow: hidden;
+  padding: 15px;
+}
+
+.pair-left {
+  padding-right: 80px;
+}
+
+.pair-right {
+  display: block;
+}
+
+.placeholder {
+  text-align: left;
+  font-size: 12px;
+  margin-bottom: 3px;
+  margin-left: 5px;
+}
+
+.center-input-field {
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-top: -5px;
+}
+
+.delete-set-button {
+  margin-top: 22px;
+}
+
+.add-button-container {
+  margin-top: 20px;
+  margin-bottom: 15px;
+}
+
+.add-button {
+  font-size: 18px;
+  outline: none;
+  background-color: #363636;
+  color: red;
+  padding: 5px 30px 5px 30px;
+  margin-top: 5px;
+}
+
+table {
+  width: 65%;
+}
+
+video, img {
+  height: 40px;
+  width: 40px;
+}
+
+img:hover {
+  width: 100px;
+  height: 100px;
+}
+
+@media screen and (max-width: 830px) {
+  .pair-left {
+    padding-right: 30px;
+  }
+}
+
+@media screen and (max-width: 780px) {
+  .pair-left {
+    padding-right: 0;
+    margin: 0 auto;
+  }
+
+  .control-pair-container {
+    display: block;
+  }
+
+  .content {
+    text-align: center;
+  }
+
+  .placeholder-mobile {
+    width: 330px;
+    margin: 0 auto;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .title {
+    margin-top: 20px;
+  }
+
+  .control-pair-container {
+    display: block;
+  }
+
+  .content {
+    text-align: center;
+  }
+
+  .placeholder-mobile {
+    width: 330px;
+    margin: 0 auto;
+  }
+}
+
+@media screen and (max-width: 460px) {
+  .placeholder-mobile {
+    width: 80%;
+  }
+
+  mat-form-field {
+    width: 80%;
+  }
+}

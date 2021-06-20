@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -31,20 +33,21 @@ namespace WorkoutApp.Controllers
       _file = file ?? throw new ArgumentNullException(nameof(file));
     }
 
-    [HttpGet]
-    public async Task<ActionResult<GetUserDto>> GetByIdAsync(CancellationToken cancellationToken) // TODO: delete this function
+    [HttpGet("{name}")]
+    public async Task<ActionResult<ICollection<GetUserDto>>> ListByNameAsync(
+      [FromRoute] [Required] string name,
+      CancellationToken cancellationToken)
     {
       var currentUserId = _userManager.GetUserIdAsInt(HttpContext.User);
       
-      var fetchedUser = await _user.GetByIdAsync(currentUserId, cancellationToken);
+      var foundedUsers = await _userManager
+        .ListByUserAndFullNameAsync(currentUserId, name, cancellationToken)
+        .ConfigureAwait(false);
 
-      if (fetchedUser is null) {
-        return NotFound();
-      }
+      var userDtoList = foundedUsers
+        .Select(user => _mapper.Map<GetUserDto>(user));
 
-      var userDto = _mapper.Map<GetUserDto>(fetchedUser); 
-  
-      return Ok(userDto);
+      return Ok(userDtoList);
     }
 
     [HttpPut]
@@ -71,7 +74,7 @@ namespace WorkoutApp.Controllers
         }
       }
 
-      var updatedUser = await _user.UpdateAsync(currentUser, updateUserDto, cancellationToken)
+      var updatedUser = await _user.DoUpdateAsync(currentUser, updateUserDto, cancellationToken)
         .ConfigureAwait(false);
 
       updatedUser!.ProfilePicture = await _file.DoGetAsync(updatedUser.ProfilePictureId, cancellationToken)
@@ -89,6 +92,50 @@ namespace WorkoutApp.Controllers
         .Select(_ => _.ClaimValue)
         .ToImmutableList();
   
+      return Ok(userDto);
+    }
+
+    [HttpPost("{id}")]
+    public async Task<ActionResult<GetUserDto>> FollowUserAsync(
+      [FromRoute] [Required] int id,
+      CancellationToken cancellationToken)
+    {
+      var currentUserId = _userManager.GetUserIdAsInt(HttpContext.User);
+
+      await _user.DoFollowUserAsync(currentUserId, id, cancellationToken)
+        .ConfigureAwait(false);
+
+      var newlyFetchedCurrentUser = await _userManager
+        .FindByIdWithAdditionalDataAsync(currentUserId, cancellationToken)
+        .ConfigureAwait(false);
+
+      var userDto = _mapper.Map<GetUserDto>(newlyFetchedCurrentUser);
+      
+      userDto.RequestingUserIds = newlyFetchedCurrentUser!.RequestingUsers.Select(_ => _.LeftId).ToImmutableList();
+      userDto.RequestedUserIds = newlyFetchedCurrentUser!.RequestedUsers.Select(_ => _.RightId).ToImmutableList();
+
+      return Ok(userDto);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<ActionResult<GetUserDto>> UnFollowUserAsync(
+      [FromRoute] [Required] int id,
+      CancellationToken cancellationToken)
+    {
+      var currentUserId = _userManager.GetUserIdAsInt(HttpContext.User);
+
+      await _user.DoUnFollowUserAsync(currentUserId, id, cancellationToken)
+        .ConfigureAwait(false);
+
+      var newlyFetchedCurrentUser = await _userManager
+        .FindByIdWithAdditionalDataAsync(currentUserId, cancellationToken)
+        .ConfigureAwait(false);
+
+      var userDto = _mapper.Map<GetUserDto>(newlyFetchedCurrentUser);
+      
+      userDto.RequestingUserIds = newlyFetchedCurrentUser!.RequestingUsers.Select(_ => _.LeftId).ToImmutableList();
+      userDto.RequestedUserIds = newlyFetchedCurrentUser!.RequestedUsers.Select(_ => _.RightId).ToImmutableList();
+
       return Ok(userDto);
     }
 

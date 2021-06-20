@@ -21,4 +21,16 @@ export class UserService {
   delete(): Observable<any> {
     return this._http.request(Resource.USER, Method.DELETE);
   }
+
+  search(name: string): Observable<UserModel[]> {
+    return this._http.request(Resource.USER, Method.GET, null, name);
+  }
+
+  follow(id: string): Observable<UserModel> {
+    return this._http.request(Resource.USER, Method.POST, null, id);
+  }
+
+  undoFollow(id: string): Observable<UserModel> {
+    return this._http.request(Resource.USER, Method.DELETE, null, id);
+  }
 }

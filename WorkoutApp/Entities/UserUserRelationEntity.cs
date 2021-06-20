@@ -7,7 +7,9 @@ namespace WorkoutApp.Entities
   {
     public int RequestingUserId { get; set; }
     
-    public int RequestedUserId { get; set; } 
+    public int RequestedUserId { get; set; }
+    
+    public bool Accepted { get; set; }
       
     [NotMapped]
     public int LeftId

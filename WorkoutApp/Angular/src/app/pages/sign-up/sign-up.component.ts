@@ -54,7 +54,6 @@ export class SignUpComponent implements OnInit {
     };
 
     getFileObject('../../../assets/avatar.png', function (fileObject) {
-      console.log(fileObject);
       that._file.upload(fileObject).subscribe(file => that.submitSignUpForm(file.id));
     });
   }

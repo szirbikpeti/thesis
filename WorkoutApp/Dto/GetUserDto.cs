@@ -17,5 +17,9 @@ namespace WorkoutApp.Dto
         public IReadOnlyCollection<string> Roles { get; set; } = ImmutableList<string>.Empty;
         
         public IReadOnlyCollection<string> Permissions { get; set; } = ImmutableList<string>.Empty;
+        
+        public IReadOnlyCollection<int> RequestingUserIds { get; set; } = ImmutableList<int>.Empty;
+        
+        public IReadOnlyCollection<int> RequestedUserIds { get; set; } = ImmutableList<int>.Empty;
     }
 }

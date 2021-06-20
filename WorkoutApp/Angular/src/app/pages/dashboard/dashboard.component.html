@@ -1,25 +1,12 @@
+<div class="title">Dashboard</div>
 
-<!--<mat-drawer-container class="example-container" [hasBackdrop]="hasBackdrop.value">-->
-<!--  <mat-drawer #drawer [mode]="mode.value">I'm a drawer</mat-drawer>-->
-<!--  <mat-drawer-content>-->
-<!--    <mat-form-field>-->
-<!--      <mat-label>Sidenav mode</mat-label>-->
-<!--      <mat-select #mode value="side">-->
-<!--        <mat-option value="side">Side</mat-option>-->
-<!--        <mat-option value="over">Over</mat-option>-->
-<!--        <mat-option value="push">Push</mat-option>-->
-<!--      </mat-select>-->
-<!--    </mat-form-field>-->
-<!--    <mat-form-field>-->
-<!--      <mat-label>Has backdrop</mat-label>-->
-<!--      <mat-select #hasBackdrop>-->
-<!--        <mat-option>Unset</mat-option>-->
-<!--        <mat-option [value]="true">True</mat-option>-->
-<!--        <mat-option [value]="false">False</mat-option>-->
-<!--      </mat-select>-->
-<!--    </mat-form-field>-->
-<!--    <button mat-raised-button (click)="drawer.toggle()">Toggle drawer</button>-->
-<!--  </mat-drawer-content>-->
-<!--</mat-drawer-container>-->
-
-<h1>DASHBOARD</h1>
+<mat-spinner *ngIf="isNull(workouts)"></mat-spinner>
+<div *ngIf="!isNull(workouts) && workouts.length === 0" class="groupTitle">
+  Nincs még rögzített edzés
+</div>
+<div *ngIf="!isNull(workouts) && workouts.length > 0">
+  <div *ngFor="let groupedWorkouts of workouts | groupBy:'date' | pairs" class="mat-card-container">
+    <div class="groupTitle">{{getGroupTitle(groupedWorkouts[0])}}</div>
+    <app-workout-card-info [workouts]="groupedWorkouts[1]"></app-workout-card-info>
+  </div>
+</div>

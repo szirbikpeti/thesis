@@ -8,12 +8,13 @@ namespace WorkoutApp.Abstractions
 {
   public interface IWorkoutRepository
   {
-
     Task<ICollection<WorkoutEntity>> ListAsync(int userId, CancellationToken cancellationToken);
+    
+    Task<WorkoutEntity?> DoGetAsync(int workoutId, CancellationToken cancellationToken);
     
     Task DoAddAsync(WorkoutEntity workout, IReadOnlyCollection<int> fileIds, CancellationToken cancellationToken);
     
-    Task<WorkoutEntity?> DoUpdateAsync(int workoutId, WorkoutDto workoutDto, CancellationToken cancellationToken);
+    Task<WorkoutEntity?> DoUpdateAsync(int workoutId, WorkoutModificationDto workoutDto, CancellationToken cancellationToken);
     
     Task<bool> DoDeleteAsync(int workoutId, CancellationToken cancellationToken);
   }

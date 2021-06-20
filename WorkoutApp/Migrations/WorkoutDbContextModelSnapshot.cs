@@ -98,6 +98,10 @@ namespace WorkoutApp.Migrations
                         .IsRequired()
                         .HasColumnType("bytea");
 
+                    b.Property<string>("Format")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
@@ -331,6 +335,9 @@ namespace WorkoutApp.Migrations
                     b.Property<int>("RequestedUserId")
                         .HasColumnType("integer");
 
+                    b.Property<bool>("Accepted")
+                        .HasColumnType("boolean");
+
                     b.HasKey("RequestingUserId", "RequestedUserId");
 
                     b.HasIndex("RequestedUserId");
@@ -409,7 +416,7 @@ namespace WorkoutApp.Migrations
                     b.HasOne("WorkoutApp.Entities.WorkoutEntity", "Workout")
                         .WithMany("Exercises")
                         .HasForeignKey("WorkoutId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Workout");
@@ -431,7 +438,7 @@ namespace WorkoutApp.Migrations
                     b.HasOne("WorkoutApp.Entities.ExerciseEntity", "Exercise")
                         .WithMany("Sets")
                         .HasForeignKey("ExerciseId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Exercise");
@@ -511,13 +518,13 @@ namespace WorkoutApp.Migrations
             modelBuilder.Entity("WorkoutApp.Entities.WorkoutFileRelationEntity", b =>
                 {
                     b.HasOne("WorkoutApp.Entities.FileEntity", "File")
-                        .WithMany("Workouts")
+                        .WithMany("WorkoutRelationEntities")
                         .HasForeignKey("FileId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WorkoutApp.Entities.WorkoutEntity", "Workout")
-                        .WithMany("Files")
+                        .WithMany("FileRelationEntities")
                         .HasForeignKey("WorkoutId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -536,7 +543,7 @@ namespace WorkoutApp.Migrations
                 {
                     b.Navigation("ProfilePictureOfUser");
 
-                    b.Navigation("Workouts");
+                    b.Navigation("WorkoutRelationEntities");
                 });
 
             modelBuilder.Entity("WorkoutApp.Entities.RoleEntity", b =>
@@ -563,7 +570,7 @@ namespace WorkoutApp.Migrations
                 {
                     b.Navigation("Exercises");
 
-                    b.Navigation("Files");
+                    b.Navigation("FileRelationEntities");
                 });
 #pragma warning restore 612, 618
         }

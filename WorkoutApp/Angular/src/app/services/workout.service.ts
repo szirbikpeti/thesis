@@ -14,7 +14,19 @@ export class WorkoutService {
   constructor(private _http: HttpService) {
   }
 
+  list(): Observable<WorkoutModel[]> {
+    return this._http.request(Resource.WORKOUT, Method.GET);
+  }
+
+  get(id: string) {
+    return this._http.request(Resource.WORKOUT, Method.GET, null, id);
+  }
+
   create(workout: WorkoutRequest): Observable<WorkoutModel> {
     return this._http.request(Resource.WORKOUT, Method.POST, workout);
+  }
+
+  update(workoutId, workout: WorkoutRequest): Observable<WorkoutModel> {
+    return this._http.request(Resource.WORKOUT, Method.PATCH, workout, workoutId);
   }
 }

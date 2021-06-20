@@ -1,13 +1,25 @@
-.example-container {
-  width: 400px;
-  height: 100%;
-  margin: 12px;
-  border: 1px solid #555;
+.title {
+  margin-left: 25px;
+  margin-bottom: 40px;
+  font-size: 36px;
 }
 
-mat-drawer-content {
-  padding: 12px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+.mat-card-container {
+  padding: 25px;
+  margin-bottom: 15px;
+}
+
+app-workout-card-info {
+  margin-left: 30px;
+}
+
+.groupTitle {
+  margin-left: 25px;
+  font-size: 30px;
+}
+
+@media screen and (max-width: 600px) {
+  .title {
+    margin-top: 20px;
+  }
 }

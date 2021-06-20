@@ -4,9 +4,11 @@ import { HomeComponent } from "./pages/home/home.component";
 import { DashboardComponent } from "./pages/dashboard/dashboard.component";
 import {NavMenuComponent} from "./pages/nav-menu/nav-menu.component";
 import {NewWorkoutComponent} from "./pages/new-workout/new-workout.component";
+import {EditWorkoutComponent} from "./pages/edit-workout/edit-workout.component";
 import {ProfileComponent} from "./pages/profile/profile.component";
 import {SignOffGuard} from "./guards/sign-off.guard";
 import {AuthGuard} from "./guards/auth.guard";
+import {FriendSearchComponent} from "./pages/friend-search/friend-search.component";
 
 const routes: Routes = [
   {
@@ -30,6 +32,14 @@ const routes: Routes = [
       {
         path: 'new-workout',
         component: NewWorkoutComponent
+      },
+      {
+        path: 'edit-workout/:id',
+        component: EditWorkoutComponent
+      },
+      {
+        path: 'friend-search',
+        component: FriendSearchComponent
       },
     ]
   },

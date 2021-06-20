@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {TranslateService} from "@ngx-translate/core";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {UserService} from "../../services/user.service";
 import {StateService} from "../../services/state.service";
 import {SignUpComponent} from "../sign-up/sign-up.component";
 import {MatDialog} from "@angular/material/dialog";

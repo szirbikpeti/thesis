@@ -59,7 +59,7 @@ namespace WorkoutApp.Controllers
 
     [HttpPost("signup")]
     public async Task<IActionResult> SignUpAsync(
-      [FromBody] [Required] AdditionUserDto newUser,
+      [FromBody] [Required] UserAdditionDto newUser,
       CancellationToken cancellationToken)
     {
       _logger.Log(LogLevel.Information, $"Starting sign up with name: {newUser.UserName}");
@@ -140,6 +140,9 @@ namespace WorkoutApp.Controllers
         .Where(_ => _.ClaimType == Claims.Type)
         .Select(_ => _.ClaimValue)
         .ToImmutableList();
+
+      userDto.RequestingUserIds = user.RequestingUsers.Select(_ => _.LeftId).ToImmutableList();
+      userDto.RequestedUserIds = user.RequestedUsers.Select(_ => _.RightId).ToImmutableList();
 
       _logger.Log(LogLevel.Information, $"Signed in with name: {accessUser.UserName}");
       return Ok(userDto);

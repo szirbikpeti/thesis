@@ -9,5 +9,7 @@ export interface UserModel {
   permissions: string[],
   profilePicture: FileModel,
   birthDay?: Date,
-  lastSignInOn: Date
+  lastSignInOn: Date,
+  requestingUserIds: string[],
+  requestedUserIds: string[],
 }

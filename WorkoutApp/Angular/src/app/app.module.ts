@@ -15,9 +15,14 @@ import {MAT_DATE_LOCALE} from "@angular/material/core";
 import {ToastrModule} from "ngx-toastr";
 import {DashboardComponent} from "./pages/dashboard/dashboard.component";
 import {NewWorkoutComponent} from "./pages/new-workout/new-workout.component";
+import {EditWorkoutComponent} from "./pages/edit-workout/edit-workout.component";
 import {ProfileComponent} from "./pages/profile/profile.component";
 import {ConfirmationDialogComponent} from "./pages/confirmation-dialog/confirmation-dialog.component";
 import {GuardsModule} from "./guards.module";
+import {WorkoutCardInfoComponent} from "./pages/dashboard/workout-card-info/workout-card-info.component";
+import {NgPipesModule} from "ngx-pipes";
+import {DatePipe} from "@angular/common";
+import {FriendSearchComponent} from "./pages/friend-search/friend-search.component";
 
 @NgModule({
   declarations: [
@@ -26,8 +31,11 @@ import {GuardsModule} from "./guards.module";
     HomeComponent,
     SignUpComponent,
     DashboardComponent,
+    WorkoutCardInfoComponent,
     NewWorkoutComponent,
+    EditWorkoutComponent,
     ProfileComponent,
+    FriendSearchComponent,
     ConfirmationDialogComponent
   ],
   imports: [
@@ -38,6 +46,7 @@ import {GuardsModule} from "./guards.module";
     GuardsModule,
     I18nModule,
     MaterialModule,
+    NgPipesModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     ToastrModule.forRoot({
@@ -47,7 +56,8 @@ import {GuardsModule} from "./guards.module";
     })
   ],
   providers: [
-    {provide: MAT_DATE_LOCALE, useValue: 'hu-HU'}
+    {provide: MAT_DATE_LOCALE, useValue: 'hu-HU'},
+    DatePipe
   ],
   bootstrap: [AppComponent]
 })

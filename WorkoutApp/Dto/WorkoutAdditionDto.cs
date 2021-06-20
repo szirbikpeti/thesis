@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace WorkoutApp.Dto
 {
-  public class WorkoutDto
+  public class WorkoutAdditionDto
   {
     [Required]
     public DateTimeOffset Date { get; set; }
