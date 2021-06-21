@@ -43,6 +43,11 @@ namespace WorkoutApp.Controllers
       var foundedUsers = await _userManager
         .ListByUserAndFullNameAsync(currentUserId, name, cancellationToken)
         .ConfigureAwait(false);
+      
+      foreach (var foundedUser in foundedUsers) {
+        foundedUser!.ProfilePicture = await _file.DoGetAsync(foundedUser.ProfilePictureId, cancellationToken)
+          .ConfigureAwait(false);
+      }
 
       var userDtoList = foundedUsers
         .Select(user => _mapper.Map<GetUserDto>(user));
@@ -52,7 +57,7 @@ namespace WorkoutApp.Controllers
 
     [HttpPut]
     public async Task<ActionResult<GetUserDto>> UpdateAsync(
-      UpdateUserDto updateUserDto,
+      [FromBody] [Required] UpdateUserDto updateUserDto,
       CancellationToken cancellationToken)
     {
       var currentUser = await _userManager.GetUserAsync(HttpContext.User)
@@ -80,61 +85,145 @@ namespace WorkoutApp.Controllers
       updatedUser!.ProfilePicture = await _file.DoGetAsync(updatedUser.ProfilePictureId, cancellationToken)
         .ConfigureAwait(false);
 
-      var userDto = _mapper.Map<GetUserDto>(updatedUser);
-      
-      userDto.Roles = updatedUser.Roles
-        .Select(_ => _.Role.Name)
-        .ToImmutableList();
-
-      userDto.Permissions = updatedUser.Roles
-        .SelectMany(_ => _.Role.Claims)
-        .Where(_ => _.ClaimType == Claims.Type)
-        .Select(_ => _.ClaimValue)
-        .ToImmutableList();
+      var userDto = CreateUserDto(updatedUser!);
   
       return Ok(userDto);
     }
 
-    [HttpPost("{id}")]
-    public async Task<ActionResult<GetUserDto>> FollowUserAsync(
+    [HttpPost("request/{id}")]
+    public async Task<ActionResult<GetUserDto>> AddFollowRequestAsync(
       [FromRoute] [Required] int id,
       CancellationToken cancellationToken)
     {
       var currentUserId = _userManager.GetUserIdAsInt(HttpContext.User);
 
-      await _user.DoFollowUserAsync(currentUserId, id, cancellationToken)
+      await _user.DoAddFollowRequestAsync(currentUserId, id, cancellationToken)
         .ConfigureAwait(false);
 
       var newlyFetchedCurrentUser = await _userManager
         .FindByIdWithAdditionalDataAsync(currentUserId, cancellationToken)
         .ConfigureAwait(false);
-
-      var userDto = _mapper.Map<GetUserDto>(newlyFetchedCurrentUser);
       
-      userDto.RequestingUserIds = newlyFetchedCurrentUser!.RequestingUsers.Select(_ => _.LeftId).ToImmutableList();
-      userDto.RequestedUserIds = newlyFetchedCurrentUser!.RequestedUsers.Select(_ => _.RightId).ToImmutableList();
+      newlyFetchedCurrentUser!.ProfilePicture = await _file
+        .DoGetAsync(newlyFetchedCurrentUser.ProfilePictureId, cancellationToken)
+        .ConfigureAwait(false);
+
+      var userDto = CreateUserDto(newlyFetchedCurrentUser!);
 
       return Ok(userDto);
     }
 
-    [HttpDelete("{id}")]
-    public async Task<ActionResult<GetUserDto>> UnFollowUserAsync(
+    [HttpDelete("request/{id}")]
+    public async Task<ActionResult<GetUserDto>> DeleteFollowRequestAsync(
       [FromRoute] [Required] int id,
       CancellationToken cancellationToken)
     {
       var currentUserId = _userManager.GetUserIdAsInt(HttpContext.User);
 
-      await _user.DoUnFollowUserAsync(currentUserId, id, cancellationToken)
+      await _user.DoDeleteFollowRequestAsync(currentUserId, id, cancellationToken)
         .ConfigureAwait(false);
 
       var newlyFetchedCurrentUser = await _userManager
         .FindByIdWithAdditionalDataAsync(currentUserId, cancellationToken)
         .ConfigureAwait(false);
-
-      var userDto = _mapper.Map<GetUserDto>(newlyFetchedCurrentUser);
       
-      userDto.RequestingUserIds = newlyFetchedCurrentUser!.RequestingUsers.Select(_ => _.LeftId).ToImmutableList();
-      userDto.RequestedUserIds = newlyFetchedCurrentUser!.RequestedUsers.Select(_ => _.RightId).ToImmutableList();
+      newlyFetchedCurrentUser!.ProfilePicture = await _file
+        .DoGetAsync(newlyFetchedCurrentUser.ProfilePictureId, cancellationToken)
+        .ConfigureAwait(false);
+
+      var userDto = CreateUserDto(newlyFetchedCurrentUser!);
+
+      return Ok(userDto);
+    }
+
+    [HttpPatch("request/{id}")]
+    public async Task<ActionResult<GetUserDto>> DeclineFollowRequest(
+      [FromRoute] [Required] int id, 
+      CancellationToken cancellationToken)
+    {
+      var currentUserId = _userManager.GetUserIdAsInt(HttpContext.User);
+
+      await _user.DoDeclineFollowRequest(currentUserId, id, cancellationToken)
+        .ConfigureAwait(false);
+      
+      var newlyFetchedCurrentUser = await _userManager
+        .FindByIdWithAdditionalDataAsync(currentUserId, cancellationToken)
+        .ConfigureAwait(false);
+      
+      newlyFetchedCurrentUser!.ProfilePicture = await _file
+        .DoGetAsync(newlyFetchedCurrentUser.ProfilePictureId, cancellationToken)
+        .ConfigureAwait(false);
+
+      var userDto = CreateUserDto(newlyFetchedCurrentUser!);
+
+      return Ok(userDto);
+    }
+
+    [HttpPatch("follow/{id}")]
+    public async Task<ActionResult<GetUserDto>> AcceptFollowRequestAsync(
+      [FromRoute] [Required] int id, 
+      CancellationToken cancellationToken)
+    {
+      var currentUserId = _userManager.GetUserIdAsInt(HttpContext.User);
+
+      await _user.DoAcceptFollowRequestAsync(currentUserId, id, cancellationToken)
+        .ConfigureAwait(false);
+      
+      var newlyFetchedCurrentUser = await _userManager
+        .FindByIdWithAdditionalDataAsync(currentUserId, cancellationToken)
+        .ConfigureAwait(false);
+      
+      newlyFetchedCurrentUser!.ProfilePicture = await _file
+        .DoGetAsync(newlyFetchedCurrentUser.ProfilePictureId, cancellationToken)
+        .ConfigureAwait(false);
+
+      var userDto = CreateUserDto(newlyFetchedCurrentUser!);
+
+      return Ok(userDto);
+    }
+
+    [HttpPost("follow/{id}")]
+    public async Task<ActionResult<GetUserDto>> FollowBackAsync(
+      [FromRoute] [Required] int id, 
+      CancellationToken cancellationToken)
+    {
+      var currentUserId = _userManager.GetUserIdAsInt(HttpContext.User);
+
+      await _user.DoFollowBackAsync(currentUserId, id, cancellationToken)
+        .ConfigureAwait(false);
+      
+      var newlyFetchedCurrentUser = await _userManager
+        .FindByIdWithAdditionalDataAsync(currentUserId, cancellationToken)
+        .ConfigureAwait(false);
+      
+      newlyFetchedCurrentUser!.ProfilePicture = await _file
+        .DoGetAsync(newlyFetchedCurrentUser.ProfilePictureId, cancellationToken)
+        .ConfigureAwait(false);
+
+      var userDto = CreateUserDto(newlyFetchedCurrentUser!);
+
+      return Ok(userDto);
+    }
+
+    [HttpDelete("follow/{id}")]
+    public async Task<ActionResult<GetUserDto>> UnFollowAsync(
+      [FromRoute] [Required] int id,
+      CancellationToken cancellationToken)
+    {
+      var currentUserId = _userManager.GetUserIdAsInt(HttpContext.User);
+
+      await _user.DoUnFollowAsync(currentUserId, id, cancellationToken)
+        .ConfigureAwait(false);
+
+      var newlyFetchedCurrentUser = await _userManager
+        .FindByIdWithAdditionalDataAsync(currentUserId, cancellationToken)
+        .ConfigureAwait(false);
+      
+      newlyFetchedCurrentUser!.ProfilePicture = await _file
+        .DoGetAsync(newlyFetchedCurrentUser.ProfilePictureId, cancellationToken)
+        .ConfigureAwait(false);
+
+      var userDto = CreateUserDto(newlyFetchedCurrentUser!);
 
       return Ok(userDto);
     }
@@ -151,6 +240,32 @@ namespace WorkoutApp.Controllers
       }
 
       return Ok();
+    }
+
+    private GetUserDto CreateUserDto(UserEntity user)
+    {
+      if (user is null) {
+        throw new ArgumentNullException(nameof(user));
+      }
+      
+      var userDto = _mapper.Map<GetUserDto>(user);
+
+      userDto.Roles = user!.Roles
+        .Select(_ => _.Role.Name)
+        .ToImmutableList();
+
+      userDto.Permissions = user!.Roles
+        .SelectMany(_ => _.Role.Claims)
+        .Where(_ => _.ClaimType == Claims.Type)
+        .Select(_ => _.ClaimValue)
+        .ToImmutableList();
+
+      userDto.SourceUserIds = user.SourceUsers.Select(_ => _.SourceId).ToImmutableList();
+      userDto.TargetUserIds = user.TargetUsers.Select(_ => _.TargetId).ToImmutableList();
+      userDto.FollowerUserIds = user.FollowerUsers.Select(_ => _.FollowerId).ToImmutableList();
+      userDto.FollowedUserIds = user.FollowedUsers.Select(_ => _.FollowedId).ToImmutableList();
+
+      return userDto;
     }
   }
 }

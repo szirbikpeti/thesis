@@ -49,14 +49,14 @@ namespace WorkoutApp.Repositories
       return newlyFetchedUser;
     }
 
-    public async Task DoFollowUserAsync(int currentUserId, int requestedUserId, CancellationToken cancellationToken)
+    public async Task DoAddFollowRequestAsync(int currentUserId, int requestedUserId, CancellationToken cancellationToken)
     {
-      var newEntity = new UserUserRelationEntity {
-        LeftId = currentUserId,
-        RightId = requestedUserId
+      var newEntity = new FollowRequestEntity {
+        SourceId = currentUserId,
+        TargetId = requestedUserId
       };
 
-      await _dbContext.UserUserRelations
+      await _dbContext.FollowRequests
         .AddAsync(newEntity, cancellationToken)
         .ConfigureAwait(false);
       
@@ -65,14 +65,87 @@ namespace WorkoutApp.Repositories
         .ConfigureAwait(false);
     }
 
-    public async Task DoUnFollowUserAsync(int currentUserId, int requestedUserId, CancellationToken cancellationToken)
+    public async Task DoAcceptFollowRequestAsync(int currentUserId, int followerId, CancellationToken cancellationToken)
     {
-      var removedEntity = await _dbContext.UserUserRelations
-        .Where(_ => _.RequestingUserId == currentUserId 
-                    && _.RequestedUserId == requestedUserId)
-        .FirstOrDefaultAsync(cancellationToken);
+      var entity = await _dbContext.FollowRequests
+        .Where(_ => _.SourceId == followerId 
+                    && _.TargetId == currentUserId)
+        .FirstOrDefaultAsync(cancellationToken)
+        .ConfigureAwait(false);
 
-      _dbContext.UserUserRelations.Remove(removedEntity!);
+      _dbContext.FollowRequests.Remove(entity!);
+      
+      var newEntity = new FollowEntity {
+        FollowerId = followerId,
+        FollowedId = currentUserId
+      };
+
+      await _dbContext.Follows
+        .AddAsync(newEntity, cancellationToken)
+        .ConfigureAwait(false);
+      
+      await _dbContext
+        .SaveChangesAsync(cancellationToken)
+        .ConfigureAwait(false);
+    }
+
+    public async Task DoFollowBackAsync(int currentUserId, int followedId, CancellationToken cancellationToken)
+    {
+      var newEntity = new FollowEntity {
+        FollowerId = currentUserId,
+        FollowedId = followedId
+      };
+
+      await _dbContext.Follows
+        .AddAsync(newEntity, cancellationToken)
+        .ConfigureAwait(false);
+      
+      await _dbContext
+        .SaveChangesAsync(cancellationToken)
+        .ConfigureAwait(false);
+    }
+
+    public async Task DoDeclineFollowRequest(int currentUserId, int followerId, CancellationToken cancellationToken)
+    {
+      var entity = await _dbContext.FollowRequests
+        .Where(_ => _.SourceId == followerId 
+                    && _.TargetId == currentUserId)
+        .FirstOrDefaultAsync(cancellationToken)
+        .ConfigureAwait(false);
+
+      entity!.IsBlocked = true;
+
+      _dbContext.FollowRequests.Update(entity!);
+
+      await _dbContext
+        .SaveChangesAsync(cancellationToken)
+        .ConfigureAwait(false);
+    }
+
+    public async Task DoDeleteFollowRequestAsync(int currentUserId, int targetId, CancellationToken cancellationToken)
+    {
+      var removedEntity = await _dbContext.FollowRequests
+        .Where(_ => _.SourceId == currentUserId 
+                    && _.TargetId == targetId)
+        .FirstOrDefaultAsync(cancellationToken)
+        .ConfigureAwait(false);
+
+      _dbContext.FollowRequests.Remove(removedEntity!);
+      
+      await _dbContext
+        .SaveChangesAsync(cancellationToken)
+        .ConfigureAwait(false);
+    }
+    
+    public async Task DoUnFollowAsync(int currentUserId, int followedId, CancellationToken cancellationToken)
+    {
+      var removedEntity = await _dbContext.Follows
+        .Where(_ => _.FollowerId == currentUserId 
+                    && _.FollowedId == followedId)
+        .FirstOrDefaultAsync(cancellationToken)
+        .ConfigureAwait(false);
+
+      _dbContext.Follows.Remove(removedEntity!);
       
       await _dbContext
         .SaveChangesAsync(cancellationToken)

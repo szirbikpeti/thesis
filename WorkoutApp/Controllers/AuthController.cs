@@ -141,8 +141,10 @@ namespace WorkoutApp.Controllers
         .Select(_ => _.ClaimValue)
         .ToImmutableList();
 
-      userDto.RequestingUserIds = user.RequestingUsers.Select(_ => _.LeftId).ToImmutableList();
-      userDto.RequestedUserIds = user.RequestedUsers.Select(_ => _.RightId).ToImmutableList();
+      userDto.SourceUserIds = user.SourceUsers.Select(_ => _.SourceId).ToImmutableList();
+      userDto.TargetUserIds = user.TargetUsers.Select(_ => _.TargetId).ToImmutableList();
+      userDto.FollowerUserIds = user.FollowerUsers.Select(_ => _.FollowerId).ToImmutableList();
+      userDto.FollowedUserIds = user.FollowedUsers.Select(_ => _.FollowedId).ToImmutableList();
 
       _logger.Log(LogLevel.Information, $"Signed in with name: {accessUser.UserName}");
       return Ok(userDto);

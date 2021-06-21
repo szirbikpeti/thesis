@@ -11,9 +11,17 @@ namespace WorkoutApp.Abstractions
     
     Task<UserEntity?> DoUpdateAsync(UserEntity currentUser,  UpdateUserDto updateUserDto, CancellationToken cancellationToken);
 
-    Task DoFollowUserAsync(int currentUserId, int requestedUserId, CancellationToken cancellationToken);
+    Task DoAddFollowRequestAsync(int currentUserId, int requestedUserId, CancellationToken cancellationToken);
     
-    Task DoUnFollowUserAsync(int currentUserId, int requestedUserId, CancellationToken cancellationToken);
+    Task DoAcceptFollowRequestAsync(int currentUserId, int followerId, CancellationToken cancellationToken);
+    
+    Task DoFollowBackAsync(int currentUserId, int followedId, CancellationToken cancellationToken);
+    
+    Task DoDeclineFollowRequest(int currentUserId, int followerId, CancellationToken cancellationToken);
+    
+    Task DoDeleteFollowRequestAsync(int currentUserId, int targetId, CancellationToken cancellationToken);
+    
+    Task DoUnFollowAsync(int currentUserId, int followedId, CancellationToken cancellationToken);
     
     Task<bool> DoDeleteAsync(int userId, CancellationToken cancellationToken);
   }

@@ -10,6 +10,10 @@ code {
   cursor: pointer;
 }
 
+.filler {
+  flex: 1 1 auto;
+}
+
 .btn-primary {
   color: #fff;
   background-color: #1b6ec2;

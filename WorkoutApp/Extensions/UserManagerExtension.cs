@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WorkoutApp.Entities;
@@ -23,13 +21,14 @@ namespace WorkoutApp.Extensions
       CancellationToken cancellationToken)
     {
       return await userManager.Users
-        .AsNoTracking()
         .AsSplitQuery()
         .Include(_ => _.Roles)
         .ThenInclude(_ => _.Role)
         .ThenInclude(_ => _.Claims)
-        .Include(_ => _.RequestingUsers)
-        .Include(_ => _.RequestedUsers)
+        .Include(_ => _.SourceUsers)
+        .Include(_ => _.TargetUsers)
+        .Include(_ => _.FollowerUsers)
+        .Include(_ => _.FollowedUsers)
         .FirstOrDefaultAsync(_ => 
           (_.Id == id) && (_.DeletedOn == null), cancellationToken)
         .ConfigureAwait(false);
@@ -43,13 +42,14 @@ namespace WorkoutApp.Extensions
       var normalizedUserName = userManager.NormalizeName(userName);
       
       return await userManager.Users
-        .AsNoTracking()
         .AsSplitQuery()
         .Include(_ => _.Roles)
         .ThenInclude(_ => _.Role)
         .ThenInclude(_ => _.Claims)
-        .Include(_ => _.RequestingUsers)
-        .Include(_ => _.RequestedUsers)
+        .Include(_ => _.SourceUsers)
+        .Include(_ => _.TargetUsers)
+        .Include(_ => _.FollowerUsers)
+        .Include(_ => _.FollowedUsers)
         .FirstOrDefaultAsync(_ => 
           (_.NormalizedUserName == normalizedUserName) 
             && (_.DeletedOn == null), 
@@ -72,8 +72,6 @@ namespace WorkoutApp.Extensions
            || _.NormalizedUserName.Contains(normalizedName)) 
           && _.Id != currentUserId 
           && _.DeletedOn == null)
-        .Include(_ => _.RequestingUsers)
-        .Include(_ => _.RequestedUsers)
         .ToListAsync(cancellationToken)
         .ConfigureAwait(false);
     }

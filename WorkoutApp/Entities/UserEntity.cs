@@ -36,8 +36,12 @@ namespace WorkoutApp.Entities
         
         public ICollection<UserRoleRelationEntity> Roles { get; set; } = null!;
         
-        public ICollection<UserUserRelationEntity> RequestingUsers { get; set; } = null!;
+        public ICollection<FollowRequestEntity> SourceUsers { get; set; } = null!;
         
-        public ICollection<UserUserRelationEntity> RequestedUsers { get; set; } = null!;
+        public ICollection<FollowRequestEntity> TargetUsers { get; set; } = null!;
+        
+        public ICollection<FollowEntity> FollowerUsers { get; set; } = null!;
+        
+        public ICollection<FollowEntity> FollowedUsers { get; set; } = null!;
     }
 }

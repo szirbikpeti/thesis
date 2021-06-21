@@ -30,6 +30,7 @@ namespace WorkoutApp.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "text", nullable: false),
+                    Format = table.Column<string>(type: "text", nullable: false),
                     Size = table.Column<int>(type: "integer", nullable: false),
                     Data = table.Column<byte[]>(type: "bytea", nullable: false),
                     UploadedOn = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
@@ -186,24 +187,49 @@ namespace WorkoutApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserUserRelations",
+                name: "FollowRequests",
                 columns: table => new
                 {
-                    RequestingUserId = table.Column<int>(type: "integer", nullable: false),
-                    RequestedUserId = table.Column<int>(type: "integer", nullable: false)
+                    SourceId = table.Column<int>(type: "integer", nullable: false),
+                    TargetId = table.Column<int>(type: "integer", nullable: false),
+                    IsBlocked = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserUserRelations", x => new { x.RequestingUserId, x.RequestedUserId });
+                    table.PrimaryKey("PK_FollowRequests", x => new { x.SourceId, x.TargetId });
                     table.ForeignKey(
-                        name: "FK_UserUserRelations_AspNetUsers_RequestedUserId",
-                        column: x => x.RequestedUserId,
+                        name: "FK_FollowRequests_AspNetUsers_SourceId",
+                        column: x => x.SourceId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_UserUserRelations_AspNetUsers_RequestingUserId",
-                        column: x => x.RequestingUserId,
+                        name: "FK_FollowRequests_AspNetUsers_TargetId",
+                        column: x => x.TargetId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Follows",
+                columns: table => new
+                {
+                    FollowerId = table.Column<int>(type: "integer", nullable: false),
+                    FollowedId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Follows", x => new { x.FollowerId, x.FollowedId });
+                    table.ForeignKey(
+                        name: "FK_Follows_AspNetUsers_FollowedId",
+                        column: x => x.FollowedId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Follows_AspNetUsers_FollowerId",
+                        column: x => x.FollowerId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -230,7 +256,7 @@ namespace WorkoutApp.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -253,6 +279,30 @@ namespace WorkoutApp.Migrations
                         principalTable: "Workouts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "WorkoutFileRelations",
+                columns: table => new
+                {
+                    WorkoutId = table.Column<int>(type: "integer", nullable: false),
+                    FileId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WorkoutFileRelations", x => new { x.WorkoutId, x.FileId });
+                    table.ForeignKey(
+                        name: "FK_WorkoutFileRelations_Files_FileId",
+                        column: x => x.FileId,
+                        principalTable: "Files",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_WorkoutFileRelations_Workouts_WorkoutId",
+                        column: x => x.WorkoutId,
+                        principalTable: "Workouts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -326,14 +376,24 @@ namespace WorkoutApp.Migrations
                 column: "WorkoutId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_FollowRequests_TargetId",
+                table: "FollowRequests",
+                column: "TargetId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Follows_FollowedId",
+                table: "Follows",
+                column: "FollowedId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Sets_ExerciseId",
                 table: "Sets",
                 column: "ExerciseId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserUserRelations_RequestedUserId",
-                table: "UserUserRelations",
-                column: "RequestedUserId");
+                name: "IX_WorkoutFileRelations_FileId",
+                table: "WorkoutFileRelations",
+                column: "FileId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Workouts_UserId",
@@ -359,10 +419,16 @@ namespace WorkoutApp.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "FollowRequests");
+
+            migrationBuilder.DropTable(
+                name: "Follows");
+
+            migrationBuilder.DropTable(
                 name: "Sets");
 
             migrationBuilder.DropTable(
-                name: "UserUserRelations");
+                name: "WorkoutFileRelations");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

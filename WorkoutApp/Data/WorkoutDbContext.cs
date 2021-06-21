@@ -24,7 +24,8 @@ namespace WorkoutApp.Data
         public DbSet<WorkoutEntity> Workouts { get; set; } = null!;
         
         public DbSet<WorkoutFileRelationEntity> WorkoutFileRelations { get; set; } = null!;
-        public DbSet<UserUserRelationEntity> UserUserRelations { get; set; } = null!;
+        public DbSet<FollowRequestEntity> FollowRequests { get; set; } = null!;
+        public DbSet<FollowEntity> Follows { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -39,7 +40,8 @@ namespace WorkoutApp.Data
             modelBuilder.ApplyConfiguration(new UserClaimConfiguration());
             modelBuilder.ApplyConfiguration(new RoleClaimConfiguration());
             modelBuilder.ApplyConfiguration(new WorkoutFileRelationConfiguration());
-            modelBuilder.ApplyConfiguration(new UserUserRelationConfiguration());
+            modelBuilder.ApplyConfiguration(new FollowRequestConfiguration());
+            modelBuilder.ApplyConfiguration(new FollowConfiguration());
             modelBuilder.ApplyConfiguration(new UserRoleRelationConfiguration());
 
             modelBuilder.Entity<UserEntity>()

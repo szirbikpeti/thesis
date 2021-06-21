@@ -3,6 +3,8 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {UserService} from "../../services/user.service";
 import {UserModel} from "../../models/UserModel";
 import {StateService} from "../../services/state.service";
+import {getPicture} from "../../utility";
+import {DomSanitizer} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-friend-search',
@@ -17,8 +19,14 @@ export class FriendSearchComponent implements OnInit {
 
   currentUser: UserModel;
 
-  constructor(private fb: FormBuilder, private _user: UserService, private _state: StateService) {
+  getPicture = getPicture;
+
+  constructor(private fb: FormBuilder, private _user: UserService, private _state: StateService,
+              public sanitizer: DomSanitizer) {
     _state.user.subscribe(storedUser => this.currentUser = storedUser);
+
+    this._user.search('bok')
+      .subscribe(foundedUsers => {this.users = foundedUsers; console.log(this.users);}); // TODO - delete
   }
 
   ngOnInit(): void {
@@ -33,17 +41,17 @@ export class FriendSearchComponent implements OnInit {
   }
 
   follow(id: string) {
-    this._user.follow(id)
+    this._user.followRequest(id)
       .subscribe(currentUser => this._state.user = currentUser);
   }
 
   undo(id: string) {
-    this._user.undoFollow(id)
+    this._user.deleteFollowRequest(id)
       .subscribe(currentUser => this._state.user = currentUser);
   }
 
   isRequestedUser(id: string): boolean {
-    return this.currentUser.requestedUserIds.includes(id);
+    return this.currentUser.targetUserIds.includes(id);
   }
 
   get name(): string {

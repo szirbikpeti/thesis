@@ -10,6 +10,8 @@ export interface UserModel {
   profilePicture: FileModel,
   birthDay?: Date,
   lastSignInOn: Date,
-  requestingUserIds: string[],
-  requestedUserIds: string[],
+  sourceUserIds: string[],
+  targetUserIds: string[],
+  followerUserIds: string[],
+  followedUserIds: string[],
 }

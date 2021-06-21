@@ -5,14 +5,17 @@
         <input matInput placeholder="{{'USER_FORM.FULLNAME' | translate}} / {{'USER_FORM.USERNAME' | translate}}" formControlName="name">
       </div>
     </mat-form-field>
-
     <button class="search-button" mat-raised-button type="submit">{{'FRIEND.SEARCH' | translate}}</button>
   </form>
   <div class="card-container" *ngIf="users !== undefined">
     <mat-card *ngFor="let user of users">
-      {{user.userName}}
-      <button *ngIf="!isRequestedUser(user.id)" mat-raised-button (click)="follow(user.id)">{{'FRIEND.FOLLOW' | translate}}</button>
-      <button *ngIf="isRequestedUser(user.id)" mat-raised-button (click)="undo(user.id)">{{'FRIEND.UNDO_FOLLOW' | translate}}</button>
+        <img class="profile-picture" [src]="getPicture(user.profilePicture.data)">
+        {{user.userName}}
+        {{user.fullName}}
+      <div style="float: right;">
+        <button *ngIf="!isRequestedUser(user.id)" mat-raised-button (click)="follow(user.id)">{{'FRIEND.FOLLOW' | translate}}</button>
+        <button *ngIf="isRequestedUser(user.id)" mat-raised-button (click)="undo(user.id)">{{'FRIEND.UNDO_FOLLOW' | translate}}</button>
+      </div>
     </mat-card>
   </div>
 </div>

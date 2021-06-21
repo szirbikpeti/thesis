@@ -45,7 +45,7 @@ mat-form-field.ng-dirty.ng-invalid {
 }
 
 .card-container {
-  text-align: center;
+  text-align: left;
   margin: auto;
   width: 750px;
 }
@@ -53,3 +53,9 @@ mat-form-field.ng-dirty.ng-invalid {
 mat-card {
   margin: 15px;
 }
+
+.profile-picture {
+  height: 60px;
+  width: 60px;
+}
+

@@ -19,6 +19,36 @@ hr {
   width: 85%;
 }
 
+.friend-request-notification-container {
+  margin-left: 12px;
+  margin-right: 12px;
+}
+
+.people-img-with-request {
+  cursor: pointer;
+  margin-top: 13px;
+}
+
+.people-img-without-request {
+  cursor: pointer;
+}
+
+.red-circle {
+  cursor: pointer;
+  background-color: red;
+  border-radius: 50%;
+  position: relative;
+  bottom: 12px;
+  text-align: center;
+  vertical-align: middle;
+  justify-content: center;
+  font-size: 11px;
+  line-height: 15px;
+  left: 18px;
+  height: 15px;
+  width: 15px;
+}
+
 .profile-picture {
   border-radius: 50%;
   cursor: pointer;
@@ -111,10 +141,6 @@ mat-divider {
   position: sticky;
   top: 0;
   z-index: 4;
-
-  .filler {
-    flex: 1 1 auto;
-  }
 
   .item-left {
     margin-right: 10px;

@@ -18,8 +18,12 @@ namespace WorkoutApp.Dto
         
         public IReadOnlyCollection<string> Permissions { get; set; } = ImmutableList<string>.Empty;
         
-        public IReadOnlyCollection<int> RequestingUserIds { get; set; } = ImmutableList<int>.Empty;
+        public IReadOnlyCollection<int> SourceUserIds { get; set; } = ImmutableList<int>.Empty;
         
-        public IReadOnlyCollection<int> RequestedUserIds { get; set; } = ImmutableList<int>.Empty;
+        public IReadOnlyCollection<int> TargetUserIds { get; set; } = ImmutableList<int>.Empty;
+        
+        public IReadOnlyCollection<int> FollowerUserIds { get; set; } = ImmutableList<int>.Empty;
+        
+        public IReadOnlyCollection<int> FollowedUserIds { get; set; } = ImmutableList<int>.Empty;
     }
 }

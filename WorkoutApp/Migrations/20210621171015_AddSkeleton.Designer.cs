@@ -10,8 +10,8 @@ using WorkoutApp.Data;
 namespace WorkoutApp.Migrations
 {
     [DbContext(typeof(WorkoutDbContext))]
-    [Migration("20210617154016_RenameEntityFields")]
-    partial class RenameEntityFields
+    [Migration("20210621171015_AddSkeleton")]
+    partial class AddSkeleton
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -100,6 +100,10 @@ namespace WorkoutApp.Migrations
                         .IsRequired()
                         .HasColumnType("bytea");
 
+                    b.Property<string>("Format")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
@@ -113,6 +117,39 @@ namespace WorkoutApp.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Files");
+                });
+
+            modelBuilder.Entity("WorkoutApp.Entities.FollowEntity", b =>
+                {
+                    b.Property<int>("FollowerId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("FollowedId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("FollowerId", "FollowedId");
+
+                    b.HasIndex("FollowedId");
+
+                    b.ToTable("Follows");
+                });
+
+            modelBuilder.Entity("WorkoutApp.Entities.FollowRequestEntity", b =>
+                {
+                    b.Property<int>("SourceId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("TargetId")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("IsBlocked")
+                        .HasColumnType("boolean");
+
+                    b.HasKey("SourceId", "TargetId");
+
+                    b.HasIndex("TargetId");
+
+                    b.ToTable("FollowRequests");
                 });
 
             modelBuilder.Entity("WorkoutApp.Entities.RoleClaimEntity", b =>
@@ -325,21 +362,6 @@ namespace WorkoutApp.Migrations
                     b.ToTable("AspNetUserRoles");
                 });
 
-            modelBuilder.Entity("WorkoutApp.Entities.UserUserRelationEntity", b =>
-                {
-                    b.Property<int>("RequestingUserId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("RequestedUserId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("RequestingUserId", "RequestedUserId");
-
-                    b.HasIndex("RequestedUserId");
-
-                    b.ToTable("UserUserRelations");
-                });
-
             modelBuilder.Entity("WorkoutApp.Entities.WorkoutEntity", b =>
                 {
                     b.Property<int>("Id")
@@ -411,10 +433,48 @@ namespace WorkoutApp.Migrations
                     b.HasOne("WorkoutApp.Entities.WorkoutEntity", "Workout")
                         .WithMany("Exercises")
                         .HasForeignKey("WorkoutId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Workout");
+                });
+
+            modelBuilder.Entity("WorkoutApp.Entities.FollowEntity", b =>
+                {
+                    b.HasOne("WorkoutApp.Entities.UserEntity", "FollowedUser")
+                        .WithMany("FollowerUsers")
+                        .HasForeignKey("FollowedId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WorkoutApp.Entities.UserEntity", "FollowerUser")
+                        .WithMany("FollowedUsers")
+                        .HasForeignKey("FollowerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("FollowedUser");
+
+                    b.Navigation("FollowerUser");
+                });
+
+            modelBuilder.Entity("WorkoutApp.Entities.FollowRequestEntity", b =>
+                {
+                    b.HasOne("WorkoutApp.Entities.UserEntity", "SourceUser")
+                        .WithMany("TargetUsers")
+                        .HasForeignKey("SourceId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WorkoutApp.Entities.UserEntity", "TargetUser")
+                        .WithMany("SourceUsers")
+                        .HasForeignKey("TargetId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("SourceUser");
+
+                    b.Navigation("TargetUser");
                 });
 
             modelBuilder.Entity("WorkoutApp.Entities.RoleClaimEntity", b =>
@@ -433,7 +493,7 @@ namespace WorkoutApp.Migrations
                     b.HasOne("WorkoutApp.Entities.ExerciseEntity", "Exercise")
                         .WithMany("Sets")
                         .HasForeignKey("ExerciseId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Exercise");
@@ -478,25 +538,6 @@ namespace WorkoutApp.Migrations
                     b.Navigation("Role");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("WorkoutApp.Entities.UserUserRelationEntity", b =>
-                {
-                    b.HasOne("WorkoutApp.Entities.UserEntity", "RequestedUser")
-                        .WithMany("RequestingUsers")
-                        .HasForeignKey("RequestedUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("WorkoutApp.Entities.UserEntity", "RequestingUser")
-                        .WithMany("RequestedUsers")
-                        .HasForeignKey("RequestingUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("RequestedUser");
-
-                    b.Navigation("RequestingUser");
                 });
 
             modelBuilder.Entity("WorkoutApp.Entities.WorkoutEntity", b =>
@@ -552,11 +593,15 @@ namespace WorkoutApp.Migrations
                 {
                     b.Navigation("Claims");
 
-                    b.Navigation("RequestedUsers");
+                    b.Navigation("FollowedUsers");
 
-                    b.Navigation("RequestingUsers");
+                    b.Navigation("FollowerUsers");
 
                     b.Navigation("Roles");
+
+                    b.Navigation("SourceUsers");
+
+                    b.Navigation("TargetUsers");
 
                     b.Navigation("Workouts");
                 });

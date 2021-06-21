@@ -10,6 +10,7 @@ import {Router} from "@angular/router";
 import {UserModel} from "../../models/UserModel";
 import {getPicture, isNull} from '../../utility';
 import {DomSanitizer} from "@angular/platform-browser";
+import {UserService} from "../../services/user.service";
 
 @Component({
   selector: 'app-nav-menu',
@@ -32,8 +33,8 @@ export class NavMenuComponent {
   authenticationConfirmed: boolean = true;
 
   constructor(private breakpointObserver: BreakpointObserver, public _auth: AuthService,
-              private _translate: TranslateService, private _state: StateService,
-              public router: Router, public sanitizer: DomSanitizer) {
+              private _user: UserService, private _translate: TranslateService,
+              private _state: StateService, public router: Router, public sanitizer: DomSanitizer) {
     _state.user.subscribe(storedUser => this.currentUser = storedUser);
     this.isHandset$.subscribe((next) => this.isHandset = next);
   }
@@ -66,5 +67,10 @@ export class NavMenuComponent {
   editProfile(): void {
     this.toggleDrawerWhenHandset();
     this.router.navigate(['/profile']);
+  }
+
+  acceptRequest(id: string) {
+    this._user.acceptFollowRequest(id)
+      .subscribe(currentUser => this._state.user = currentUser);
   }
 }

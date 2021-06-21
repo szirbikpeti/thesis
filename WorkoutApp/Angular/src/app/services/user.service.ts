@@ -26,11 +26,28 @@ export class UserService {
     return this._http.request(Resource.USER, Method.GET, null, name);
   }
 
-  follow(id: string): Observable<UserModel> {
-    return this._http.request(Resource.USER, Method.POST, null, id);
+  followRequest(id: string): Observable<UserModel> {
+    return this._http.request(Resource.USER_REQUEST, Method.POST, null, id);
   }
 
-  undoFollow(id: string): Observable<UserModel> {
-    return this._http.request(Resource.USER, Method.DELETE, null, id);
+  deleteFollowRequest(id: string): Observable<UserModel> {
+    return this._http.request(Resource.USER_REQUEST, Method.DELETE, null, id);
   }
+
+  declineFollowRequest(id: string): Observable<UserModel> {
+    return this._http.request(Resource.USER_REQUEST, Method.PATCH, null, id);
+  }
+
+  acceptFollowRequest(id: string): Observable<UserModel> {
+    return this._http.request(Resource.USER_FOLLOW, Method.PATCH, null, id);
+  }
+
+  followBack(id: string): Observable<UserModel> {
+    return this._http.request(Resource.USER_FOLLOW, Method.POST, null, id);
+  }
+
+  unfollow(id: string): Observable<UserModel> {
+    return this._http.request(Resource.USER_FOLLOW, Method.DELETE, null, id);
+  }
+
 }

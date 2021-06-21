@@ -10,7 +10,7 @@
       <div class="profile-mobile">
         <img *ngIf="!isNull(currentUser.profilePicture)"
              [src]="getPicture(this.currentUser.profilePicture.data)"
-             alt="Nincs kép"
+             alt="No image"
              (click)="editProfile()"
              class="profile-picture-mobile"/>
         <div class="clickable username"
@@ -109,6 +109,19 @@
 <!--        </div>-->
 <!--      </mat-menu>-->
 
+      <div class="friend-request-notification-container">
+        <img [ngClass]="false ? 'people-img-with-request' : 'people-img-without-request'" src="assets/people.svg">
+<!--        <div *ngIf="false" class="red-circle" [matMenuTriggerFor]="friendRequestMenu">-->
+<!--          {{this.currentUser.requestingUsers.length}}-->
+<!--        </div>-->
+<!--        <mat-menu #friendRequestMenu="matMenu">-->
+<!--          <div *ngFor="let request of this.currentUser.requestingUsers">-->
+<!--            {{request.requestingUser.userName}}-->
+<!--            <button mat-button (click)="acceptRequest(request.requestingUser.id)">Elfogad</button>-->
+<!--          </div>-->
+<!--        </mat-menu>-->
+      </div>
+
       <div class="username-container">
         <div class="clickable username"
              (click)="editProfile()">
@@ -117,7 +130,7 @@
       <div class="mobile-profile">
         <img *ngIf="!isNull(currentUser.profilePicture)"
              [src]="getPicture(this.currentUser.profilePicture.data)"
-             alt="Nincs kép"
+             alt="No image"
              (click)="editProfile()"
              class="profile-picture"/>
       </div>
