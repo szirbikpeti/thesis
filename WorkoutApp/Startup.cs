@@ -14,6 +14,7 @@ using Microsoft.Extensions.Hosting;
 using WorkoutApp.Abstractions;
 using WorkoutApp.Data;
 using WorkoutApp.Entities;
+using WorkoutApp.Hubs;
 using WorkoutApp.Repositories;
 
 namespace WorkoutApp
@@ -109,6 +110,7 @@ namespace WorkoutApp
           _ => _.RequireClaim(Claims.Type, Claims.MessageSendPermission));
       });
 
+      services.AddSignalR();
       services.AddCors();
       services.AddHttpContextAccessor();
       services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -116,6 +118,7 @@ namespace WorkoutApp
       services.AddScoped<IUserRepository, UserRepository>();
       services.AddScoped<IFileRepository, FileRepository>();
       services.AddScoped<IWorkoutRepository, WorkoutRepository>();
+      services.AddScoped<INotificationRepository, NotificationRepository>();
     }
 
     public void Configure(IApplicationBuilder appBuilder, IWebHostEnvironment environment, WorkoutDbContext dbContext)
@@ -149,6 +152,7 @@ namespace WorkoutApp
 
       appBuilder.UseEndpoints(endpoints => {
         endpoints.MapControllers();
+        endpoints.MapHub<NotificationHub>("/notify");
       });
 
       appBuilder.UseSpa(spa => {

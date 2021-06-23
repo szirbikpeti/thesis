@@ -24,13 +24,20 @@ namespace WorkoutApp.Controllers
     private readonly UserManager<UserEntity> _userManager;
     private readonly IUserRepository _user;
     private readonly IFileRepository _file;
+    private readonly INotificationRepository _notification;
 
-    public UserController(IMapper mapper,  UserManager<UserEntity> userManager, IUserRepository user, IFileRepository file)
+    public UserController(
+      IMapper mapper,
+      UserManager<UserEntity> userManager,
+      IUserRepository user,
+      IFileRepository file,
+      INotificationRepository notification)
     {
       _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
       _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
       _user = user ?? throw new ArgumentNullException(nameof(user));
       _file = file ?? throw new ArgumentNullException(nameof(file));
+      _notification = notification ?? throw new ArgumentNullException(nameof(notification));
     }
 
     [HttpGet("{name}")]
@@ -98,6 +105,16 @@ namespace WorkoutApp.Controllers
       var currentUserId = _userManager.GetUserIdAsInt(HttpContext.User);
 
       await _user.DoAddFollowRequestAsync(currentUserId, id, cancellationToken)
+        .ConfigureAwait(false);
+
+      var notification = new NotificationEntity {
+        Type = NotificationType.FollowRequest,
+        SentByUserId = currentUserId,
+        ReceivedUserId = id,
+        TriggeredOn = DateTimeOffset.Now
+      };
+      
+      await _notification.DoAddAsync(notification, cancellationToken)
         .ConfigureAwait(false);
 
       var newlyFetchedCurrentUser = await _userManager

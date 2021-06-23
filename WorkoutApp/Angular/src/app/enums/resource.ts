@@ -7,4 +7,5 @@ export enum Resource {
   USER_FOLLOW = 'user/follow/',
   FILE = 'file/',
   WORKOUT = 'workout/',
+  NOTIFICATION = "notification/"
 }

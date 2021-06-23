@@ -50,7 +50,7 @@
       <button
         type="button"
         class="item-left menu-button"
-        [ngClass]="this.sideNav?.opened ? 'menu-button-1' : 'menu-button-2'"
+        [ngClass]="isSideNavOpened() ? 'menu-button-1' : 'menu-button-2'"
         mat-icon-button
         (click)="toggleSideNav()">
         <mat-icon>menu</mat-icon>
@@ -110,16 +110,23 @@
 <!--      </mat-menu>-->
 
       <div class="friend-request-notification-container">
-        <img [ngClass]="false ? 'people-img-with-request' : 'people-img-without-request'" src="assets/people.svg">
-<!--        <div *ngIf="false" class="red-circle" [matMenuTriggerFor]="friendRequestMenu">-->
-<!--          {{this.currentUser.requestingUsers.length}}-->
-<!--        </div>-->
-<!--        <mat-menu #friendRequestMenu="matMenu">-->
-<!--          <div *ngFor="let request of this.currentUser.requestingUsers">-->
-<!--            {{request.requestingUser.userName}}-->
-<!--            <button mat-button (click)="acceptRequest(request.requestingUser.id)">Elfogad</button>-->
-<!--          </div>-->
-<!--        </mat-menu>-->
+        <img  src="assets/people.svg" [matMenuTriggerFor]="friendRequestMenu"
+              [ngClass]="getFollowNotificationCount() > 0
+                ? 'people-img-with-request'
+                : 'people-img-without-request'">
+        <div *ngIf="getFollowNotificationCount() > 0" class="red-circle" [matMenuTriggerFor]="friendRequestMenu">
+          {{this.followNotifications.length}}
+        </div>
+        <mat-menu #friendRequestMenu="matMenu">
+          <div style="height: 30px; width: 200px;" *ngFor="let followNotification of this.followNotifications">
+            <div style="float: left;">
+              <img style="height: 50px; width: 50px;" alt="No image" [src]="getPicture(followNotification.sentByUser.profilePicture.data)">
+              {{followNotification.sentByUser.userName}} <br>
+              {{followNotification.triggeredOn | date:'yyyy.MM.dd. HH:mm'}}
+            </div>
+            <button mat-button (click)="acceptRequest(followNotification.sentByUser.id)">Elfogad</button>
+          </div>
+        </mat-menu>
       </div>
 
       <div class="username-container">

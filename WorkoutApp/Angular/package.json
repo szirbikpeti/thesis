@@ -25,6 +25,7 @@
     "@angular/platform-browser-dynamic": "11.2.8",
     "@angular/platform-server": "11.2.8",
     "@angular/router": "11.2.8",
+    "@microsoft/signalr": "^5.0.7",
     "@nguniversal/module-map-ngfactory-loader": "8.1.1",
     "@ngx-translate/core": "^13.0.0",
     "@ngx-translate/http-loader": "^6.0.0",

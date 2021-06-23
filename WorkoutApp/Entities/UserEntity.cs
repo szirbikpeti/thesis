@@ -43,5 +43,9 @@ namespace WorkoutApp.Entities
         public ICollection<FollowEntity> FollowerUsers { get; set; } = null!;
         
         public ICollection<FollowEntity> FollowedUsers { get; set; } = null!;
+
+        public ICollection<NotificationEntity> SentNotifications { get; set; } = null!;
+
+        public ICollection<NotificationEntity> ReceivedNotifications { get; set; } = null!;
     }
 }

@@ -52,7 +52,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Angular\src\app\enums" />
       <Folder Include="Angular\src\app\guards" />
       <Folder Include="Angular\src\app\pages" />
       <Folder Include="Angular\src\app\services" />

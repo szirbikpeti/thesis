@@ -22,6 +22,7 @@ namespace WorkoutApp.Data
         public DbSet<SetEntity> Sets { get; set; } = null!;
         public DbSet<ExerciseEntity> Exercises { get; set; } = null!;
         public DbSet<WorkoutEntity> Workouts { get; set; } = null!;
+        public DbSet<NotificationEntity> Notifications { get; set; } = null!;
         
         public DbSet<WorkoutFileRelationEntity> WorkoutFileRelations { get; set; } = null!;
         public DbSet<FollowRequestEntity> FollowRequests { get; set; } = null!;
@@ -43,11 +44,15 @@ namespace WorkoutApp.Data
             modelBuilder.ApplyConfiguration(new FollowRequestConfiguration());
             modelBuilder.ApplyConfiguration(new FollowConfiguration());
             modelBuilder.ApplyConfiguration(new UserRoleRelationConfiguration());
+            modelBuilder.ApplyConfiguration(new NotificationConfiguration());
 
             modelBuilder.Entity<UserEntity>()
                 .HasQueryFilter(_ => _.DeletedOn == null);
 
             modelBuilder.Entity<WorkoutEntity>()
+                .HasQueryFilter(_ => _.DeletedOn == null);
+            
+            modelBuilder.Entity<NotificationEntity>()
                 .HasQueryFilter(_ => _.DeletedOn == null);
         }
     }

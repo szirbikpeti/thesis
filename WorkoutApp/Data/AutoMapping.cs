@@ -20,6 +20,7 @@ namespace WorkoutApp.Data
             CreateMap<SetEntity, SetDto>();
             CreateMap<GetFileDto, FileEntity>();
             CreateMap<FileEntity, GetFileDto>();
+            CreateMap<NotificationEntity, GetNotificationDto>();
         }
     }
 }
