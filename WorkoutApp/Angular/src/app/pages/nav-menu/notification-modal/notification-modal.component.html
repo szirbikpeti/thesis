@@ -1,0 +1,25 @@
+<div class="content">
+  <h2 mat-dialog-title>{{'PAGE.PROFILE' | translate}}</h2>
+  <mat-dialog-content class="mat-typography">
+    <img class="profile-picture" [src]="getPicture(sentByUser.profilePicture.data)">
+    <h3>{{sentByUser.userName}}</h3>
+    <p>{{'USER_FORM.FULLNAME' | translate}}: {{sentByUser.fullName}}</p>
+    <p>{{'USER_FORM.EMAIL' | translate}}: {{sentByUser.email}}</p>
+    <p *ngIf="sentByUser.birthday !== null">{{'USER_FORM.BIRTHDAY' | translate}}: {{sentByUser.birthday | date:'yyyy.MM.dd.'}}</p>
+    <p>Last login: {{sentByUser.lastSignedInOn | date:'yyyy.MM.dd. HH:mm'}}</p>
+    <p style="margin-top: 4px;">{{sentByUser.about}}</p>
+
+    <h2 mat-dialog-title style="margin-top: 10px;">{{'NOTIFICATION.NOTIFICATION' | translate}}</h2>
+    <p>{{'NOTIFICATION.TRIGGERED_ON' | translate}}: {{notification.triggeredOn | date:'yyyy.MM.dd HH:mm'}}</p>
+    <p>{{'NOTIFICATION.TYPE' | translate}}: {{'NOTIFICATION.' + NotificationType[notification.type].toUpperCase() | translate}}</p>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <span *ngIf="notification.type === 0">
+    <button mat-button mat-dialog-close (click)="decline()">{{'NOTIFICATION.DECLINE' | translate}}</button>
+    <button mat-button [mat-dialog-close]="true" (click)="accept()" cdkFocusInitial>{{'NOTIFICATION.ACCEPT' | translate}}</button>
+    </span>
+    <span *ngIf="notification.type !== 0">
+    <button mat-button [mat-dialog-close]="true" (click)="markAsRead()" cdkFocusInitial>{{'NOTIFICATION.MARK_AS_READ' | translate}}</button>
+    </span>
+  </mat-dialog-actions>
+</div>

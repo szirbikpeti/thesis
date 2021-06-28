@@ -3,10 +3,12 @@
   public enum NotificationType
   {
     FollowRequest,
+    DeleteFollowRequest,
+    DeleteDeclinedFollowRequest,
     Follow,
     FollowBack,
-    AcceptFollow,
-    DeclineFollow,
+    AcceptFollowRequest,
+    DeclineFollowRequest,
     UnFollow
   }
 }

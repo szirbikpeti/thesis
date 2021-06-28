@@ -85,7 +85,7 @@ namespace WorkoutApp.Controllers
       });
 
       var createdUser = await _userManager
-        .FindByIdWithAdditionalDataAsync(mappedUser.Id, cancellationToken)
+        .FindByIdWithAdditionalDataAsync(mappedUser.Id, cancellationToken: cancellationToken)
         .ConfigureAwait(false);
       
       createdUser!.CreatedOn = DateTimeOffset.Now;
@@ -140,11 +140,6 @@ namespace WorkoutApp.Controllers
         .Where(_ => _.ClaimType == Claims.Type)
         .Select(_ => _.ClaimValue)
         .ToImmutableList();
-
-      userDto.SourceUserIds = user.SourceUsers.Select(_ => _.SourceId).ToImmutableList();
-      userDto.TargetUserIds = user.TargetUsers.Select(_ => _.TargetId).ToImmutableList();
-      userDto.FollowerUserIds = user.FollowerUsers.Select(_ => _.FollowerId).ToImmutableList();
-      userDto.FollowedUserIds = user.FollowedUsers.Select(_ => _.FollowedId).ToImmutableList();
 
       _logger.Log(LogLevel.Information, $"Signed in with name: {accessUser.UserName}");
       return Ok(userDto);

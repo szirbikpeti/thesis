@@ -17,20 +17,32 @@ namespace WorkoutApp.Extensions
 
     public static async Task<UserEntity?> FindByIdWithAdditionalDataAsync(
       this UserManager<UserEntity> userManager, 
-      int id, 
-      CancellationToken cancellationToken)
+      int id,
+      bool includesRoles = true,
+      bool includesFollowsData = true,
+      CancellationToken cancellationToken = default)
     {
-      return await userManager.Users
+      var fetchedUser = userManager.Users
         .AsSplitQuery()
-        .Include(_ => _.Roles)
-        .ThenInclude(_ => _.Role)
-        .ThenInclude(_ => _.Claims)
-        .Include(_ => _.SourceUsers)
-        .Include(_ => _.TargetUsers)
-        .Include(_ => _.FollowerUsers)
-        .Include(_ => _.FollowedUsers)
-        .FirstOrDefaultAsync(_ => 
-          (_.Id == id) && (_.DeletedOn == null), cancellationToken)
+        .Where(_ => _.Id == id && _.DeletedOn == null);
+
+      if (includesRoles) {
+        fetchedUser = fetchedUser
+          .Include(_ => _.Roles)
+          .ThenInclude(_ => _.Role)
+          .ThenInclude(_ => _.Claims);
+      }
+
+      if (includesFollowsData) {
+        fetchedUser = fetchedUser
+          .Include(_ => _.SourceUsers)
+          .Include(_ => _.TargetUsers)
+          .Include(_ => _.FollowerUsers)
+          .Include(_ => _.FollowedUsers);
+      }
+
+      return await fetchedUser
+        .FirstOrDefaultAsync(cancellationToken)
         .ConfigureAwait(false);
     }
     
@@ -46,10 +58,6 @@ namespace WorkoutApp.Extensions
         .Include(_ => _.Roles)
         .ThenInclude(_ => _.Role)
         .ThenInclude(_ => _.Claims)
-        .Include(_ => _.SourceUsers)
-        .Include(_ => _.TargetUsers)
-        .Include(_ => _.FollowerUsers)
-        .Include(_ => _.FollowedUsers)
         .FirstOrDefaultAsync(_ => 
           (_.NormalizedUserName == normalizedUserName) 
             && (_.DeletedOn == null), 
@@ -75,7 +83,7 @@ namespace WorkoutApp.Extensions
         .ToListAsync(cancellationToken)
         .ConfigureAwait(false);
     }
-    
+
     public static async Task<bool> IsUserExistsAsync(
       this UserManager<UserEntity> userManager, 
       string userName, 

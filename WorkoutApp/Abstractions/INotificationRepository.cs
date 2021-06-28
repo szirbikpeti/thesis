@@ -7,7 +7,13 @@ namespace WorkoutApp.Abstractions
 {
   public interface INotificationRepository
   {
+    Task DoBroadcastMessages();
+    
     Task DoAddAsync(NotificationEntity notification, CancellationToken cancellationToken);
+    
+    Task DoDeleteAsync(int id, CancellationToken cancellationToken);
+    
+    Task DoDeleteAsync(int sentByUserId, int receivedUserId, NotificationType type, CancellationToken cancellationToken);
     
     Task<ICollection<NotificationEntity>> DoGetAsync(int id, CancellationToken cancellationToken);
   }

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpService} from "./http.service";
 import {Observable} from "rxjs";
 import {NotificationModel} from "../models/NotificationModel";
@@ -17,4 +17,7 @@ export class NotificationService {
     return this._http.request(Resource.NOTIFICATION, Method.GET);
   }
 
+  delete(id: string): Observable<any> {
+    return this._http.request(Resource.NOTIFICATION, Method.DELETE, null, id);
+  }
 }

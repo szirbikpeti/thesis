@@ -12,10 +12,11 @@ import {getPicture, isNull} from '../../utility';
 import {DomSanitizer} from "@angular/platform-browser";
 import {UserService} from "../../services/user.service";
 import * as signalR from '@microsoft/signalr';
-import {sign} from "crypto";
 import {NotificationService} from "../../services/notification.service";
 import {NotificationModel} from "../../models/NotificationModel";
 import {NotificationType} from "../../enums/notification";
+import {MatDialog} from "@angular/material/dialog";
+import {NotificationModalComponent} from "./notification-modal/notification-modal.component";
 
 @Component({
   selector: 'app-nav-menu',
@@ -42,7 +43,7 @@ export class NavMenuComponent {
 
   constructor(private breakpointObserver: BreakpointObserver, public _auth: AuthService, private _notification: NotificationService,
               private _user: UserService, private _translate: TranslateService, @Inject('BASE_URL') baseUrl: string,
-              private _state: StateService, public router: Router, public sanitizer: DomSanitizer) {
+              private _state: StateService, private dialog: MatDialog, public router: Router, public sanitizer: DomSanitizer) {
     _state.user.subscribe(storedUser => this.currentUser = storedUser);
     this.isHandset$.subscribe((next) => this.isHandset = next);
     this.getNotifications();
@@ -62,13 +63,11 @@ export class NavMenuComponent {
   private getNotifications(): void {
     this._notification.get().subscribe(notis => {
       this.notifications = notis
-        .filter(_ => !NotificationType[_.type].toLowerCase().includes('follow'));
+        .filter(_ => !this.getNotificationType(_.type).toLowerCase().includes('follow'));
 
       this.followNotifications = notis
-        .filter(_ => NotificationType[_.type].toLowerCase().includes('follow'));
-
-      console.log(this.notifications);
-      console.log(this.followNotifications);
+        .filter(_ => this.getNotificationType(_.type).toLowerCase().includes('follow')
+          && isNull(_.deletedOn));
     });
   }
 
@@ -93,7 +92,7 @@ export class NavMenuComponent {
     this.router.navigate(['/']);
   }
 
-  toggleSideNav() {
+  toggleSideNav(): void {
     this.sideNav.toggle();
   }
 
@@ -102,16 +101,48 @@ export class NavMenuComponent {
     this.router.navigate(['/profile']);
   }
 
-  acceptRequest(id: string) {
+  acceptRequest(id: string): void {
     this._user.acceptFollowRequest(id)
-      .subscribe(currentUser => this._state.user = currentUser);
+      .subscribe(null);
+  }
+
+  declineRequest(id: string): void {
+    this._user.declineFollowRequest(id)
+      .subscribe(null);
+  }
+
+  markAsReadNotification(id: string): void {
+    this._notification.delete(id)
+      .subscribe(null);
   }
 
   isSideNavOpened(): boolean {
-    return this.sideNav?.opened ?? true;
+    return this.sideNav?.opened ?? window.innerWidth > 960;
   }
 
   getFollowNotificationCount(): number {
     return this.followNotifications?.length ?? 0;
+  }
+
+  openProfileModal(notification: NotificationModel) {
+    this.dialog.open(NotificationModalComponent, {
+      width: '350px',
+      data: {
+        notification: notification,
+        acceptCallback: () => {
+          this.acceptRequest(notification.sentByUser.id);
+        },
+        declineCallback: () => {
+          this.declineRequest(notification.sentByUser.id);
+        },
+        markAsReadCallback: () => {
+          this.markAsReadNotification(notification.id);
+        }
+      }
+    });
+  }
+
+  getNotificationType(type: NotificationType): string {
+    return NotificationType[type];
   }
 }

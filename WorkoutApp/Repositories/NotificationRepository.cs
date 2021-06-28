@@ -24,19 +24,9 @@ namespace WorkoutApp.Repositories
       _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
       _hubContext = hubContext ?? throw new ArgumentNullException(nameof(hubContext));
     }
-    
-    public async Task DoAddAsync(NotificationEntity notification, CancellationToken cancellationToken)
-    {
-      await _dbContext.Notifications
-        .AddAsync(notification, cancellationToken)
-        .ConfigureAwait(false);
 
-      await _dbContext
-        .SaveChangesAsync(cancellationToken)
-        .ConfigureAwait(false);
-
+    public async Task DoBroadcastMessages() => 
       await _hubContext.Clients.All.BroadcastMessage();
-    }
     
     public async Task<ICollection<NotificationEntity>> DoGetAsync(int id, CancellationToken cancellationToken)
     {
@@ -46,6 +36,47 @@ namespace WorkoutApp.Repositories
         .Include(_ => _.ReceivedUser)
         .OrderByDescending(_ => _.TriggeredOn)
         .ToListAsync(cancellationToken)
+        .ConfigureAwait(false);
+    }
+
+    public async Task DoAddAsync(NotificationEntity notification, CancellationToken cancellationToken)
+    {
+      await _dbContext.Notifications
+        .AddAsync(notification, cancellationToken)
+        .ConfigureAwait(false);
+
+      await _dbContext
+        .SaveChangesAsync(cancellationToken)
+        .ConfigureAwait(false);
+    }
+
+    public async Task DoDeleteAsync(int id, CancellationToken cancellationToken)
+    {
+      var notification = await _dbContext.Notifications
+        .Where(_ => _.Id == id)
+        .FirstOrDefaultAsync(cancellationToken)
+        .ConfigureAwait(false);
+      
+      notification!.DeletedOn = DateTimeOffset.Now;
+      
+      await _dbContext
+        .SaveChangesAsync(cancellationToken)
+        .ConfigureAwait(false);
+    }
+
+    public async Task DoDeleteAsync(int sentByUserId, int receivedUserId, NotificationType type, CancellationToken cancellationToken)
+    {
+      var notification = await _dbContext.Notifications
+        .Where(_ => _.SentByUserId == sentByUserId
+                    && _.ReceivedUserId == receivedUserId
+                    && _.Type == type)
+        .FirstOrDefaultAsync(cancellationToken)
+        .ConfigureAwait(false);
+      
+      notification!.DeletedOn = DateTimeOffset.Now;
+      
+      await _dbContext
+        .SaveChangesAsync(cancellationToken)
         .ConfigureAwait(false);
     }
   }

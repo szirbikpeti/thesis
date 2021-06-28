@@ -45,7 +45,7 @@ export class ProfileComponent implements OnInit {
       userName: [{value: this.currentUser.userName, disabled: true}, Validators.required],
       email: [this.currentUser.email, Validators.required],
       about: [this.currentUser.about],
-      birthday: [this.currentUser.birthDay],
+      birthday: [this.currentUser.birthday],
       profilePictureId: [this.currentUser.profilePicture.id],
       passwordChange: this.fb.group({
         oldPassword: [''],
@@ -76,6 +76,8 @@ export class ProfileComponent implements OnInit {
       this._toast.success(
         this._translate.instant('USER_FORM.SUCCESSFUL_UPDATE'),
         this._translate.instant( 'GENERAL.INFO'));
+
+      this.router.navigate(['/dashboard']);
     }, err => {
       this._toast.error(
         this._translate.instant('USER_FORM.UNSUCCESSFUL_UPDATE'),

@@ -43,7 +43,8 @@ namespace WorkoutApp.Repositories
         .SaveChangesAsync(cancellationToken)
         .ConfigureAwait(false);
 
-      var newlyFetchedUser = await _userManager.FindByIdWithAdditionalDataAsync(currentUser.Id, cancellationToken)
+      var newlyFetchedUser = await _userManager.FindByIdWithAdditionalDataAsync(
+          currentUser.Id, includesFollowsData: false, cancellationToken: cancellationToken)
         .ConfigureAwait(false);
 
       return newlyFetchedUser;
@@ -122,10 +123,10 @@ namespace WorkoutApp.Repositories
         .ConfigureAwait(false);
     }
 
-    public async Task DoDeleteFollowRequestAsync(int currentUserId, int targetId, CancellationToken cancellationToken)
+    public async Task DoDeleteFollowRequestAsync(int sourceId, int targetId, CancellationToken cancellationToken)
     {
       var removedEntity = await _dbContext.FollowRequests
-        .Where(_ => _.SourceId == currentUserId 
+        .Where(_ => _.SourceId == sourceId 
                     && _.TargetId == targetId)
         .FirstOrDefaultAsync(cancellationToken)
         .ConfigureAwait(false);

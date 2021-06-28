@@ -5,6 +5,7 @@ import {UserModel} from "../../models/UserModel";
 import {StateService} from "../../services/state.service";
 import {getPicture} from "../../utility";
 import {DomSanitizer} from "@angular/platform-browser";
+import {FollowRequestAndFollowModel} from "../../models/FollowRequestAndFollowModel";
 
 @Component({
   selector: 'app-friend-search',
@@ -17,16 +18,17 @@ export class FriendSearchComponent implements OnInit {
 
   users: UserModel[];
 
-  currentUser: UserModel;
+  currentFollowRequestsAndFollows: FollowRequestAndFollowModel;
 
   getPicture = getPicture;
 
   constructor(private fb: FormBuilder, private _user: UserService, private _state: StateService,
               public sanitizer: DomSanitizer) {
-    _state.user.subscribe(storedUser => this.currentUser = storedUser);
-
     this._user.search('bok')
       .subscribe(foundedUsers => {this.users = foundedUsers; console.log(this.users);}); // TODO - delete
+
+    this._user.getFollowRequestsAndFollows()
+      .subscribe(frf => {this.currentFollowRequestsAndFollows = frf; console.log(frf)});
   }
 
   ngOnInit(): void {
@@ -42,16 +44,59 @@ export class FriendSearchComponent implements OnInit {
 
   follow(id: string) {
     this._user.followRequest(id)
-      .subscribe(currentUser => this._state.user = currentUser);
+      .subscribe(frf => this.currentFollowRequestsAndFollows = frf);
   }
 
-  undo(id: string) {
-    this._user.deleteFollowRequest(id)
-      .subscribe(currentUser => this._state.user = currentUser);
+  deleteFollowRequest(id: string, isDeletedByTargetUser = false) {
+    this._user.deleteFollowRequest(id, isDeletedByTargetUser)
+      .subscribe(frf => this.currentFollowRequestsAndFollows = frf);
   }
 
-  isRequestedUser(id: string): boolean {
-    return this.currentUser.targetUserIds.includes(id);
+  acceptFollowRequest(id: string) {
+    this._user.acceptFollowRequest(id)
+      .subscribe(frf => this.currentFollowRequestsAndFollows = frf);
+  }
+
+  followBack(id: string) {
+    this._user.followBack(id)
+      .subscribe(frf => this.currentFollowRequestsAndFollows = frf);
+  }
+
+  unfollow(id: string) {
+    this._user.unfollow(id)
+      .subscribe(frf => this.currentFollowRequestsAndFollows = frf);
+  }
+
+  isSourceUser(id: string): boolean {
+    return this.currentFollowRequestsAndFollows.sourceUsers
+      .map(({id}) => id)
+      .includes(id);
+  }
+
+  isTargetUser(id: string): boolean {
+    return this.currentFollowRequestsAndFollows.targetUsers
+      .map(({id}) => id)
+      .includes(id);
+  }
+
+  isFollowerUser(id: string): boolean {
+    return this.currentFollowRequestsAndFollows.followerUserIds.includes(id);
+  }
+
+  isFollowedUser(id: string): boolean {
+    return this.currentFollowRequestsAndFollows.followedUserIds.includes(id);
+  }
+
+  isBlockedBySourceUser(id: string): boolean {
+    return this.currentFollowRequestsAndFollows.sourceUsers
+      .find(_ => _.id == id)
+      ?.isBlocked ?? false;
+  }
+
+  isBlockedByTargetUser(id: string): boolean {
+    return this.currentFollowRequestsAndFollows.targetUsers
+      .find(_ => _.id == id)
+      ?.isBlocked ?? false;
   }
 
   get name(): string {

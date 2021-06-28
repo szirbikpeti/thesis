@@ -74,6 +74,23 @@
     "SEARCH": "Search",
     "FOLLOW": "Follow",
     "UNDO_FOLLOW": "Undo",
-    "UNFOLLOW": "Unfollow"
+    "UNFOLLOW": "Unfollow",
+    "FOLLOW_BACK": "Follow back"
+  },
+  "NOTIFICATION": {
+    "NOTIFICATION": "Notification",
+    "TRIGGERED_ON": "Triggered on",
+    "TYPE": "Type",
+    "FOLLOW_REQUEST": "Follow request",
+    "DELETE_FOLLOW_REQUEST": "Deleted follow request",
+    "DELETE_DECLINED_FOLLOW_REQUEST": "Unblock",
+    "FOLLOW": "Follow",
+    "FOLLOW_BACK": "Follow back",
+    "ACCEPT_FOLLOW_REQUEST": "Accepted request",
+    "DECLINE_FOLLOW_REQUEST": "Declined request",
+    "UNFOLLOW": "Unfollow",
+    "ACCEPT": "Accept",
+    "DECLINE": "Decline",
+    "MARK_AS_READ": "Mark as read"
   }
 }

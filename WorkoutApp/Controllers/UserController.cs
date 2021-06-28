@@ -62,6 +62,21 @@ namespace WorkoutApp.Controllers
       return Ok(userDtoList);
     }
 
+    [HttpGet("followRequestsAndFollows")]
+    public async Task<ActionResult<GetFollowRequestsAndFollowsDto>> GetFollowRequestsAndFollowsAsync(
+      CancellationToken cancellationToken)
+    {
+      var currentUserId = _userManager.GetUserIdAsInt(HttpContext.User);
+      
+      var currentUser = await _userManager
+        .FindByIdWithAdditionalDataAsync(currentUserId, includesRoles: false, cancellationToken:  cancellationToken)
+        .ConfigureAwait(false);
+
+      var dto = CreateFollowRequestsAndFollowsDto(currentUser!);
+      
+      return Ok(dto);
+    }
+
     [HttpPut]
     public async Task<ActionResult<GetUserDto>> UpdateAsync(
       [FromBody] [Required] UpdateUserDto updateUserDto,
@@ -98,7 +113,7 @@ namespace WorkoutApp.Controllers
     }
 
     [HttpPost("request/{id}")]
-    public async Task<ActionResult<GetUserDto>> AddFollowRequestAsync(
+    public async Task<ActionResult<GetFollowRequestsAndFollowsDto>> AddFollowRequestAsync(
       [FromRoute] [Required] int id,
       CancellationToken cancellationToken)
     {
@@ -116,68 +131,107 @@ namespace WorkoutApp.Controllers
       
       await _notification.DoAddAsync(notification, cancellationToken)
         .ConfigureAwait(false);
-
-      var newlyFetchedCurrentUser = await _userManager
-        .FindByIdWithAdditionalDataAsync(currentUserId, cancellationToken)
+      
+      await _notification.DoBroadcastMessages()
         .ConfigureAwait(false);
       
-      newlyFetchedCurrentUser!.ProfilePicture = await _file
-        .DoGetAsync(newlyFetchedCurrentUser.ProfilePictureId, cancellationToken)
+      var newlyFetchedCurrentUser = await _userManager
+        .FindByIdWithAdditionalDataAsync(currentUserId, includesRoles: false, cancellationToken:  cancellationToken)
         .ConfigureAwait(false);
+      
+      var dto = CreateFollowRequestsAndFollowsDto(newlyFetchedCurrentUser!);
 
-      var userDto = CreateUserDto(newlyFetchedCurrentUser!);
-
-      return Ok(userDto);
+      return Ok(dto);
     }
 
     [HttpDelete("request/{id}")]
-    public async Task<ActionResult<GetUserDto>> DeleteFollowRequestAsync(
+    public async Task<ActionResult<GetFollowRequestsAndFollowsDto>> DeleteFollowRequestAsync(
       [FromRoute] [Required] int id,
+      [FromBody] [Required] bool isDeletedByTargetUser,
       CancellationToken cancellationToken)
     {
       var currentUserId = _userManager.GetUserIdAsInt(HttpContext.User);
+      
+      var sourceId = currentUserId;
+      var targetId = id;
 
-      await _user.DoDeleteFollowRequestAsync(currentUserId, id, cancellationToken)
+      if (isDeletedByTargetUser) {
+        sourceId = id;
+        targetId = currentUserId;
+      }
+
+      await _user.DoDeleteFollowRequestAsync(sourceId, targetId, cancellationToken)
+        .ConfigureAwait(false);
+      
+      await _notification.DoDeleteAsync(
+          sourceId, targetId, 
+          isDeletedByTargetUser 
+            ? NotificationType.FollowRequest 
+            : NotificationType.DeclineFollowRequest, cancellationToken)
+        .ConfigureAwait(false);
+      
+      var notification = new NotificationEntity {
+        Type = isDeletedByTargetUser 
+          ? NotificationType.DeleteFollowRequest 
+          : NotificationType.DeleteDeclinedFollowRequest,
+        SentByUserId = sourceId,
+        ReceivedUserId = targetId,
+        TriggeredOn = DateTimeOffset.Now
+      };
+      
+      await _notification.DoAddAsync(notification, cancellationToken)
+        .ConfigureAwait(false);
+      
+      await _notification.DoBroadcastMessages()
         .ConfigureAwait(false);
 
       var newlyFetchedCurrentUser = await _userManager
-        .FindByIdWithAdditionalDataAsync(currentUserId, cancellationToken)
+        .FindByIdWithAdditionalDataAsync(currentUserId, includesRoles: false, cancellationToken:  cancellationToken)
         .ConfigureAwait(false);
       
-      newlyFetchedCurrentUser!.ProfilePicture = await _file
-        .DoGetAsync(newlyFetchedCurrentUser.ProfilePictureId, cancellationToken)
-        .ConfigureAwait(false);
+      var dto = CreateFollowRequestsAndFollowsDto(newlyFetchedCurrentUser!);
 
-      var userDto = CreateUserDto(newlyFetchedCurrentUser!);
-
-      return Ok(userDto);
+      return Ok(dto);
     }
 
     [HttpPatch("request/{id}")]
-    public async Task<ActionResult<GetUserDto>> DeclineFollowRequest(
-      [FromRoute] [Required] int id, 
+    public async Task<ActionResult<GetFollowRequestsAndFollowsDto>> DeclineFollowRequest(
+      [FromRoute] [Required] int id,
       CancellationToken cancellationToken)
     {
       var currentUserId = _userManager.GetUserIdAsInt(HttpContext.User);
 
       await _user.DoDeclineFollowRequest(currentUserId, id, cancellationToken)
         .ConfigureAwait(false);
+
+      await _notification.DoDeleteAsync(
+          id, currentUserId, NotificationType.FollowRequest, cancellationToken)
+        .ConfigureAwait(false);
+
+      var notification = new NotificationEntity {
+        Type = NotificationType.DeclineFollowRequest,
+        SentByUserId = currentUserId,
+        ReceivedUserId = id,
+        TriggeredOn = DateTimeOffset.Now
+      };
+      
+      await _notification.DoAddAsync(notification, cancellationToken)
+        .ConfigureAwait(false);
+
+      await _notification.DoBroadcastMessages()
+        .ConfigureAwait(false);
       
       var newlyFetchedCurrentUser = await _userManager
-        .FindByIdWithAdditionalDataAsync(currentUserId, cancellationToken)
+        .FindByIdWithAdditionalDataAsync(currentUserId, includesRoles: false, cancellationToken:  cancellationToken)
         .ConfigureAwait(false);
       
-      newlyFetchedCurrentUser!.ProfilePicture = await _file
-        .DoGetAsync(newlyFetchedCurrentUser.ProfilePictureId, cancellationToken)
-        .ConfigureAwait(false);
+      var dto = CreateFollowRequestsAndFollowsDto(newlyFetchedCurrentUser!);
 
-      var userDto = CreateUserDto(newlyFetchedCurrentUser!);
-
-      return Ok(userDto);
+      return Ok(dto);
     }
 
     [HttpPatch("follow/{id}")]
-    public async Task<ActionResult<GetUserDto>> AcceptFollowRequestAsync(
+    public async Task<ActionResult<GetFollowRequestsAndFollowsDto>> AcceptFollowRequestAsync(
       [FromRoute] [Required] int id, 
       CancellationToken cancellationToken)
     {
@@ -185,22 +239,35 @@ namespace WorkoutApp.Controllers
 
       await _user.DoAcceptFollowRequestAsync(currentUserId, id, cancellationToken)
         .ConfigureAwait(false);
+
+      await _notification.DoDeleteAsync(
+id, currentUserId, NotificationType.FollowRequest, cancellationToken)
+        .ConfigureAwait(false);
+      
+      var notification = new NotificationEntity {
+        Type = NotificationType.AcceptFollowRequest,
+        SentByUserId = currentUserId,
+        ReceivedUserId = id,
+        TriggeredOn = DateTimeOffset.Now
+      };
+      
+      await _notification.DoAddAsync(notification, cancellationToken)
+        .ConfigureAwait(false);
+      
+      await _notification.DoBroadcastMessages()
+        .ConfigureAwait(false);
       
       var newlyFetchedCurrentUser = await _userManager
-        .FindByIdWithAdditionalDataAsync(currentUserId, cancellationToken)
+        .FindByIdWithAdditionalDataAsync(currentUserId, includesRoles: false, cancellationToken:  cancellationToken)
         .ConfigureAwait(false);
       
-      newlyFetchedCurrentUser!.ProfilePicture = await _file
-        .DoGetAsync(newlyFetchedCurrentUser.ProfilePictureId, cancellationToken)
-        .ConfigureAwait(false);
+      var dto = CreateFollowRequestsAndFollowsDto(newlyFetchedCurrentUser!);
 
-      var userDto = CreateUserDto(newlyFetchedCurrentUser!);
-
-      return Ok(userDto);
+      return Ok(dto);
     }
 
     [HttpPost("follow/{id}")]
-    public async Task<ActionResult<GetUserDto>> FollowBackAsync(
+    public async Task<ActionResult<GetFollowRequestsAndFollowsDto>> FollowBackAsync(
       [FromRoute] [Required] int id, 
       CancellationToken cancellationToken)
     {
@@ -209,21 +276,30 @@ namespace WorkoutApp.Controllers
       await _user.DoFollowBackAsync(currentUserId, id, cancellationToken)
         .ConfigureAwait(false);
       
-      var newlyFetchedCurrentUser = await _userManager
-        .FindByIdWithAdditionalDataAsync(currentUserId, cancellationToken)
+      var notification = new NotificationEntity {
+        Type = NotificationType.FollowBack,
+        SentByUserId = currentUserId,
+        ReceivedUserId = id,
+        TriggeredOn = DateTimeOffset.Now
+      };
+      
+      await _notification.DoAddAsync(notification, cancellationToken)
         .ConfigureAwait(false);
       
-      newlyFetchedCurrentUser!.ProfilePicture = await _file
-        .DoGetAsync(newlyFetchedCurrentUser.ProfilePictureId, cancellationToken)
+      await _notification.DoBroadcastMessages()
         .ConfigureAwait(false);
+      
+      var newlyFetchedCurrentUser = await _userManager
+        .FindByIdWithAdditionalDataAsync(currentUserId, includesRoles: false, cancellationToken:  cancellationToken)
+        .ConfigureAwait(false);
+      
+      var dto = CreateFollowRequestsAndFollowsDto(newlyFetchedCurrentUser!);
 
-      var userDto = CreateUserDto(newlyFetchedCurrentUser!);
-
-      return Ok(userDto);
+      return Ok(dto);
     }
 
     [HttpDelete("follow/{id}")]
-    public async Task<ActionResult<GetUserDto>> UnFollowAsync(
+    public async Task<ActionResult<GetFollowRequestsAndFollowsDto>> UnFollowAsync(
       [FromRoute] [Required] int id,
       CancellationToken cancellationToken)
     {
@@ -233,16 +309,12 @@ namespace WorkoutApp.Controllers
         .ConfigureAwait(false);
 
       var newlyFetchedCurrentUser = await _userManager
-        .FindByIdWithAdditionalDataAsync(currentUserId, cancellationToken)
+        .FindByIdWithAdditionalDataAsync(currentUserId, includesRoles: false, cancellationToken:  cancellationToken)
         .ConfigureAwait(false);
       
-      newlyFetchedCurrentUser!.ProfilePicture = await _file
-        .DoGetAsync(newlyFetchedCurrentUser.ProfilePictureId, cancellationToken)
-        .ConfigureAwait(false);
+      var dto = CreateFollowRequestsAndFollowsDto(newlyFetchedCurrentUser!);
 
-      var userDto = CreateUserDto(newlyFetchedCurrentUser!);
-
-      return Ok(userDto);
+      return Ok(dto);
     }
 
     [HttpDelete]
@@ -277,12 +349,25 @@ namespace WorkoutApp.Controllers
         .Select(_ => _.ClaimValue)
         .ToImmutableList();
 
-      userDto.SourceUserIds = user.SourceUsers.Select(_ => _.SourceId).ToImmutableList();
-      userDto.TargetUserIds = user.TargetUsers.Select(_ => _.TargetId).ToImmutableList();
-      userDto.FollowerUserIds = user.FollowerUsers.Select(_ => _.FollowerId).ToImmutableList();
-      userDto.FollowedUserIds = user.FollowedUsers.Select(_ => _.FollowedId).ToImmutableList();
-
       return userDto;
+    }
+
+    private static GetFollowRequestsAndFollowsDto CreateFollowRequestsAndFollowsDto(UserEntity user)
+    {
+      if (user is null) {
+        throw new ArgumentNullException(nameof(user));
+      }
+      
+      return new GetFollowRequestsAndFollowsDto {
+        SourceUsers = user.SourceUsers
+          .Select(_ => new GetFollowRequestDto {Id = _.SourceId, IsBlocked = _.IsBlocked})
+          .ToImmutableList(),
+        TargetUsers = user.TargetUsers
+          .Select(_ => new GetFollowRequestDto {Id = _.TargetId, IsBlocked = _.IsBlocked})
+          .ToImmutableList(),
+        FollowerUserIds = user.FollowerUsers.Select(_ => _.FollowerId).ToImmutableList(),
+        FollowedUserIds = user.FollowedUsers.Select(_ => _.FollowedId).ToImmutableList()
+      };
     }
   }
 }

@@ -23,11 +23,13 @@ import {WorkoutCardInfoComponent} from "./pages/dashboard/workout-card-info/work
 import {NgPipesModule} from "ngx-pipes";
 import {DatePipe} from "@angular/common";
 import {FriendSearchComponent} from "./pages/friend-search/friend-search.component";
+import {NotificationModalComponent} from "./pages/nav-menu/notification-modal/notification-modal.component";
 
 @NgModule({
   declarations: [
     AppComponent,
     NavMenuComponent,
+    NotificationModalComponent,
     HomeComponent,
     SignUpComponent,
     DashboardComponent,

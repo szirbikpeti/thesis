@@ -7,8 +7,6 @@ namespace WorkoutApp.Abstractions
 {
   public interface IUserRepository
   {
-    Task<UserEntity?> GetByIdAsync(int id, CancellationToken cancellationToken = default);
-    
     Task<UserEntity?> DoUpdateAsync(UserEntity currentUser,  UpdateUserDto updateUserDto, CancellationToken cancellationToken);
 
     Task DoAddFollowRequestAsync(int currentUserId, int requestedUserId, CancellationToken cancellationToken);
@@ -19,7 +17,7 @@ namespace WorkoutApp.Abstractions
     
     Task DoDeclineFollowRequest(int currentUserId, int followerId, CancellationToken cancellationToken);
     
-    Task DoDeleteFollowRequestAsync(int currentUserId, int targetId, CancellationToken cancellationToken);
+    Task DoDeleteFollowRequestAsync(int sourceId, int targetId, CancellationToken cancellationToken);
     
     Task DoUnFollowAsync(int currentUserId, int followedId, CancellationToken cancellationToken);
     

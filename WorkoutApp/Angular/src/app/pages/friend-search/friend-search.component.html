@@ -13,8 +13,13 @@
         {{user.userName}}
         {{user.fullName}}
       <div style="float: right;">
-        <button *ngIf="!isRequestedUser(user.id)" mat-raised-button (click)="follow(user.id)">{{'FRIEND.FOLLOW' | translate}}</button>
-        <button *ngIf="isRequestedUser(user.id)" mat-raised-button (click)="undo(user.id)">{{'FRIEND.UNDO_FOLLOW' | translate}}</button>
+        <button *ngIf="!isSourceUser(user.id) && !isTargetUser(user.id) && !isFollowedUser(user.id) && !isFollowerUser(user.id)" mat-raised-button (click)="follow(user.id)">{{'FRIEND.FOLLOW' | translate}}</button>
+        <button *ngIf="isSourceUser(user.id) && !isBlockedBySourceUser(user.id)" mat-raised-button (click)="acceptFollowRequest(user.id)">Elogad</button>
+        <button *ngIf="isSourceUser(user.id) && isBlockedBySourceUser(user.id)" mat-raised-button (click)="deleteFollowRequest(user.id, true)">Kérelem visszautasításának visszavonása</button>
+        <button *ngIf="isTargetUser(user.id) && isBlockedByTargetUser(user.id)" mat-raised-button disabled>Kérelem elutasítva</button>
+        <button *ngIf="isTargetUser(user.id) && !isBlockedByTargetUser(user.id)" mat-raised-button (click)="deleteFollowRequest(user.id)">{{'FRIEND.UNDO_FOLLOW' | translate}}</button>
+        <button *ngIf="isFollowedUser(user.id)" mat-raised-button (click)="unfollow(user.id)">{{'FRIEND.UNFOLLOW' | translate}}</button>
+        <button *ngIf="isFollowerUser(user.id) && !isFollowedUser(user.id)" mat-raised-button (click)="followBack(user.id)">{{'FRIEND.FOLLOW_BACK' | translate}}</button>
       </div>
     </mat-card>
   </div>

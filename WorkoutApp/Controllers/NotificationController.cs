@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -35,7 +36,6 @@ namespace WorkoutApp.Controllers
       _notification = notification ?? throw new ArgumentNullException(nameof(notification));
       _file = file ?? throw new ArgumentNullException(nameof(file));
     }
-
     
     [HttpGet]
     public async Task<ActionResult<ICollection<GetNotificationDto>>> GetAsync(CancellationToken cancellationToken)
@@ -55,6 +55,20 @@ namespace WorkoutApp.Controllers
       var notificationDto = notifications.Select(_ => _mapper.Map<GetNotificationDto>(_));
 
       return Ok(notificationDto);
+    }
+    
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteAsync(
+      [FromRoute] [Required] int id,
+      CancellationToken cancellationToken)
+    {
+      await _notification.DoDeleteAsync(id, cancellationToken)
+        .ConfigureAwait(false);
+
+      await _notification.DoBroadcastMessages()
+        .ConfigureAwait(false);
+      
+      return Ok();
     }
   }
 }

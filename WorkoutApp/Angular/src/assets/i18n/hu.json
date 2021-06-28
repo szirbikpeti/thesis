@@ -28,7 +28,7 @@
     "FRIEND_SEARCH": "Barát keresés"
   },
   "PAGE": {
-    "PROFILE": "Adataim"
+    "PROFILE": "Profil adatok"
   },
   "USER_FORM": {
     "LOGIN": "Bejelentkezés",
@@ -73,7 +73,24 @@
   "FRIEND": {
     "SEARCH": "Keresés",
     "FOLLOW": "Követés",
-    "UNDO_FOLLOW": "Visszavon",
-    "UNFOLLOW": "Követés visszavonása"
+    "UNDO_FOLLOW": "Kérelem visszavonása",
+    "UNFOLLOW": "Kikövetés",
+    "FOLLOW_BACK": "Visszakövetés"
+  },
+  "NOTIFICATION": {
+    "NOTIFICATION": "Értesítés",
+    "TRIGGERED_ON": "Kézbesítve",
+    "TYPE": "Típus",
+    "FOLLOW_REQUEST": "Követési kérelem",
+    "DELETE_FOLLOW_REQUEST": "Törölt követési kérelem",
+    "DELETE_DECLINED_FOLLOW_REQUEST": "Blokkolás feloldása",
+    "FOLLOW": "Követés",
+    "FOLLOW_BACK": "Visszakövetés",
+    "ACCEPT_FOLLOW_REQUEST": "Elfogadott kérelem",
+    "DECLINE_FOLLOW_REQUEST": "Elutasított kérelem",
+    "UNFOLLOW": "Kikövetés",
+    "ACCEPT": "Elfogad",
+    "DECLINE": "Elutasít",
+    "MARK_AS_READ": "Olvasottként jelöl"
   }
 }

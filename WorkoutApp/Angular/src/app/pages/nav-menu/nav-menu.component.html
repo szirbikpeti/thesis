@@ -114,17 +114,41 @@
               [ngClass]="getFollowNotificationCount() > 0
                 ? 'people-img-with-request'
                 : 'people-img-without-request'">
-        <div *ngIf="getFollowNotificationCount() > 0" class="red-circle" [matMenuTriggerFor]="friendRequestMenu">
+        <div *ngIf="getFollowNotificationCount() > 0"
+             class="red-circle" [matMenuTriggerFor]="friendRequestMenu">
           {{this.followNotifications.length}}
         </div>
         <mat-menu #friendRequestMenu="matMenu">
-          <div style="height: 30px; width: 200px;" *ngFor="let followNotification of this.followNotifications">
-            <div style="float: left;">
-              <img style="height: 50px; width: 50px;" alt="No image" [src]="getPicture(followNotification.sentByUser.profilePicture.data)">
-              {{followNotification.sentByUser.userName}} <br>
-              {{followNotification.triggeredOn | date:'yyyy.MM.dd. HH:mm'}}
+          <div class="mat-menu-header text-center">
+            Követések
+          </div>
+          <div class="follow-noti-grid-container menu-item clickable"
+               *ngFor="let followNotification of this.followNotifications"
+               (click)="$event.stopPropagation(); openProfileModal(followNotification)">
+            <div class="item1">
+              <img style="height: 60px; width: 60px;" alt="No image" [src]="getPicture(followNotification.sentByUser.profilePicture.data)">
             </div>
-            <button mat-button (click)="acceptRequest(followNotification.sentByUser.id)">Elfogad</button>
+            <div class="item2" style="margin-bottom: 15px; font-size: 15px">{{followNotification.sentByUser.userName}}</div>
+            <div class="item3" style="text-align: center;">{{'NOTIFICATION.' + getNotificationType(followNotification.type).toUpperCase() | translate}}</div>
+            <div class="item4" style="font-size: 15px;">{{followNotification.sentByUser.fullName}}</div>
+            <div class="item5" style="margin-top: -8px; text-align: center;">
+              <span *ngIf="followNotification.type === 0">
+              <button mat-icon-button matTooltip="{{'NOTIFICATION.DECLINE' | translate}}"
+                      (click)="$event.stopPropagation(); declineRequest(followNotification.sentByUser.id)">
+                <mat-icon>close</mat-icon>
+              </button>
+              <button mat-icon-button matTooltip="{{'NOTIFICATION.ACCEPT' | translate}}"
+                      (click)="$event.stopPropagation(); acceptRequest(followNotification.sentByUser.id)">
+                <mat-icon>done</mat-icon>
+              </button>
+              </span>
+              <span *ngIf="followNotification.type !== 0">
+              <button mat-icon-button matTooltip="{{'NOTIFICATION.MARK_AS_READ' | translate}}"
+                      (click)="$event.stopPropagation(); markAsReadNotification(followNotification.id)">
+                <mat-icon>mark_as_unread</mat-icon>
+              </button>
+              </span>
+            </div>
           </div>
         </mat-menu>
       </div>
