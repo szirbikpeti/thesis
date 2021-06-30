@@ -13,6 +13,8 @@ import {WorkoutRequest} from "../../requests/WorkoutRequest";
 import {getPicture, isNull} from "../../utility";
 import {WorkoutModel} from "../../models/WorkoutModel";
 import {DomSanitizer} from "@angular/platform-browser";
+import {ConfirmationDialogComponent} from "../confirmation-dialog/confirmation-dialog.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-edit-workout',
@@ -34,7 +36,7 @@ export class EditWorkoutComponent {
 
   constructor(private fb: FormBuilder, private _workout: WorkoutService,
               private _file: FileService, private _translate: TranslateService, public sanitizer: DomSanitizer,
-              private _toast: ToastrService, private router: Router, private route: ActivatedRoute) {
+              private _toast: ToastrService, private router: Router, private route: ActivatedRoute, private dialog: MatDialog) {
     this.route.params.subscribe(event =>
       this._workout.get(event.id)
         .subscribe(fetchedWorkout => {
@@ -66,8 +68,6 @@ export class EditWorkoutComponent {
         new FileTableModel(i++, null, file.data, file.id, file.name, file.format));
     }
 
-    const asd = this.workout ?? '';
-
     this.dataSource = new MatTableDataSource<FileTableModel>(this.selectedFiles);
   }
 
@@ -87,6 +87,25 @@ export class EditWorkoutComponent {
     });
   }
 
+  private submitWorkoutForm(fileIds: string[]): void {
+    const workoutRequest: WorkoutRequest = this.workoutForm.getRawValue();
+
+    fileIds = fileIds.concat(this.workout.files.map(({id}) => id));
+    workoutRequest.fileIds = fileIds;
+
+    this._workout.update(this.workout.id, workoutRequest).subscribe(() => {
+      this._toast.success(
+        this._translate.instant('WORKOUT_FORM.SUCCESSFUL_MODIFICATION'),
+        this._translate.instant( 'GENERAL.INFO'));
+
+      this.router.navigate(['/dashboard']);
+    }, () => {
+      this._toast.error(
+        this._translate.instant('WORKOUT_FORM.UNSUCCESSFUL_MODIFICATION'),
+        this._translate.instant( 'GENERAL.ERROR'));
+    });
+  }
+
   addNewExercise(): void {
     this.exercises.push(this.createNewExercise());
   }
@@ -95,13 +114,55 @@ export class EditWorkoutComponent {
     this.getSet(exerciseIndex).push(this.createNewSet());
   }
 
+  addAttachment() {
+    const e: HTMLElement = this.fileInput.nativeElement;
+    e.click();
+  }
+
+  deleteExercise(exerciseIndex: number): void {
+    this.exercises.removeAt(exerciseIndex);
+  }
+
   deleteSet(exerciseIndex: number, setIndex: number): void {
     this.getSet(exerciseIndex).removeAt(setIndex);
   }
 
-  addAttachment() {
-    const e: HTMLElement = this.fileInput.nativeElement;
-    e.click();
+  deleteSelectedAttachment(element: FileTableModel) {
+    this.selectedFiles.forEach((value,index)=>{
+      if(value.position === element.position) this.selectedFiles.splice(index,1);
+    });
+
+    if (!isNull(element.id)) {
+      const deletedIndex = this.workout.files.findIndex(fileModel => fileModel.id === element.id);
+      this.workout.files.splice(deletedIndex, 1);
+    }
+
+    this.dataSource.data = this.selectedFiles;
+  }
+
+  private deleteWorkout() {
+    this._workout.delete(this.workout.id)
+      .subscribe(() => {
+        this._toast.success(
+          this._translate.instant('WORKOUT_FORM.SUCCESSFUL_DELETE'),
+          this._translate.instant( 'GENERAL.INFO'));
+
+        this.router.navigate(['/dashboard']);
+      }, () => {
+        this._toast.success(
+          this._translate.instant('WORKOUT_FORM.UNSUCCESSFUL_DELETE'),
+          this._translate.instant( 'GENERAL.INFO'));
+
+        this.router.navigate(['/dashboard']);
+      });
+  }
+
+  openConfirmationDialog() {
+    this.dialog.open(ConfirmationDialogComponent, {
+      data: {
+        callback: () => this.deleteWorkout()
+      }
+    });
   }
 
   onFileSelected(event): void {
@@ -148,46 +209,10 @@ export class EditWorkoutComponent {
     }
   }
 
-  private submitWorkoutForm(fileIds: string[]): void {
-    const workoutRequest: WorkoutRequest = this.workoutForm.getRawValue();
-
-    fileIds = fileIds.concat(this.workout.files.map(({id}) => id));
-    workoutRequest.fileIds = fileIds;
-
-    this._workout.update(this.workout.id, workoutRequest).subscribe(() => {
-      this._toast.success(
-        this._translate.instant('WORKOUT_FORM.SUCCESSFUL_MODIFICATION'),
-        this._translate.instant( 'GENERAL.INFO'));
-
-      this.router.navigate(['/dashboard']);
-    }, () => {
-      this._toast.error(
-        this._translate.instant('WORKOUT_FORM.UNSUCCESSFUL_MODIFICATION'),
-        this._translate.instant( 'GENERAL.ERROR'));
-    });
-  }
-
   get exercises(): FormArray {return this.workoutForm.get('exercises') as FormArray;}
 
   getSet(exerciseIndex: number): FormArray {
     return (this.exercises.at(exerciseIndex) as FormGroup).get('sets') as FormArray;
-  }
-
-  deleteExercise(exerciseIndex: number): void {
-    this.exercises.removeAt(exerciseIndex);
-  }
-
-  deleteSelectedAttachment(element: FileTableModel) {
-    this.selectedFiles.forEach((value,index)=>{
-      if(value.position === element.position) this.selectedFiles.splice(index,1);
-    });
-
-    if (!isNull(element.id)) {
-      const deletedIndex = this.workout.files.findIndex(fileModel => fileModel.id === element.id);
-      this.workout.files.splice(deletedIndex, 1);
-    }
-
-    this.dataSource.data = this.selectedFiles;
   }
 
   getFileName(element: FileTableModel): string {

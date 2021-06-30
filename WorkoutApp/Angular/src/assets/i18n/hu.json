@@ -64,11 +64,14 @@
     "SET_DURATION": "Időtartam",
     "ATTACHMENTS": "Csatolmányok",
     "ADD": "Edzés hozzáadása",
-    "MODIFY": "Edzés módosítás",
+    "MODIFY": "Edzés módosítása",
+    "DELETE": "Edzés törlése",
     "SUCCESSFUL_ADDITION": "Sikeres edzés hozzáadás",
     "UNSUCCESSFUL_ADDITION": "Sikertelen edzés hozzáadás",
     "SUCCESSFUL_MODIFICATION": "Sikeres edzés módosítás",
-    "UNSUCCESSFUL_MODIFICATION": "Sikertelen edzés módosítás"
+    "UNSUCCESSFUL_MODIFICATION": "Sikertelen edzés módosítás",
+    "SUCCESSFUL_DELETE": "Sikeres edzés törlés",
+    "UNSUCCESSFUL_DELETE": "Sikertelen edzés törlés"
   },
   "FRIEND": {
     "SEARCH": "Keresés",

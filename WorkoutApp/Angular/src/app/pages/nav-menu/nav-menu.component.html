@@ -134,7 +134,7 @@
             <div class="item5" style="margin-top: -8px; text-align: center;">
               <span *ngIf="followNotification.type === 0">
               <button mat-icon-button matTooltip="{{'NOTIFICATION.DECLINE' | translate}}"
-                      (click)="$event.stopPropagation(); declineRequest(followNotification.sentByUser.id)">
+                      (click)="$event.stopPropagation(); declineRequest(followNotification.sentByUser.id);">
                 <mat-icon>close</mat-icon>
               </button>
               <button mat-icon-button matTooltip="{{'NOTIFICATION.ACCEPT' | translate}}"

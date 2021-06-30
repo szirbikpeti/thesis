@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import {WorkoutService} from "../../services/workout.service";
 import {WorkoutModel} from "../../models/WorkoutModel";
 import {DatePipe} from "@angular/common";
@@ -11,7 +11,7 @@ import {isNull} from "../../utility";
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent {
 
   workouts: WorkoutModel[];
 
@@ -20,9 +20,6 @@ export class DashboardComponent implements OnInit {
   constructor(private _workout: WorkoutService, private _state: StateService,
               private _translate: TranslateService, private datePipe: DatePipe) {
     this._workout.list().subscribe(workouts => this.workouts = workouts);
-  }
-
-  ngOnInit(): void {
   }
 
   getGroupTitle(date: Date) {

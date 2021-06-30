@@ -110,5 +110,16 @@ namespace WorkoutApp.Controllers
   
       return Ok(workoutDto);
     }
+
+    [HttpDelete("{workoutId}")]
+    public async Task<IActionResult> DeleteAsync(
+      [FromRoute] [Required] int workoutId,
+      CancellationToken cancellationToken)
+    {
+      await _workout.DoDeleteAsync(workoutId, cancellationToken)
+        .ConfigureAwait(false);
+
+      return Ok();
+    }
   }
 }

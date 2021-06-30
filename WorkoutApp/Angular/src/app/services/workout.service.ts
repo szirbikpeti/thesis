@@ -26,7 +26,11 @@ export class WorkoutService {
     return this._http.request(Resource.WORKOUT, Method.POST, workout);
   }
 
-  update(workoutId, workout: WorkoutRequest): Observable<WorkoutModel> {
+  update(workoutId: string, workout: WorkoutRequest): Observable<WorkoutModel> {
     return this._http.request(Resource.WORKOUT, Method.PATCH, workout, workoutId);
+  }
+
+  delete(workoutId: string): Observable<any> {
+    return this._http.request(Resource.WORKOUT, Method.DELETE, null, workoutId);
   }
 }

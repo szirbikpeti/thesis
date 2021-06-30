@@ -1,4 +1,9 @@
-<div class="title">{{'WORKOUT_FORM.MODIFY_TITLE' | translate}}</div>
+<div class="title">{{'WORKOUT_FORM.MODIFY_TITLE' | translate}}
+  <button mat-icon-button type="button"
+          class="delete-set-button" (click)="openConfirmationDialog()">
+    <mat-icon>delete_forever</mat-icon>
+  </button>
+</div>
 
 <mat-spinner *ngIf="this.workout === undefined"></mat-spinner>
 <div *ngIf="this.workout !== undefined" class="content">

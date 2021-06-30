@@ -65,10 +65,13 @@
     "ATTACHMENTS": "Attachments",
     "ADD": "Add workout",
     "MODIFY": "Modify workout",
+    "DELETE": "Delete workout",
     "SUCCESSFUL_ADDITION": "Successful workout addition",
     "UNSUCCESSFUL_ADDITION": "Unsuccessful workout addition",
     "SUCCESSFUL_MODIFICATION": "Successful workout modification",
-    "UNSUCCESSFUL_MODIFICATION": "Unsuccessful workout modification"
+    "UNSUCCESSFUL_MODIFICATION": "Unsuccessful workout modification",
+    "SUCCESSFUL_DELETE": "Successful workout deletion",
+    "UNSUCCESSFUL_DELETE": "Unsuccessful workout deletion"
   },
   "FRIEND": {
     "SEARCH": "Search",
