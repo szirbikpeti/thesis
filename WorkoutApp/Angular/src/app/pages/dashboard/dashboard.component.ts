@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import {WorkoutService} from "../../services/workout.service";
 import {WorkoutModel} from "../../models/WorkoutModel";
-import {DatePipe} from "@angular/common";
 import {StateService} from "../../services/state.service";
 import {TranslateService} from "@ngx-translate/core";
 import {isNull} from "../../utility";
+import {DateFormatterPipe} from "../../pipes/date-formatter.pipe";
 
 @Component({
   selector: 'app-dashboard',
@@ -18,7 +18,7 @@ export class DashboardComponent {
   isNull = isNull;
 
   constructor(private _workout: WorkoutService, private _state: StateService,
-              private _translate: TranslateService, private datePipe: DatePipe) {
+              private _translate: TranslateService, private customDatePipe: DateFormatterPipe) {
     this._workout.list().subscribe(workouts => this.workouts = workouts);
   }
 
@@ -35,7 +35,6 @@ export class DashboardComponent {
       return this._translate.instant('GENERAL.YESTERDAY');
     }
 
-    const format = this._state.language.value === 'hu' ? 'yyyy.MM.dd' : 'mediumDate';
-    return this.datePipe.transform(workoutDate, format);
+    return this.customDatePipe.transform(workoutDate, this._state.language.value, false);
   }
 }

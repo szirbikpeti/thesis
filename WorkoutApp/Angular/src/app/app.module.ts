@@ -24,6 +24,8 @@ import {NgPipesModule} from "ngx-pipes";
 import {DatePipe} from "@angular/common";
 import {FriendSearchComponent} from "./pages/friend-search/friend-search.component";
 import {NotificationModalComponent} from "./pages/nav-menu/notification-modal/notification-modal.component";
+import {FriendsComponent} from "./pages/friends/friends.component";
+import { DateFormatterPipe } from './pipes/date-formatter.pipe';
 
 @NgModule({
   declarations: [
@@ -38,7 +40,9 @@ import {NotificationModalComponent} from "./pages/nav-menu/notification-modal/no
     EditWorkoutComponent,
     ProfileComponent,
     FriendSearchComponent,
-    ConfirmationDialogComponent
+    FriendsComponent,
+    ConfirmationDialogComponent,
+    DateFormatterPipe
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -59,7 +63,8 @@ import {NotificationModalComponent} from "./pages/nav-menu/notification-modal/no
   ],
   providers: [
     {provide: MAT_DATE_LOCALE, useValue: 'hu-HU'},
-    DatePipe
+    DatePipe,
+    DateFormatterPipe
   ],
   bootstrap: [AppComponent]
 })

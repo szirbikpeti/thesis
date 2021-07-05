@@ -8,10 +8,12 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using WorkoutApp.Abstractions;
 using WorkoutApp.Dto;
 using WorkoutApp.Entities;
 using WorkoutApp.Extensions;
+using WorkoutApp.Frameworks;
 
 namespace WorkoutApp.Controllers
 {
@@ -60,6 +62,48 @@ namespace WorkoutApp.Controllers
         .Select(user => _mapper.Map<GetUserDto>(user));
 
       return Ok(userDtoList);
+    }
+
+    [HttpGet("friends")]
+    public async Task<ActionResult<ICollection<GetFriendsDto>>> ListFriendsAsync(
+      CancellationToken cancellationToken)
+    {
+      var currentUserId = _userManager.GetUserIdAsInt(HttpContext.User);
+      
+      var followerUsers = await _userManager
+        .ListFollowerUsersAsync(currentUserId, cancellationToken)
+        .ConfigureAwait(false);
+      
+      var followedUsers = await _userManager
+        .ListFollowedUsersAsync(currentUserId, cancellationToken)
+        .ConfigureAwait(false);
+
+      var userEqualityComparer = new IdEqualityComparer<UserEntity>();
+
+      followerUsers = followerUsers.Except(followedUsers, userEqualityComparer).ToImmutableList();
+      
+      foreach (var friend in followerUsers) {
+        friend!.ProfilePicture = await _file.DoGetAsync(friend.ProfilePictureId, cancellationToken)
+          .ConfigureAwait(false);
+      }
+
+      foreach (var friend in followedUsers) {
+        friend!.ProfilePicture = await _file.DoGetAsync(friend.ProfilePictureId, cancellationToken)
+          .ConfigureAwait(false);
+      }
+
+      var followerListDto = followerUsers
+        .Select(user => _mapper.Map<GetUserDto>(user)).ToImmutableList();
+
+      var followedListDto = followedUsers
+        .Select(user => _mapper.Map<GetUserDto>(user)).ToImmutableList();
+
+      var friendDto = new GetFriendsDto {
+        FollowerUsers = followerListDto,
+        FollowedUsers = followedListDto
+      };
+
+      return Ok(friendDto);
     }
 
     [HttpGet("followRequestsAndFollows")]

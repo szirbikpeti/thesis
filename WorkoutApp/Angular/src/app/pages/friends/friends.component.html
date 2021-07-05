@@ -1,0 +1,129 @@
+<div *ngIf="friends !== undefined">
+  <h1 *ngIf="friends.followerUsers.length > 0">{{'FRIEND.FOLLOW_BACK' | translate}}</h1>
+  <table mat-table
+         [dataSource]="followerDataSource" multiTemplateDataRows
+         class="mat-elevation-z8">
+
+    <ng-container matColumnDef="{{column}}" *ngFor="let column of displayedColumns; index as index">
+      <span *ngIf="index === 0">
+        <th mat-header-cell *matHeaderCellDef>#</th>
+        <td mat-cell *matCellDef="let element">
+          <img class="profile-picture" [src]="getPicture(element[column].data)">
+        </td>
+      </span>
+      <span *ngIf="index === displayedColumns.length - 1">
+        <th mat-header-cell *matHeaderCellDef> {{'GENERAL.' + column.toUpperCase() | translate}} </th>
+        <td mat-cell *matCellDef="let element">
+        <button mat-icon-button (click)="$event.stopPropagation(); followBack(element.id);">
+          <img src="./assets/follow-back.png">
+        </button>
+        </td>
+      </span>
+      <span *ngIf="index !== 0 && index !== displayedColumns.length - 1">
+        <th mat-header-cell *matHeaderCellDef> {{'USER_FORM.' + column.toUpperCase() | translate}} </th>
+        <td mat-cell *matCellDef="let element;">
+          <span *ngIf="isDate(element[column])">
+            {{element[column] | dateFormatter : _state.language.value}}
+          </span>
+          <span *ngIf="!isDate(element[column])">
+            {{element[column]}}
+          </span>
+        </td>
+      </span>
+    </ng-container>
+
+    <ng-container matColumnDef="expandedDetail">
+      <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
+        <div class="example-element-detail"
+             [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+          <div style="padding: 16px;">
+            <div *ngIf="!displayedColumns.includes('fullName')">
+              {{'USER_FORM.FULLNAME' | translate}}: {{element.fullName}}
+            </div>
+            <div *ngIf="!displayedColumns.includes('email')" class="expanded-detail-row">
+              {{'USER_FORM.EMAIL' | translate}}: {{element.email}}
+            </div>
+            <div *ngIf="!displayedColumns.includes('lastSignedInOn')" class="expanded-detail-row">
+              {{'USER_FORM.LASTSIGNEDINON' | translate}}: {{element.lastSignedInOn | dateFormatter : _state.language.value}}
+            </div>
+            <div *ngIf="element.about" class="expanded-detail-row">
+              {{'USER_FORM.ABOUT' | translate}}: {{element.about}}
+            </div>
+          </div>
+        </div>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let element; columns: displayedColumns;"
+        class="example-element-row"
+        [class.example-expanded-row]="expandedElement === element"
+        (click)="expandedElement = expandedElement === element ? null : element">
+    </tr>
+    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+  </table>
+
+
+  <h1 style="margin-top: 45px;" *ngIf="friends.followedUsers.length > 0">{{'FRIEND.UNFOLLOW' | translate}}</h1>
+  <table mat-table *ngIf="friends.followedUsers.length > 0" [dataSource]="followedDataSource"
+         multiTemplateDataRows class="mat-elevation-z8">
+
+    <ng-container matColumnDef="{{column}}" *ngFor="let column of displayedColumns; index as index">
+      <span *ngIf="index === 0">
+        <th mat-header-cell *matHeaderCellDef>#</th>
+        <td mat-cell *matCellDef="let element">
+          <img class="profile-picture" [src]="getPicture(element[column].data)">
+        </td>
+      </span>
+      <span *ngIf="index === displayedColumns.length - 1">
+        <th mat-header-cell *matHeaderCellDef> {{'GENERAL.' + column.toUpperCase() | translate}} </th>
+        <td mat-cell *matCellDef="let element">
+        <button mat-icon-button (click)="$event.stopPropagation(); unfollow(element.id);">
+          <img src="./assets/delete_forever.svg">
+        </button>
+        </td>
+      </span>
+      <span *ngIf="index !== 0 && index !== displayedColumns.length - 1">
+        <th mat-header-cell *matHeaderCellDef> {{'USER_FORM.' + column.toUpperCase() | translate}} </th>
+        <td mat-cell *matCellDef="let element;">
+          <span *ngIf="isDate(element[column])">
+            {{element[column] | dateFormatter : _state.language.value}}
+          </span>
+          <span *ngIf="!isDate(element[column])">
+            {{element[column]}}
+          </span>
+        </td>
+      </span>
+    </ng-container>
+
+    <ng-container matColumnDef="expandedDetail">
+      <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
+        <div class="example-element-detail"
+             [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+          <div style="padding: 16px;">
+            <div *ngIf="!displayedColumns.includes('fullName')">
+              {{'USER_FORM.FULLNAME' | translate}}: {{element.fullName}}
+            </div>
+            <div *ngIf="!displayedColumns.includes('email')" class="expanded-detail-row">
+              {{'USER_FORM.EMAIL' | translate}}: {{element.email}}
+            </div>
+            <div *ngIf="!displayedColumns.includes('lastSignedInOn')" class="expanded-detail-row">
+              {{'USER_FORM.LASTSIGNEDINON' | translate}}: {{element.lastSignedInOn | dateFormatter : _state.language.value}}
+            </div>
+            <div *ngIf="element.about" class="expanded-detail-row">
+              {{'USER_FORM.ABOUT' | translate}}: {{element.about}}
+            </div>
+          </div>
+        </div>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let element; columns: displayedColumns;"
+        class="example-element-row"
+        [class.example-expanded-row]="expandedElement === element"
+        (click)="expandedElement = expandedElement === element ? null : element">
+    </tr>
+    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+  </table>
+</div>

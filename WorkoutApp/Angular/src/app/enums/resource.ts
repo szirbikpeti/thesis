@@ -3,7 +3,7 @@ export enum Resource {
   LOGIN = "auth/signin/",
   LOGOUT = "auth/",
   USER = 'user/',
-  USER_SEARCH = 'user/search/',
+  USER_FRIENDS = 'user/friends/',
   USER_REQUEST = 'user/request/',
   USER_FOLLOW = 'user/follow/',
   USER_FOLLOW_REQUESTS_AND_FOLLOWS = 'user/followRequestsAndFollows/',

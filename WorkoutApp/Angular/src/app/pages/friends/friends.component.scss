@@ -1,0 +1,72 @@
+//mat-table {
+//  margin-bottom: 55px;
+//}
+//
+//mat-header-cell {
+//  display:flex;
+//  justify-content: center;
+//}
+//
+//mat-cell {
+//  cursor: pointer;
+//  user-select: none;
+//  height: 60px;
+//  display:flex;
+//  justify-content: center;
+//  padding: 0 10px 0 10px;
+//  text-align: center;
+//}
+//
+.profile-picture {
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
+}
+
+
+table {
+  width: 90%;
+}
+
+td {
+  cursor: pointer;
+}
+
+tr.example-detail-row {
+  height: 0;
+}
+
+tr.example-element-row:not(.example-expanded-row):hover {
+  background: whitesmoke;
+}
+
+tr.example-element-row:not(.example-expanded-row):active {
+  background: #efefef;
+}
+
+.example-element-row td {
+  border-bottom-width: 0;
+}
+
+.example-element-detail {
+  overflow: hidden;
+}
+
+.expanded-detail-row {
+  margin-top: 15px;
+}
+
+.example-element-diagram {
+  min-width: 80px;
+  border: 2px solid black;
+  padding: 8px;
+  font-weight: lighter;
+  margin: 8px 0;
+  height: 104px;
+}
+
+.example-element-symbol {
+  font-weight: bold;
+  font-size: 40px;
+  line-height: normal;
+}

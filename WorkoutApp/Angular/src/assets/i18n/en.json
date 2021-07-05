@@ -12,7 +12,8 @@
     "ARE_YOU_SURE": "Are you sure?",
     "INVALID_FORM": "Invalid input field(s)",
     "TODAY": "Today",
-    "YESTERDAY": "Yesterday"
+    "YESTERDAY": "Yesterday",
+    "OPERATION": "Operation"
   },
   "HOME": {
     "ADD_WORKOUTS": "Adding workouts",
@@ -25,7 +26,8 @@
     "LOG_OUT": "Log out",
     "DASHBOARD": "Dashboard",
     "NEW_WORKOUT": "Create new workout",
-    "FRIEND_SEARCH": "Friend search"
+    "FRIEND_SEARCH": "Friend search",
+    "FRIENDS": "Friends"
   },
   "PAGE": {
     "PROFILE": "Profile"
@@ -42,6 +44,8 @@
     "NEW_PASSWORD": "New Password",
     "BIRTHDAY": "Birthday",
     "ABOUT": "About",
+    "LASTSIGNEDINON": "Last login",
+    "OPERATION": "Operation",
     "SUCCESSFUL_SIGNUP": "Successful sign-up",
     "UNSUCCESSFUL_LOGIN": "Unsuccessful login",
     "SUCCESSFUL_UPDATE":  "Successful update",

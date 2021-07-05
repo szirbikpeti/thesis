@@ -6,6 +6,7 @@ import {Observable} from "rxjs";
 import {UserModel} from "../models/UserModel";
 import {UserEditRequest} from "../requests/UserEditRequest";
 import {FollowRequestAndFollowModel} from "../models/FollowRequestAndFollowModel";
+import {FriendModel} from "../models/FriendModel";
 
 @Injectable({
   providedIn: 'root'
@@ -53,5 +54,9 @@ export class UserService {
 
   unfollow(id: string): Observable<FollowRequestAndFollowModel> {
     return this._http.request(Resource.USER_FOLLOW, Method.DELETE, null, id);
+  }
+
+  getFriends(): Observable<FriendModel> {
+    return this._http.request(Resource.USER_FRIENDS, Method.GET);
   }
 }

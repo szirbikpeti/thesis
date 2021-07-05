@@ -128,6 +128,7 @@ export class NavMenuComponent {
     this.dialog.open(NotificationModalComponent, {
       width: '350px',
       data: {
+        language: this._state.language.value,
         notification: notification,
         acceptCallback: () => {
           this.acceptRequest(notification.sentByUser.id);

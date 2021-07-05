@@ -12,7 +12,8 @@
     "ARE_YOU_SURE": "Biztos benne?",
     "INVALID_FORM": "Érvénytelen beviteli mező(k)",
     "TODAY": "Ma",
-    "YESTERDAY": "Tegnap"
+    "YESTERDAY": "Tegnap",
+    "OPERATION": "Művelet"
   },
   "HOME": {
     "ADD_WORKOUTS": "Edzések rögzítése",
@@ -25,7 +26,8 @@
     "LOG_OUT": "Kijelentkezés",
     "DASHBOARD": "Dashboard",
     "NEW_WORKOUT": "Új edzés felvétel",
-    "FRIEND_SEARCH": "Barát keresés"
+    "FRIEND_SEARCH": "Barát keresés",
+    "FRIENDS": "Barátok"
   },
   "PAGE": {
     "PROFILE": "Profil adatok"
@@ -42,6 +44,7 @@
     "NEW_PASSWORD": "Új jelszó",
     "BIRTHDAY": "Születésnap",
     "ABOUT": "Magamról",
+    "LASTSIGNEDINON": "Utolsó bejelentkezés",
     "SUCCESSFUL_SIGNUP": "Sikeres regisztráció",
     "UNSUCCESSFUL_LOGIN": "Sikertelen bejelentkezés",
     "SUCCESSFUL_UPDATE": "Sikeres módosítás",

@@ -15,7 +15,7 @@
       </span>
     </div>
     <div class="modified-on-container">
-      {{'WORKOUT_FORM.MODIFIED_ON' | translate}}: {{getDateFormat(workout.modifiedOn)}}
+      {{'WORKOUT_FORM.MODIFIED_ON' | translate}}: {{workout.modifiedOn | dateFormatter : _state.language.value : false}}
     </div>
   </mat-card>
 </div>

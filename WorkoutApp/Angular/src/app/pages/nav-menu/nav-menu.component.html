@@ -20,7 +20,7 @@
       <a (click)="toggleDrawerWhenHandset()" routerLink="/dashboard" mat-list-item
          href="#" routerLinkActive="active">
         <div class="menu-icon-container">
-          <img src="../../../assets/dashboard.svg" class="menu-icon">
+          <img src="./assets/dashboard.svg" class="menu-icon">
         </div>
         <span [translate]="'NAV.DASHBOARD'"></span>
       </a>
@@ -28,7 +28,7 @@
       <a *ngIf="_auth.hasPermission('workout.management')" (click)="toggleDrawerWhenHandset()" routerLink="/new-workout"
          mat-list-item href="#" routerLinkActive="active">
         <div class="menu-icon-container">
-          <img src="../../../assets/new-workout.svg" class="menu-icon">
+          <img src="./assets/new-workout.svg" class="menu-icon">
         </div>
         <span [translate]="'NAV.NEW_WORKOUT'"></span>
       </a>
@@ -38,9 +38,17 @@
       <a routerLinkActive="active"
          (click)="toggleDrawerWhenHandset()" routerLink="/friend-search" mat-list-item href="#">
         <div class="menu-icon-container">
-          <img src="../../../assets/person-search.svg" class="menu-icon">
+          <img src="./assets/person-search.svg" class="menu-icon">
         </div>
         <span [translate]="'NAV.FRIEND_SEARCH'"></span>
+      </a>
+      <mat-divider></mat-divider>
+      <a routerLinkActive="active"
+         (click)="toggleDrawerWhenHandset()" routerLink="/friends" mat-list-item href="#">
+        <div class="menu-icon-container">
+          <img src="./assets/person.svg" class="menu-icon">
+        </div>
+        <span [translate]="'NAV.FRIENDS'"></span>
       </a>
       <mat-divider class="last-divider"></mat-divider>
     </mat-nav-list>
