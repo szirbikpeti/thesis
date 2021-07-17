@@ -3,15 +3,17 @@ using System.ComponentModel.DataAnnotations;
 
 namespace WorkoutApp.Dto
 {
-  public class ExerciseDto
+  public class ExerciseModificationDto
   {
+    public int Id { get; set; }
+    
     [Required]
     public string Name { get; set; } = null!;
 
     [Required]
     public string Equipment { get; set; } = null!;
 
-    [Required] 
-    public ICollection<SetDto> Sets { get; set; } = null!;
+    [Required]
+    public ICollection<SetModificationDto> Sets { get; set; } = null!;
   }
 }

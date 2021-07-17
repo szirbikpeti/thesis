@@ -16,7 +16,7 @@ namespace WorkoutApp.Configurations
       builder.HasOne(_ => _.Workout)
         .WithMany(_ => _.Exercises)
         .HasForeignKey(_ => _.WorkoutId)
-        .OnDelete(DeleteBehavior.Cascade);
+        .OnDelete(DeleteBehavior.Restrict);
     }
   }
 }

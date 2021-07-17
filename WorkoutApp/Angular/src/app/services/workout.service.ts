@@ -18,7 +18,7 @@ export class WorkoutService {
     return this._http.request(Resource.WORKOUT, Method.GET);
   }
 
-  get(id: string) {
+  get(id: string): Observable<WorkoutModel> {
     return this._http.request(Resource.WORKOUT, Method.GET, null, id);
   }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -77,13 +78,14 @@ namespace WorkoutApp.Repositories
         .ConfigureAwait(false);
 
       if (fileIds.Count > 0) {
-        var createdWorkout = await _dbContext.Workouts.Where(_ => _.CreatedOn == workout.CreatedOn)
+        var createdWorkout = await _dbContext.Workouts
+          .Where(_ => _.CreatedOn == workout.CreatedOn)
           .FirstOrDefaultAsync(cancellationToken)
           .ConfigureAwait(false);
         
         var newEntities = fileIds.Select(_ => new WorkoutFileRelationEntity {
-          LeftId = createdWorkout!.Id,
-          RightId = _
+          WorkoutId = createdWorkout!.Id,
+          FileId = _
         });
 
         await _dbContext.WorkoutFileRelations
@@ -105,9 +107,29 @@ namespace WorkoutApp.Repositories
         return null;
       }
 
+      var beforeExerciseIds = fetchedWorkout.Exercises.Select(_ => _.Id).ToImmutableList();
+      var beforeSetsIds = fetchedWorkout.Exercises.SelectMany(_ => _.Sets).Select(_ => _.Id).ToImmutableList();
+
       _mapper.Map(workoutDto, fetchedWorkout);
-      
       fetchedWorkout.ModifiedOn = DateTimeOffset.Now;
+      
+      var afterExerciseIds = fetchedWorkout.Exercises.Select(_ => _.Id).ToImmutableList();
+      var afterSetsIds = fetchedWorkout.Exercises.SelectMany(_ => _.Sets).Select(_ => _.Id).ToImmutableList();
+
+      var removedExercises =
+        beforeExerciseIds.Except(afterExerciseIds)
+          .Select(_ => _dbContext.GetByIdAsync<ExerciseEntity>(_, cancellationToken).Result!)
+          .ToList();
+      
+      var removedSets = 
+        beforeSetsIds.Except(afterSetsIds)
+          .Select(_ => _dbContext.GetByIdAsync<SetEntity>(_, cancellationToken).Result!)
+          .ToList();
+      
+      _dbContext.DoDeleteRange(removedExercises);
+      _dbContext.DoDeleteRange(removedSets);
+
+      _dbContext.Workouts.Update(fetchedWorkout);
 
       var removedFileIds = fetchedWorkout.FileRelationEntities.Select(_ => _.FileId).Except(workoutDto.FileIds);
       var removedEntities = fetchedWorkout.FileRelationEntities
@@ -117,8 +139,8 @@ namespace WorkoutApp.Repositories
 
       var newFileIds = workoutDto.FileIds.Except(fetchedWorkout.FileRelationEntities.Select(_ => _.FileId));
       var newEntities = newFileIds.Select(_ => new WorkoutFileRelationEntity {
-        LeftId = fetchedWorkout.Id,
-        RightId = _
+        WorkoutId = fetchedWorkout.Id,
+        FileId = _
       });
       
       await _dbContext.WorkoutFileRelations

@@ -23,10 +23,16 @@ namespace WorkoutApp.Data
         public DbSet<ExerciseEntity> Exercises { get; set; } = null!;
         public DbSet<WorkoutEntity> Workouts { get; set; } = null!;
         public DbSet<NotificationEntity> Notifications { get; set; } = null!;
+        public DbSet<PostEntity> Posts { get; set; } = null!;
+        public DbSet<CommentEntity> Comments { get; set; } = null!;
         
         public DbSet<WorkoutFileRelationEntity> WorkoutFileRelations { get; set; } = null!;
         public DbSet<FollowRequestEntity> FollowRequests { get; set; } = null!;
         public DbSet<FollowEntity> Follows { get; set; } = null!;
+        public DbSet<PostFileRelationEntity> PostFileRelations { get; set; } = null!;
+        public DbSet<PostCommentRelationEntity> PostCommentRelations { get; set; } = null!;
+        public DbSet<LikeEntity> Likes { get; set; } = null!;
+        
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -45,14 +51,32 @@ namespace WorkoutApp.Data
             modelBuilder.ApplyConfiguration(new FollowConfiguration());
             modelBuilder.ApplyConfiguration(new UserRoleRelationConfiguration());
             modelBuilder.ApplyConfiguration(new NotificationConfiguration());
+            modelBuilder.ApplyConfiguration(new PostConfiguration());
+            modelBuilder.ApplyConfiguration(new CommentConfiguration());
+            modelBuilder.ApplyConfiguration(new PostFileRelationConfiguration());
+            modelBuilder.ApplyConfiguration(new NotificationConfiguration());
+            modelBuilder.ApplyConfiguration(new PostCommentRelationConfiguration());
+            modelBuilder.ApplyConfiguration(new LikeConfiguration());
 
             modelBuilder.Entity<UserEntity>()
                 .HasQueryFilter(_ => _.DeletedOn == null);
 
             modelBuilder.Entity<WorkoutEntity>()
                 .HasQueryFilter(_ => _.DeletedOn == null);
+
+            modelBuilder.Entity<ExerciseEntity>()
+                .HasQueryFilter(_ => _.DeletedOn == null);
+
+            modelBuilder.Entity<SetEntity>()
+                .HasQueryFilter(_ => _.DeletedOn == null);
             
             modelBuilder.Entity<NotificationEntity>()
+                .HasQueryFilter(_ => _.DeletedOn == null);
+            
+            modelBuilder.Entity<PostEntity>()
+                .HasQueryFilter(_ => _.DeletedOn == null);
+            
+            modelBuilder.Entity<CommentEntity>()
                 .HasQueryFilter(_ => _.DeletedOn == null);
         }
     }

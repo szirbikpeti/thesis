@@ -17,6 +17,7 @@
               matInput
               formControlName="date"
               [matDatepicker]="workoutDate"
+              [matDatepickerFilter]="futureFilter"
               (focus)="workoutDate.open()">
             <mat-datepicker #workoutDate></mat-datepicker>
           </div>

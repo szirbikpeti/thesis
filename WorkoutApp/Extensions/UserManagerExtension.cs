@@ -115,6 +115,22 @@ namespace WorkoutApp.Extensions
         .ToListAsync(cancellationToken)
         .ConfigureAwait(false);
     }
+    
+    public static async Task<ICollection<int>> ListFollowedUserIdsAsync(
+      this UserManager<UserEntity> userManager,
+      int currentUserId,
+      CancellationToken cancellationToken)
+    {
+      return await userManager.Users
+        .AsNoTracking()
+        .Where(_ =>_.Id == currentUserId 
+          && _.DeletedOn == null)
+        .Include(_ => _.FollowedUsers)
+        .SelectMany(_ => _.FollowedUsers)
+        .Select(_ => _.FollowedUser.Id)
+        .ToListAsync(cancellationToken)
+        .ConfigureAwait(false);
+    }
 
     public static async Task<bool> IsUserExistsAsync(
       this UserManager<UserEntity> userManager, 

@@ -59,6 +59,34 @@ namespace WorkoutApp.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("WorkoutApp.Entities.CommentEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("Comment")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTimeOffset>("CommentedOn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTimeOffset?>("DeletedOn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTimeOffset>("ModifiedOn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("PostId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Comments");
+                });
+
             modelBuilder.Entity("WorkoutApp.Entities.ExerciseEntity", b =>
                 {
                     b.Property<int>("Id")
@@ -150,6 +178,21 @@ namespace WorkoutApp.Migrations
                     b.ToTable("FollowRequests");
                 });
 
+            modelBuilder.Entity("WorkoutApp.Entities.LikeEntity", b =>
+                {
+                    b.Property<int>("PostId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("PostId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Likes");
+                });
+
             modelBuilder.Entity("WorkoutApp.Entities.NotificationEntity", b =>
                 {
                     b.Property<int>("Id")
@@ -179,6 +222,63 @@ namespace WorkoutApp.Migrations
                     b.HasIndex("SentByUserId");
 
                     b.ToTable("Notifications");
+                });
+
+            modelBuilder.Entity("WorkoutApp.Entities.PostCommentRelationEntity", b =>
+                {
+                    b.Property<int>("PostId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("CommentId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("PostId", "CommentId");
+
+                    b.HasIndex("CommentId");
+
+                    b.ToTable("PostCommentRelations");
+                });
+
+            modelBuilder.Entity("WorkoutApp.Entities.PostEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<DateTimeOffset?>("DeletedOn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTimeOffset>("PostedOn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Posts");
+                });
+
+            modelBuilder.Entity("WorkoutApp.Entities.PostFileRelationEntity", b =>
+                {
+                    b.Property<int>("PostId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("FileId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("PostId", "FileId");
+
+                    b.HasIndex("FileId");
+
+                    b.ToTable("PostFileRelations");
                 });
 
             modelBuilder.Entity("WorkoutApp.Entities.RoleClaimEntity", b =>
@@ -238,6 +338,9 @@ namespace WorkoutApp.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<DateTimeOffset?>("DeletedOn")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<TimeSpan?>("Duration")
                         .HasColumnType("interval");
@@ -462,7 +565,7 @@ namespace WorkoutApp.Migrations
                     b.HasOne("WorkoutApp.Entities.WorkoutEntity", "Workout")
                         .WithMany("Exercises")
                         .HasForeignKey("WorkoutId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Workout");
@@ -506,6 +609,25 @@ namespace WorkoutApp.Migrations
                     b.Navigation("TargetUser");
                 });
 
+            modelBuilder.Entity("WorkoutApp.Entities.LikeEntity", b =>
+                {
+                    b.HasOne("WorkoutApp.Entities.PostEntity", "Post")
+                        .WithMany("LikingUsers")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WorkoutApp.Entities.UserEntity", "User")
+                        .WithMany("LikedPosts")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Post");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("WorkoutApp.Entities.NotificationEntity", b =>
                 {
                     b.HasOne("WorkoutApp.Entities.UserEntity", "ReceivedUser")
@@ -525,6 +647,55 @@ namespace WorkoutApp.Migrations
                     b.Navigation("SentByUser");
                 });
 
+            modelBuilder.Entity("WorkoutApp.Entities.PostCommentRelationEntity", b =>
+                {
+                    b.HasOne("WorkoutApp.Entities.CommentEntity", "Comment")
+                        .WithMany("PostRelationEntities")
+                        .HasForeignKey("CommentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WorkoutApp.Entities.PostEntity", "Post")
+                        .WithMany("CommentRelationEntities")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Comment");
+
+                    b.Navigation("Post");
+                });
+
+            modelBuilder.Entity("WorkoutApp.Entities.PostEntity", b =>
+                {
+                    b.HasOne("WorkoutApp.Entities.UserEntity", "User")
+                        .WithMany("Posts")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("WorkoutApp.Entities.PostFileRelationEntity", b =>
+                {
+                    b.HasOne("WorkoutApp.Entities.FileEntity", "File")
+                        .WithMany("PostRelationEntities")
+                        .HasForeignKey("FileId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WorkoutApp.Entities.PostEntity", "Post")
+                        .WithMany("FileRelationEntities")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("File");
+
+                    b.Navigation("Post");
+                });
+
             modelBuilder.Entity("WorkoutApp.Entities.RoleClaimEntity", b =>
                 {
                     b.HasOne("WorkoutApp.Entities.RoleEntity", "Role")
@@ -541,7 +712,7 @@ namespace WorkoutApp.Migrations
                     b.HasOne("WorkoutApp.Entities.ExerciseEntity", "Exercise")
                         .WithMany("Sets")
                         .HasForeignKey("ExerciseId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Exercise");
@@ -618,6 +789,11 @@ namespace WorkoutApp.Migrations
                     b.Navigation("Workout");
                 });
 
+            modelBuilder.Entity("WorkoutApp.Entities.CommentEntity", b =>
+                {
+                    b.Navigation("PostRelationEntities");
+                });
+
             modelBuilder.Entity("WorkoutApp.Entities.ExerciseEntity", b =>
                 {
                     b.Navigation("Sets");
@@ -625,9 +801,20 @@ namespace WorkoutApp.Migrations
 
             modelBuilder.Entity("WorkoutApp.Entities.FileEntity", b =>
                 {
+                    b.Navigation("PostRelationEntities");
+
                     b.Navigation("ProfilePictureOfUser");
 
                     b.Navigation("WorkoutRelationEntities");
+                });
+
+            modelBuilder.Entity("WorkoutApp.Entities.PostEntity", b =>
+                {
+                    b.Navigation("CommentRelationEntities");
+
+                    b.Navigation("FileRelationEntities");
+
+                    b.Navigation("LikingUsers");
                 });
 
             modelBuilder.Entity("WorkoutApp.Entities.RoleEntity", b =>
@@ -644,6 +831,10 @@ namespace WorkoutApp.Migrations
                     b.Navigation("FollowedUsers");
 
                     b.Navigation("FollowerUsers");
+
+                    b.Navigation("LikedPosts");
+
+                    b.Navigation("Posts");
 
                     b.Navigation("ReceivedNotifications");
 

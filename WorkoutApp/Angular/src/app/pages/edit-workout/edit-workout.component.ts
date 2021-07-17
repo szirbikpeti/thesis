@@ -53,10 +53,22 @@ export class EditWorkoutComponent {
     });
 
     for (let i = 0; i < this.workout.exercises.length; i++) {
-      this.addNewExercise();
+      this.exercises.push(
+        this.fb.group({
+          id: [{value: '', disabled: true}],
+          name: ['', Validators.required],
+          equipment: ['', Validators.required],
+          sets: this.fb.array([])
+      }));
 
-      for(let j = 0; j < this.workout.exercises[i].sets.length - 1; j++) {
-        this.addNewSet(i);
+      for(let j = 0; j < this.workout.exercises[i].sets.length; j++) {
+        this.getSet(i).push(
+          this.fb.group({
+            id: [{value: '', disabled: true}],
+            reps: [11, Validators.required],
+            weight: [0, Validators.required],
+            duration: []
+        }));
       }
     }
 
@@ -82,13 +94,14 @@ export class EditWorkoutComponent {
   private createNewSet(): FormGroup {
     return this.fb.group({
       reps: [1, Validators.required],
-      weight: [1.0, Validators.required],
+      weight: [0, Validators.required],
       duration: []
     });
   }
 
   private submitWorkoutForm(fileIds: string[]): void {
     const workoutRequest: WorkoutRequest = this.workoutForm.getRawValue();
+    workoutRequest.id = this.workout.id;
 
     fileIds = fileIds.concat(this.workout.files.map(({id}) => id));
     workoutRequest.fileIds = fileIds;
@@ -98,12 +111,17 @@ export class EditWorkoutComponent {
         this._translate.instant('WORKOUT_FORM.SUCCESSFUL_MODIFICATION'),
         this._translate.instant( 'GENERAL.INFO'));
 
-      this.router.navigate(['/dashboard']);
+      this.router.navigate(['/my-workouts']);
     }, () => {
       this._toast.error(
         this._translate.instant('WORKOUT_FORM.UNSUCCESSFUL_MODIFICATION'),
         this._translate.instant( 'GENERAL.ERROR'));
     });
+  }
+
+  futureFilter (d: Date | null): boolean {
+    const date = (d || new Date());
+    return date < new Date();
   }
 
   addNewExercise(): void {

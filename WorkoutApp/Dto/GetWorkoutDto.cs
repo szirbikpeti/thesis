@@ -16,8 +16,8 @@ namespace WorkoutApp.Dto
         
     public DateTimeOffset ModifiedOn { get; set; }
 
-    public IReadOnlyCollection<ExerciseDto> Exercises { get; set; } = 
-      ImmutableList<ExerciseDto>.Empty;
+    public IReadOnlyCollection<GetExerciseDto> Exercises { get; set; } = 
+      ImmutableList<GetExerciseDto>.Empty;
     
     public IReadOnlyCollection<GetFileDto> Files { get; set; } = 
       ImmutableList<GetFileDto>.Empty;

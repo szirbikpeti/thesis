@@ -14,7 +14,7 @@ namespace WorkoutApp.Dto
     public string Type { get; set; } = null!;
 
     [Required]
-    public ICollection<ExerciseDto> Exercises { get; set; } = null!;
+    public ICollection<ExerciseAdditionDto> Exercises { get; set; } = null!;
     
     public IReadOnlyCollection<int> FileIds { get; set; } = ImmutableList<int>.Empty;
   }

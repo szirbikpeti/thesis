@@ -27,6 +27,7 @@ import {FriendSearchComponent} from "./pages/friend-search/friend-search.compone
 import {NotificationModalComponent} from "./pages/nav-menu/notification-modal/notification-modal.component";
 import {FriendsComponent} from "./pages/friends/friends.component";
 import {DateFormatterPipe} from './pipes/date-formatter.pipe';
+import {NewPostComponent} from "./pages/dashboard/new-post/new-post.component";
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import {DateFormatterPipe} from './pipes/date-formatter.pipe';
     HomeComponent,
     SignUpComponent,
     DashboardComponent,
+    NewPostComponent,
     WorkoutComponent,
     WorkoutCardInfoComponent,
     NewWorkoutComponent,

@@ -22,5 +22,7 @@ namespace WorkoutApp.Entities
         public UserEntity? ProfilePictureOfUser { get; set; }
 
         public ICollection<WorkoutFileRelationEntity> WorkoutRelationEntities { get; set; } = null!;
+        
+        public ICollection<PostFileRelationEntity> PostRelationEntities { get; set; } = null!;
     }
 }

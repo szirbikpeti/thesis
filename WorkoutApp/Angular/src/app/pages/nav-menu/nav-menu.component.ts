@@ -62,7 +62,7 @@ export class NavMenuComponent {
 
   private getNotifications(): void {
     this._notification.get().subscribe(notis => {
-      console.log(notis);
+      // TODO - delete is not working right now, console.log(notis);
 
       this.notifications = notis
         .filter(_ => !this.getNotificationType(_.type).toLowerCase().includes('follow'));

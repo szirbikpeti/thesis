@@ -17,8 +17,8 @@ export class HttpService {
     this.baseUrl = baseUrl;
   }
 
-  request(resource: Resource, method: Method, payload?: any, id: string = ''): Observable<any> {
-    const apiURL = this.baseUrl + 'api/' + resource + id;
+  request(resource: Resource, method: Method, payload?: any, additionURL: string = ''): Observable<any> {
+    const apiURL = this.baseUrl + 'api/' + resource + additionURL;
 
     let options: Object = {
       headers: new HttpHeaders({

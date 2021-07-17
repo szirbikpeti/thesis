@@ -1,14 +1,13 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 
 namespace WorkoutApp.Dto
 {
-  public class SetDto
+  public class GetSetDto
   {
-    [Required]
+    public int Id { get; set; }
+    
     public int Reps { get; set; }
 
-    [Required]
     public double Weight { get; set; }
         
     public TimeSpan? Duration { get; set; }

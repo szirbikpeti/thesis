@@ -128,12 +128,17 @@ export class NewWorkoutComponent implements OnInit {
         this._translate.instant('WORKOUT_FORM.SUCCESSFUL_ADDITION'),
         this._translate.instant( 'GENERAL.INFO'));
 
-      this.router.navigate(['/dashboard']);
+      this.router.navigate(['/my-workouts']);
     }, () => {
       this._toast.success(
         this._translate.instant('WORKOUT_FORM.UNSUCCESSFUL_ADDITION'),
         this._translate.instant( 'GENERAL.ERROR'));
     });
+  }
+
+  futureFilter (d: Date | null): boolean {
+    const date = (d || new Date());
+    return date < new Date();
   }
 
   get exercises(): FormArray {return this.workoutForm.get('exercises') as FormArray;}

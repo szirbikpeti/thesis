@@ -31,6 +31,8 @@ namespace WorkoutApp.Entities
         public FileEntity ProfilePicture { get; set; } = null!;
         
         public ICollection<WorkoutEntity> Workouts { get; set; } = null!;
+        
+        public ICollection<PostEntity> Posts { get; set; } = null!;
 
         public ICollection<UserClaimEntity> Claims { get; set; } = null!;
         
@@ -47,5 +49,7 @@ namespace WorkoutApp.Entities
         public ICollection<NotificationEntity> SentNotifications { get; set; } = null!;
 
         public ICollection<NotificationEntity> ReceivedNotifications { get; set; } = null!;
+        
+        public ICollection<LikeEntity> LikedPosts { get; set; } = null!;
     }
 }
