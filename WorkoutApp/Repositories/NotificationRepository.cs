@@ -25,8 +25,12 @@ namespace WorkoutApp.Repositories
       _hubContext = hubContext ?? throw new ArgumentNullException(nameof(hubContext));
     }
 
-    public async Task DoBroadcastMessages() => 
-      await _hubContext.Clients.All.BroadcastMessage();
+    public async Task DoBroadcastFollowNotifications(IEnumerable<string> userIds) => 
+      await _hubContext.Clients.Users(userIds).BroadcastFollowNotifications();
+    
+
+    public async Task DoBroadcastFollowNotifications(int receiverUserId) => 
+      await _hubContext.Clients.User(receiverUserId.ToString()).BroadcastFollowNotifications();
     
     public async Task<ICollection<NotificationEntity>> DoGetAsync(int id, CancellationToken cancellationToken)
     {

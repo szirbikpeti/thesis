@@ -4,6 +4,6 @@ namespace WorkoutApp.Abstractions
 {
   public interface IHubClient
   {
-    Task BroadcastMessage();
+    Task BroadcastFollowNotifications();
   }
 }

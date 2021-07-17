@@ -57,11 +57,13 @@ export class NavMenuComponent {
       .then(() => console.log('SignalR connected!'))
       .catch(err => console.error(err.toString()));
 
-    connection.on("BroadcastMessage", () => this.getNotifications());
+    connection.on("BroadcastFollowNotifications", () => this.getNotifications());
   }
 
   private getNotifications(): void {
     this._notification.get().subscribe(notis => {
+      console.log(notis);
+
       this.notifications = notis
         .filter(_ => !this.getNotificationType(_.type).toLowerCase().includes('follow'));
 

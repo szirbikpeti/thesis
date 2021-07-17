@@ -14,18 +14,19 @@ import {SignUpComponent} from "./pages/sign-up/sign-up.component";
 import {MAT_DATE_LOCALE} from "@angular/material/core";
 import {ToastrModule} from "ngx-toastr";
 import {DashboardComponent} from "./pages/dashboard/dashboard.component";
+import {WorkoutComponent} from "./pages/workout/workout.component";
 import {NewWorkoutComponent} from "./pages/new-workout/new-workout.component";
 import {EditWorkoutComponent} from "./pages/edit-workout/edit-workout.component";
 import {ProfileComponent} from "./pages/profile/profile.component";
 import {ConfirmationDialogComponent} from "./pages/confirmation-dialog/confirmation-dialog.component";
 import {GuardsModule} from "./guards.module";
-import {WorkoutCardInfoComponent} from "./pages/dashboard/workout-card-info/workout-card-info.component";
+import {WorkoutCardInfoComponent} from "./pages/workout/workout-card-info/workout-card-info.component";
 import {NgPipesModule} from "ngx-pipes";
 import {DatePipe} from "@angular/common";
 import {FriendSearchComponent} from "./pages/friend-search/friend-search.component";
 import {NotificationModalComponent} from "./pages/nav-menu/notification-modal/notification-modal.component";
 import {FriendsComponent} from "./pages/friends/friends.component";
-import { DateFormatterPipe } from './pipes/date-formatter.pipe';
+import {DateFormatterPipe} from './pipes/date-formatter.pipe';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { DateFormatterPipe } from './pipes/date-formatter.pipe';
     HomeComponent,
     SignUpComponent,
     DashboardComponent,
+    WorkoutComponent,
     WorkoutCardInfoComponent,
     NewWorkoutComponent,
     EditWorkoutComponent,

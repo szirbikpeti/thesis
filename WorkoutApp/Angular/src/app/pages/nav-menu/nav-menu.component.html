@@ -25,6 +25,14 @@
         <span [translate]="'NAV.DASHBOARD'"></span>
       </a>
       <mat-divider *ngIf="_auth.hasPermission('workout.management')"></mat-divider>
+      <a (click)="toggleDrawerWhenHandset()" routerLink="/my-workouts" mat-list-item
+         href="#" routerLinkActive="active">
+        <div class="menu-icon-container">
+          <img style="width: 24px; height: 24px" src="./assets/dumbell.png" class="menu-icon">
+        </div>
+        <span [translate]="'NAV.MY_WORKOUTS'"></span>
+      </a>
+      <mat-divider *ngIf="_auth.hasPermission('workout.management')"></mat-divider>
       <a *ngIf="_auth.hasPermission('workout.management')" (click)="toggleDrawerWhenHandset()" routerLink="/new-workout"
          mat-list-item href="#" routerLinkActive="active">
         <div class="menu-icon-container">

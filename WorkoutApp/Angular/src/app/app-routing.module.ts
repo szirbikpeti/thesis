@@ -10,6 +10,7 @@ import {SignOffGuard} from "./guards/sign-off.guard";
 import {AuthGuard} from "./guards/auth.guard";
 import {FriendSearchComponent} from "./pages/friend-search/friend-search.component";
 import {FriendsComponent} from "./pages/friends/friends.component";
+import {WorkoutComponent} from "./pages/workout/workout.component";
 
 const routes: Routes = [
   {
@@ -25,6 +26,10 @@ const routes: Routes = [
       {
         path: 'dashboard',
         component: DashboardComponent
+      },
+      {
+        path: 'my-workouts',
+        component: WorkoutComponent
       },
       {
         path: 'profile',

@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using WorkoutApp.Abstractions;
 using WorkoutApp.Dto;
 using WorkoutApp.Entities;
@@ -176,7 +175,7 @@ namespace WorkoutApp.Controllers
       await _notification.DoAddAsync(notification, cancellationToken)
         .ConfigureAwait(false);
       
-      await _notification.DoBroadcastMessages()
+      await _notification.DoBroadcastFollowNotifications(id)
         .ConfigureAwait(false);
       
       var newlyFetchedCurrentUser = await _userManager
@@ -226,7 +225,7 @@ namespace WorkoutApp.Controllers
       await _notification.DoAddAsync(notification, cancellationToken)
         .ConfigureAwait(false);
       
-      await _notification.DoBroadcastMessages()
+      await _notification.DoBroadcastFollowNotifications(new []{id.ToString(), currentUserId.ToString()})
         .ConfigureAwait(false);
 
       var newlyFetchedCurrentUser = await _userManager
@@ -262,7 +261,7 @@ namespace WorkoutApp.Controllers
       await _notification.DoAddAsync(notification, cancellationToken)
         .ConfigureAwait(false);
 
-      await _notification.DoBroadcastMessages()
+      await _notification.DoBroadcastFollowNotifications(new []{id.ToString(), currentUserId.ToString()})
         .ConfigureAwait(false);
       
       var newlyFetchedCurrentUser = await _userManager
@@ -298,7 +297,7 @@ id, currentUserId, NotificationType.FollowRequest, cancellationToken)
       await _notification.DoAddAsync(notification, cancellationToken)
         .ConfigureAwait(false);
       
-      await _notification.DoBroadcastMessages()
+      await _notification.DoBroadcastFollowNotifications(new []{id.ToString(), currentUserId.ToString()})
         .ConfigureAwait(false);
       
       var newlyFetchedCurrentUser = await _userManager
@@ -330,7 +329,7 @@ id, currentUserId, NotificationType.FollowRequest, cancellationToken)
       await _notification.DoAddAsync(notification, cancellationToken)
         .ConfigureAwait(false);
       
-      await _notification.DoBroadcastMessages()
+      await _notification.DoBroadcastFollowNotifications(id)
         .ConfigureAwait(false);
       
       var newlyFetchedCurrentUser = await _userManager

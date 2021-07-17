@@ -62,10 +62,12 @@ namespace WorkoutApp.Controllers
       [FromRoute] [Required] int id,
       CancellationToken cancellationToken)
     {
+      var currentUserId = _userManager.GetUserIdAsInt(HttpContext.User);
+      
       await _notification.DoDeleteAsync(id, cancellationToken)
         .ConfigureAwait(false);
 
-      await _notification.DoBroadcastMessages()
+      await _notification.DoBroadcastFollowNotifications(currentUserId)
         .ConfigureAwait(false);
       
       return Ok();

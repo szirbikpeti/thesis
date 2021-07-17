@@ -1,10 +1,4 @@
-import { Component } from '@angular/core';
-import {WorkoutService} from "../../services/workout.service";
-import {WorkoutModel} from "../../models/WorkoutModel";
-import {StateService} from "../../services/state.service";
-import {TranslateService} from "@ngx-translate/core";
-import {isNull} from "../../utility";
-import {DateFormatterPipe} from "../../pipes/date-formatter.pipe";
+import {Component} from '@angular/core';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,28 +7,4 @@ import {DateFormatterPipe} from "../../pipes/date-formatter.pipe";
 })
 export class DashboardComponent {
 
-  workouts: WorkoutModel[];
-
-  isNull = isNull;
-
-  constructor(private _workout: WorkoutService, private _state: StateService,
-              private _translate: TranslateService, private customDatePipe: DateFormatterPipe) {
-    this._workout.list().subscribe(workouts => this.workouts = workouts);
-  }
-
-  getGroupTitle(date: Date) {
-    const workoutDate = new Date(date);
-    const today = new Date(Date.now());
-
-    if (workoutDate.toDateString() === today.toDateString()) {
-      return this._translate.instant('GENERAL.TODAY');
-    }
-
-    today.setDate(today.getDate() - 1);
-    if (workoutDate.toDateString() === today.toDateString()) {
-      return this._translate.instant('GENERAL.YESTERDAY');
-    }
-
-    return this.customDatePipe.transform(workoutDate, this._state.language.value, false);
-  }
 }
