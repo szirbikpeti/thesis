@@ -12,6 +12,16 @@ namespace WorkoutApp.Configurations
       
       builder.Property(_ => _.Id)
         .ValueGeneratedOnAdd();
+      
+      builder.HasOne(_ => _.Post)
+        .WithMany(_ => _.Comments)
+        .HasForeignKey(_ => _.PostId)
+        .OnDelete(DeleteBehavior.Restrict);
+      
+      builder.HasOne(_ => _.User)
+        .WithMany(_ => _.Comments)
+        .HasForeignKey(_ => _.UserId)
+        .OnDelete(DeleteBehavior.Restrict);
     }
   }
 }

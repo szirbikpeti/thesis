@@ -1,0 +1,84 @@
+<h2 *ngIf="posts.length === 0">{{'POST.NO_POST' | translate}}</h2>
+<mat-card *ngFor="let post of posts; index as index">
+  <button *ngIf="tabIndex === 1" mat-icon-button class="more-button" [matMenuTriggerFor]="moreMenu">
+    <mat-icon>more_vert</mat-icon>
+  </button>
+  <mat-menu #moreMenu="matMenu" xPosition="before">
+    <button mat-menu-item class="delete-post-button" (click)="deletePost(post)">{{'GENERAL.DELETE' | translate}}</button>
+  </mat-menu>
+  <div class="profile-picture-container">
+    <img class="profile-picture" [src]="getPicture(post.user.profilePicture.data)">
+  </div>
+  <div class="username-container">{{post.user.userName}} <span style="font-weight: normal;"> - {{post.workout.type}}</span></div>
+  <hr>
+  <div style="position: relative">
+    <img class="post-file" [src]="getPicture(post.files[postAdditionData[index].currentFileNumber].data)">
+    <img *ngIf="postAdditionData[index].currentFileNumber !== 0"
+         (click)="setCurrentFileNumber(index, '--')" class="arrow-img left-arrow-img" src="assets/left-pagination.png">
+    <img *ngIf="!postAdditionData[index].isLastMediaFile"
+         (click)="setCurrentFileNumber(index, '++')" class="arrow-img right-arrow-img" src="assets/right-pagination.png">
+    <div style="text-align: center">{{postAdditionData[index].currentFileNumber + 1}}/{{post.files.length}}</div>
+  </div>
+  <div class="post-related-container">
+    <div>
+      <button *ngIf="!isLikedPost(post)" mat-icon-button (click)="like(post.id)">
+        <img src="assets/like-dumbell.png">
+      </button>
+      <button *ngIf="isLikedPost(post)" mat-icon-button (click)="unlike(post.id)">
+        <img src="assets/liked-dumbell.png">
+      </button>
+      <button style="margin-left: 10px;" mat-icon-button (click)="comment.focus()">
+        <img src="assets/comment.png">
+      </button>
+    </div>
+    <div *ngIf="post.likedUsers.length > 0">
+      {{post.likedUsers.length}} {{'POST.LIKE' | translate}}
+    </div>
+    <div class="description-container">
+      <strong style="margin-right: 8px;">{{post.user.userName}}</strong> {{post.description}}
+      <span class="show-details" (click)="setShowDetails(index)">
+          <span *ngIf="!postAdditionData[index].isShowDetails">{{'POST.SHOW_DETAILS' | translate}}</span>
+          <span *ngIf="postAdditionData[index].isShowDetails">{{'POST.SHOW_LESS' | translate}}</span>
+        </span>
+      <div class="workout-details-container" *ngIf="postAdditionData[index].isShowDetails">
+        <span class="edit-label" *ngIf="post.postedOn < post.workout.modifiedOn">{{'POST.EDITED' | translate}}</span>
+        <div class="exercise-container" *ngFor="let exercise of post.workout.exercises; index as index">
+          <h2>{{'WORKOUT.EXERCISE' | translate}} {{index + 1}}</h2>
+          <div class="exercise-left">
+            {{'WORKOUT.EXERCISE_NAME' | translate}}: {{exercise.name}}
+          </div>
+          <div class="exercise-right">
+            {{'WORKOUT.EXERCISE_EQUIPMENT' | translate}}: {{exercise.equipment}}
+          </div>
+          <div>
+            <table>
+              <tr>
+                <td>{{'WORKOUT.SET_WEIGHT' | translate}}</td>
+                <td *ngFor="let set of exercise.sets">{{set.weight}}</td>
+              </tr>
+              <tr>
+                <td>{{'WORKOUT.SET_REPS' | translate}}</td>
+                <td *ngFor="let set of exercise.sets">{{set.reps}}</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="post.comments.length > 0" class="separator">{{'POST.COMMENTS' | translate}}</div>
+    <div class="comment-container" *ngFor="let comment of post.comments">
+      <strong>{{comment.user.userName}}</strong> {{comment.comment}}
+      <button *ngIf="comment.user.id === currentUser.id" mat-icon-button class="more-horiz-button" [matMenuTriggerFor]="moreCommentMenu">
+        <mat-icon>more_horiz</mat-icon>
+      </button>
+      <mat-menu #moreCommentMenu="matMenu" xPosition="before">
+        <button mat-menu-item class="delete-post-button" (click)="deleteComment(post.id, comment.id)">{{'GENERAL.DELETE' | translate}}</button>
+      </mat-menu>
+    </div>
+    <hr>
+    <div class="add-comment-container">
+      <input #comment placeholder="{{'POST.ADD_COMMENT' | translate}}">
+      <button class="comment-button" mat-button (click)="addComment(post.id, comment);">{{'POST.COMMENT' | translate}}</button>
+    </div>
+  </div>
+</mat-card>

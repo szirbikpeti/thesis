@@ -1,15 +1,17 @@
 <h2 mat-dialog-title>{{'POST.ADD_TITLE' | translate}}</h2>
 <mat-spinner *ngIf="!unPostedWorkouts"></mat-spinner>
 <mat-dialog-content *ngIf="unPostedWorkouts" class="mat-typography">
-  <h3>{{'WORKOUT.WORKOUTS' | translate}}</h3>
-  <mat-form-field appearance="fill">
-    <mat-select [(ngModel)]="selectedWorkout" (selectionChange)="getFiles()" placeholder="{{'WORKOUT.SELECT' | translate}}">
-      <mat-option *ngFor="let workout of unPostedWorkouts" [value]="workout" [disabled]="workout.files.length === 0">
-        {{workout.date | dateFormatter : _state.language.value : false}} - {{workout.type}}
-        <span *ngIf="workout.files.length === 0">({{'GENERAL.NO_MEDIA_FILE' | translate}})</span>
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+  <div *ngIf="!data">
+    <h3>{{'WORKOUT.WORKOUTS' | translate}}</h3>
+    <mat-form-field appearance="fill">
+      <mat-select [(ngModel)]="selectedWorkout" (selectionChange)="getFiles()" placeholder="{{'WORKOUT.SELECT' | translate}}">
+        <mat-option *ngFor="let workout of unPostedWorkouts" [value]="workout" [disabled]="workout.files.length === 0">
+          {{workout.date | dateFormatter : _state.language.value : false}} - {{workout.type}}
+          <span *ngIf="workout.files.length === 0">({{'GENERAL.NO_MEDIA_FILE' | translate}})</span>
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
 
   <form *ngIf="selectedWorkout" [formGroup]="postForm">
     <mat-form-field class="example-full-width" appearance="fill">

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, Inject} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {WorkoutService} from "../../../services/workout.service";
 import {WorkoutModel} from "../../../models/WorkoutModel";
@@ -8,7 +8,7 @@ import {DomSanitizer} from "@angular/platform-browser";
 import {PostService} from "../../../services/post.service";
 import {ToastrService} from "ngx-toastr";
 import {TranslateService} from "@ngx-translate/core";
-import {MatDialogRef} from "@angular/material/dialog";
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-new-post',
@@ -26,18 +26,24 @@ export class NewPostComponent {
 
   getPicture = getPicture;
 
-  constructor(public _state: StateService, public sanitizer: DomSanitizer, private fb: FormBuilder,
+  constructor(public _state: StateService, public sanitizer: DomSanitizer, @Inject(MAT_DIALOG_DATA) public data: any,
+              private dialogRef: MatDialogRef<NewPostComponent>, private fb: FormBuilder,
               private _toast: ToastrService, private _translate: TranslateService,
-              private _workout: WorkoutService, private _post: PostService,
-              private dialogRef: MatDialogRef<NewPostComponent>) {
+              private _workout: WorkoutService, private _post: PostService) {
     this.postForm = fb.group({
       workoutId: [{value: '', disabled: true}],
       description: ['', Validators.required],
       fileIds: [{value: '', disabled: true}]
     });
 
-    _workout.list_unposted()
-      .subscribe(workouts => this.unPostedWorkouts = workouts);
+    if (data) {
+      this.selectedWorkout = data.workout;
+      this.unPostedWorkouts = [];
+      this.getFiles();
+    } else {
+      _workout.list_unposted()
+        .subscribe(workouts => this.unPostedWorkouts = workouts);
+    }
   }
 
   submitPostForm(): void {
@@ -72,8 +78,6 @@ export class NewPostComponent {
     this.selectedWorkout.files.forEach(file => {
       this.selectableFiles.push({file: file, isChecked: true});
     });
-
-    console.log(this.selectableFiles);
   }
 
   mediaFileOnClick(index: number): void {

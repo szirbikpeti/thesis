@@ -26,6 +26,6 @@ namespace WorkoutApp.Entities
     
     public ICollection<LikeEntity> LikingUsers { get; set; } = null!;
     
-    public ICollection<PostCommentRelationEntity> CommentRelationEntities { get; set; } = null!;
+    public ICollection<CommentEntity> Comments { get; set; } = null!;
   }
 }

@@ -38,13 +38,16 @@ namespace WorkoutApp.Repositories
         .AsSplitQuery()
         .Where(_ => _.UserId == currentUserId || followedUserIds.Contains(_.UserId))
         .Include(_ => _.User)
+        .ThenInclude(_ => _.ProfilePicture)
         .Include(_ => _.Workout)
         .ThenInclude(_ => _.Exercises)
         .ThenInclude(_ => _.Sets)
         .Include(_ => _.FileRelationEntities)
         .ThenInclude(_ => _.File)
-        .Include(_ => _.CommentRelationEntities)
-        .Include(_ => _.LikingUsers)  // TODO - ThenInclude
+        .Include(_ => _.Comments)
+        .ThenInclude(_ => _.User)
+        .Include(_ => _.LikingUsers)
+        .ThenInclude(_ => _.User)
         .ToListAsync(cancellationToken)
         .ConfigureAwait(false);
     }
@@ -55,13 +58,17 @@ namespace WorkoutApp.Repositories
         .AsNoTracking()
         .AsSplitQuery()
         .Where(_ => _.Id == postId)
+        .Include(_ => _.User)
+        .ThenInclude(_ => _.ProfilePicture)
         .Include(_ => _.Workout)
         .ThenInclude(_ => _.Exercises)
         .ThenInclude(_ => _.Sets)
         .Include(_ => _.FileRelationEntities)
         .ThenInclude(_ => _.File)
-        .Include(_ => _.CommentRelationEntities)
-        .Include(_ => _.LikingUsers)  // TODO - ThenInclude
+        .Include(_ => _.Comments)
+        .ThenInclude(_ => _.User)
+        .Include(_ => _.LikingUsers)
+        .ThenInclude(_ => _.User)
         .FirstOrDefaultAsync(cancellationToken)
         .ConfigureAwait(false);
     }
@@ -103,15 +110,6 @@ namespace WorkoutApp.Repositories
         .AddAsync(newComment, cancellationToken)
         .ConfigureAwait(false);
 
-      var newRelationEntity = new PostCommentRelationEntity {
-        PostId = postId,
-        CommentId = createdComment.Entity.Id
-      };
-
-      await _dbContext.PostCommentRelations
-        .AddAsync(newRelationEntity, cancellationToken)
-        .ConfigureAwait(false);
-      
       await _dbContext
         .SaveChangesAsync(cancellationToken)
         .ConfigureAwait(false);
@@ -175,27 +173,26 @@ namespace WorkoutApp.Repositories
     }
 
     public async Task<PostEntity?> DoDeleteCommentAsync(
-      PostCommentRelationEntity deletedRelation,
+      int postId,
+      int commentId,
       CancellationToken cancellationToken)
     {
       var deletedComment = await _dbContext.Comments
-        .Where(_ => _.Id == deletedRelation.CommentId)
+        .Where(_ => _.Id == commentId)
         .FirstOrDefaultAsync(cancellationToken)
         .ConfigureAwait(false);
 
       if (deletedComment is null) {
         return null;
       }
-      
+
       deletedComment.DeletedOn = DateTimeOffset.Now;
 
-      _dbContext.PostCommentRelations.Remove(deletedRelation);
-      
       await _dbContext
         .SaveChangesAsync(cancellationToken)
         .ConfigureAwait(false);
       
-      return await DoGetAsync(deletedRelation.PostId, cancellationToken)
+      return await DoGetAsync(postId, cancellationToken)
         .ConfigureAwait(false);
     }
 

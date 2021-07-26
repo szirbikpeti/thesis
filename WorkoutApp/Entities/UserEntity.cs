@@ -51,5 +51,7 @@ namespace WorkoutApp.Entities
         public ICollection<NotificationEntity> ReceivedNotifications { get; set; } = null!;
         
         public ICollection<LikeEntity> LikedPosts { get; set; } = null!;
+        
+        public ICollection<CommentEntity> Comments { get; set; } = null!;
     }
 }

@@ -1,0 +1,148 @@
+h2 {
+  margin: 15px;
+}
+
+mat-card {
+  position: relative;
+  margin: 25px auto;
+  width: 700px;
+}
+
+.profile-picture-container{
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.username-container {
+  display: inline-block;
+  font-weight: bolder;
+}
+
+.profile-picture {
+  border-radius: 50%;
+  height: 45px;
+  width: 45px;
+}
+
+.more-button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+
+.delete-post-button {
+  color: red;
+}
+
+.post-file {
+  width: 100%;
+  height: 650px;
+}
+
+.arrow-img {
+  cursor: pointer;
+  position: absolute;
+  top: 45%;
+  opacity: 0.6;
+}
+
+.left-arrow-img {
+  left: 15px;
+}
+
+.right-arrow-img {
+  right: 15px;
+}
+
+.left-arrow-img:hover {
+  box-shadow: 0 0 0 5px red;
+}
+
+.right-arrow-img:hover {
+  box-shadow: 5px 0 0 0 red;
+}
+
+.post-related-container {
+  margin-top: -13px;
+  margin-left: 5px;
+}
+
+.description-container {
+  margin-top: 12px;
+}
+
+.show-details {
+  color: #969696;
+  cursor: pointer;
+  margin-left: 30px;
+}
+
+.show-details:hover {
+  text-decoration: underline grey;
+}
+
+.workout-details-container {
+  position: relative;
+}
+
+.edit-label {
+  position: absolute;
+  color: #969696;
+  right: 10px;
+}
+
+.comment-container {
+  position: relative;
+  margin-top: 7px;
+  margin-left: 5px;
+}
+
+.more-horiz-button {
+  position: absolute;
+  top: -50%;
+  right: 0;
+}
+
+.add-comment-container {
+  position: relative;
+  margin-left: 5px;
+}
+
+input {
+  border: none;
+  width: 555px;
+}
+
+input:focus {
+  outline: none;
+}
+
+.comment-button {
+  position: absolute;
+  right: 0;
+  top: -50%;
+  margin-top: 6px;
+}
+
+.separator {
+  display: flex;
+  color: #969696;
+  align-items: center;
+  text-align: center;
+  margin-top: 15px;
+  margin-bottom: 10px;
+}
+
+.separator::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.separator:not(:empty)::before {
+  margin-right: .25em;
+}
+
+.separator:not(:empty)::after {
+  margin-left: .25em;
+}

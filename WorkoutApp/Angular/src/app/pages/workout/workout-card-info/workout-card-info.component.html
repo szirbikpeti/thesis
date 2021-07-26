@@ -1,6 +1,23 @@
 <div class="flex-container">
   <mat-card *ngFor="let workout of workouts">
-    <button mat-icon-button style="float:right" (click)="editWorkout(workout.id)"><mat-icon>edit</mat-icon></button>
+    <button mat-icon-button style="float:right" [matMenuTriggerFor]="moreMenu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #moreMenu="matMenu">
+      <button mat-menu-item (click)="editWorkout(workout.id)">
+        <mat-icon>edit</mat-icon>
+        {{'GENERAL.EDIT' | translate}}
+      </button>
+<!--      TODO - disable button if post is already exists for current workout-->
+      <button mat-menu-item (click)="openPostCreatorModal(workout)" [disabled]="workout.files.length === 0">
+        <mat-icon>share</mat-icon>
+        {{'POST.POST' | translate}}
+      </button>
+      <button mat-menu-item style="color: red" (click)="deleteWorkout(workout.id)">
+        <mat-icon color="warn">delete_forever</mat-icon>
+        {{'GENERAL.DELETE' | translate}}
+      </button>
+    </mat-menu>
     <div class="detail">
       {{'WORKOUT.TYPE' | translate}}: {{workout.type}}
     </div>
@@ -9,7 +26,7 @@
     </div>
     <div class="detail">
       <span style="margin-right: 10px">{{'WORKOUT.ATTACHMENTS' | translate}}: {{workout.files.length}}</span>
-      <span *ngFor="let file of workout.files | slice:0:3">
+      <span *ngFor="let file of workout.files | slice:0:2">
         <img *ngIf="!file.format.startsWith('video')" alt="No image" [src]="getPicture(file.data)">
         <video *ngIf="file.format.startsWith('video')" [src]="getPicture(file.data)"></video>
       </span>

@@ -22,7 +22,7 @@ namespace WorkoutApp.Abstractions
     
     Task<bool> DoDeleteAsync(int postId, CancellationToken cancellationToken);
     
-    Task<PostEntity?> DoDeleteCommentAsync(PostCommentRelationEntity deletedRelation, CancellationToken cancellationToken);
+    Task<PostEntity?> DoDeleteCommentAsync(int postId, int commentId, CancellationToken cancellationToken);
     
     Task<PostEntity?> DoDeleteLikeAsync(LikeEntity like, CancellationToken cancellationToken);
   }

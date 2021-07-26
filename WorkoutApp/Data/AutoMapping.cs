@@ -25,6 +25,9 @@ namespace WorkoutApp.Data
             CreateMap<NotificationEntity, GetNotificationDto>();
             CreateMap<PostAdditionDto, PostEntity>();
             CreateMap<PostEntity, GetPostDto>();
+            CreateMap<CommentAdditionDto, CommentEntity>();
+            CreateMap<CommentModificationDto, CommentEntity>();
+            CreateMap<CommentEntity, GetCommentDto>();
         }
     }
 }

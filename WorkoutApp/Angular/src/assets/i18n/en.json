@@ -6,6 +6,7 @@
     "INFO": "Info",
     "ERROR": "Error",
     "SAVE": "Save",
+    "EDIT": "Edit",
     "DELETE": "Delete",
     "YES": "Yes",
     "CANCEL": "Cancel",
@@ -107,8 +108,18 @@
   },
   "POST": {
     "ADD_TITLE": "Create new post",
+    "NO_POST": "No post to show",
+    "FRIENDS_POSTS": "Friends posts",
+    "MY_POSTS": "My posts",
     "POST": "Post",
     "DESCRIPTION": "Description",
+    "LIKE": "likes",
+    "ADD_COMMENT": "Add a comment",
+    "COMMENT": "Comment",
+    "COMMENTS": "Comments",
+    "SHOW_DETAILS": "show details",
+    "SHOW_LESS": "show less",
+    "EDITED": "Edited",
     "SUCCESSFUL_ADDITION": "Successful post addition",
     "UNSUCCESSFUL_ADDITION": "Unsuccessful post addition"
   }

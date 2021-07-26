@@ -11,5 +11,7 @@ namespace WorkoutApp.Dto
     public DateTimeOffset CommentedOn { get; set; }
     
     public DateTimeOffset ModifiedOn { get; set; }
+
+    public GetUserDto User { get; set; } = null!;
   }
 }

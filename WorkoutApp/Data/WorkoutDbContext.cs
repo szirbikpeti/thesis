@@ -30,7 +30,6 @@ namespace WorkoutApp.Data
         public DbSet<FollowRequestEntity> FollowRequests { get; set; } = null!;
         public DbSet<FollowEntity> Follows { get; set; } = null!;
         public DbSet<PostFileRelationEntity> PostFileRelations { get; set; } = null!;
-        public DbSet<PostCommentRelationEntity> PostCommentRelations { get; set; } = null!;
         public DbSet<LikeEntity> Likes { get; set; } = null!;
         
 
@@ -55,7 +54,6 @@ namespace WorkoutApp.Data
             modelBuilder.ApplyConfiguration(new CommentConfiguration());
             modelBuilder.ApplyConfiguration(new PostFileRelationConfiguration());
             modelBuilder.ApplyConfiguration(new NotificationConfiguration());
-            modelBuilder.ApplyConfiguration(new PostCommentRelationConfiguration());
             modelBuilder.ApplyConfiguration(new LikeConfiguration());
 
             modelBuilder.Entity<UserEntity>()

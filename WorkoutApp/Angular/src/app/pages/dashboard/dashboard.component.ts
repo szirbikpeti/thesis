@@ -3,6 +3,8 @@ import {PostService} from "../../services/post.service";
 import {PostModel} from "../../models/PostModel";
 import {MatDialog} from "@angular/material/dialog";
 import {NewPostComponent} from "./new-post/new-post.component";
+import {UserModel} from "../../models/UserModel";
+import {StateService} from "../../services/state.service";
 
 @Component({
   selector: 'app-dashboard',
@@ -11,22 +13,30 @@ import {NewPostComponent} from "./new-post/new-post.component";
 })
 export class DashboardComponent {
 
+  currentUser: UserModel;
+
   posts: PostModel[];
 
-  constructor(private _post: PostService, private dialog: MatDialog) {
+  constructor(private _post: PostService, private _state: StateService, private dialog: MatDialog) {
+    this.currentUser = _state.user.value;
+
     _post.list().subscribe(posts => {
-      console.log(posts);
-      this.posts = posts
+      this.posts = posts;
     });
   }
 
-  openPostCreatorModal() {
+  openPostCreatorModal(): void {
     this.dialog.open(NewPostComponent, {
       width: '650px',
-      disableClose: true,
-      // data: {
-      //   callback: () => this.deleteWorkout()
-      // }
+      disableClose: true
     });
+  }
+
+  getFriendsPosts(): PostModel[] {
+    return this.posts.filter(post => post.user.id !== this.currentUser.id);
+  }
+
+  getMyPosts(): PostModel[] {
+    return this.posts.filter(post => post.user.id === this.currentUser.id);
   }
 }

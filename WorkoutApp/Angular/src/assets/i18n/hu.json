@@ -6,6 +6,7 @@
     "INFO": "Információ",
     "ERROR": "Hiba",
     "SAVE": "Mentés",
+    "EDIT": "Módosítás",
     "DELETE": "Törlés",
     "YES": "Igen",
     "CANCEL": "Mégse",
@@ -106,8 +107,18 @@
   },
   "POST": {
     "ADD_TITLE": "Új poszt létrehozása",
+    "NO_POST": "Nincs megjelenítendő poszt",
+    "FRIENDS_POSTS": "Barátok posztjai",
+    "MY_POSTS": "Saját posztjai",
     "POST": "Posztolás",
     "DESCRIPTION": "Leírás",
+    "LIKE": "lájk",
+    "ADD_COMMENT": "Kommentelés",
+    "COMMENT": "Komment",
+    "COMMENTS": "Kommentek",
+    "SHOW_DETAILS": "mutass többet",
+    "SHOW_LESS": "mutass kevesebbet",
+    "EDITED": "Módosítva",
     "SUCCESSFUL_ADDITION": "Sikeres posztolás",
     "UNSUCCESSFUL_ADDITION": "Sikertelen posztolás"
   }

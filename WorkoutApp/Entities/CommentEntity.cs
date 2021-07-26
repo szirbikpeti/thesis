@@ -9,6 +9,8 @@ namespace WorkoutApp.Entities
     public int Id { get; set; }
     
     public int PostId { get; set; }
+    
+    public int UserId { get; set; }
 
     public string Comment { get; set; } = null!;
     
@@ -16,7 +18,9 @@ namespace WorkoutApp.Entities
     
     public DateTimeOffset ModifiedOn { get; set; }
     public DateTimeOffset? DeletedOn { get; set; }
+
+    public PostEntity Post { get; set; } = null!;
     
-    public ICollection<PostCommentRelationEntity> PostRelationEntities { get; set; } = null!;
+    public UserEntity User { get; set; } = null!;
   }
 }

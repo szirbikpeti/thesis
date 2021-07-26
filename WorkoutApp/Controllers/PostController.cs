@@ -89,8 +89,11 @@ namespace WorkoutApp.Controllers
       [FromBody] [Required] CommentAdditionDto newCommentDto,
       CancellationToken cancellationToken)
     {
+      var currentUserId = _userManager.GetUserIdAsInt(HttpContext.User);
+      
       // TODO - check that user posts includes postId
       var mappedComment = _mapper.Map<CommentEntity>(newCommentDto);
+      mappedComment.UserId = currentUserId;
       mappedComment.PostId = postId;
       mappedComment.CommentedOn = DateTimeOffset.Now;
       mappedComment.ModifiedOn = DateTimeOffset.Now;
@@ -106,9 +109,14 @@ namespace WorkoutApp.Controllers
       [FromBody] [Required] LikeDto newLikeDto,
       CancellationToken cancellationToken)
     {
-      var mappedLike = _mapper.Map<LikeEntity>(newLikeDto);
+      var currentUserId = _userManager.GetUserIdAsInt(HttpContext.User);
+      
+      var likeEntity = new LikeEntity {
+        PostId = newLikeDto.PostId,
+        UserId = currentUserId
+      };
 
-      var updatedPost = await _post.DoAddLikeAsync(mappedLike, cancellationToken)
+      var updatedPost = await _post.DoAddLikeAsync(likeEntity, cancellationToken)
         .ConfigureAwait(false);
 
       return Ok(CreatePostDto(updatedPost!));
@@ -135,6 +143,15 @@ namespace WorkoutApp.Controllers
       [FromRoute] [Required] int postId,
       CancellationToken cancellationToken)
     {
+      var currentUserId = _userManager.GetUserIdAsInt(HttpContext.User);
+      
+      var post = await _post.DoGetAsync(postId, cancellationToken)
+        .ConfigureAwait(false);
+
+      if (post!.UserId != currentUserId) {
+        return Unauthorized("Cannot be delete other's post");
+      }
+      
       var result = await _post.DoDeleteAsync(postId, cancellationToken)
         .ConfigureAwait(false);
 
@@ -151,12 +168,7 @@ namespace WorkoutApp.Controllers
       [FromRoute] [Required] int commentId,
       CancellationToken cancellationToken)
     {
-      var relationEntity = new PostCommentRelationEntity {
-        PostId = postId,
-        CommentId = commentId
-      };
-      
-      var updatedPost = await _post.DoDeleteCommentAsync(relationEntity, cancellationToken)
+      var updatedPost = await _post.DoDeleteCommentAsync(postId, commentId, cancellationToken)
         .ConfigureAwait(false);
 
       if (updatedPost is null) {
@@ -171,9 +183,14 @@ namespace WorkoutApp.Controllers
       [FromBody] [Required] LikeDto deletedLikeDto,
       CancellationToken cancellationToken)
     {
-      var mappedLike = _mapper.Map<LikeEntity>(deletedLikeDto);
+      var currentUserId = _userManager.GetUserIdAsInt(HttpContext.User);
+      
+      var likeEntity = new LikeEntity {
+        PostId = deletedLikeDto.PostId,
+        UserId = currentUserId
+      };
 
-      var updatedPost = await _post.DoDeleteLikeAsync(mappedLike, cancellationToken)
+      var updatedPost = await _post.DoDeleteLikeAsync(likeEntity, cancellationToken)
         .ConfigureAwait(false);
 
       return Ok(CreatePostDto(updatedPost!));
@@ -186,11 +203,7 @@ namespace WorkoutApp.Controllers
       postDto.Files = post.FileRelationEntities
         .Select(relation => _mapper.Map<GetFileDto>(relation.File))
         .ToImmutableList();
-      
-      postDto.Comments = post.CommentRelationEntities
-        .Select(relation => _mapper.Map<GetCommentDto>(relation.Comment))
-        .ToImmutableList();
-          
+
       postDto.LikedUsers = post.LikingUsers
         .Select(relation => _mapper.Map<GetUserDto>(relation.User))
         .ToImmutableList();

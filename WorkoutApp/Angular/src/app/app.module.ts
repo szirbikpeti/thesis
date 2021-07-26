@@ -29,6 +29,7 @@ import {FriendsComponent} from "./pages/friends/friends.component";
 import {DateFormatterPipe} from './pipes/date-formatter.pipe';
 import {NewPostComponent} from "./pages/dashboard/new-post/new-post.component";
 import {IsVideoPipe} from "./pipes/is-video.pipe";
+import {PostCardComponent} from "./pages/dashboard/post-card/post-card.component";
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import {IsVideoPipe} from "./pipes/is-video.pipe";
     HomeComponent,
     SignUpComponent,
     DashboardComponent,
+    PostCardComponent,
     NewPostComponent,
     WorkoutComponent,
     WorkoutCardInfoComponent,
