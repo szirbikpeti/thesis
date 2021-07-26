@@ -2,7 +2,7 @@
   <form [formGroup]="friendSearchForm" (ngSubmit)="submitFriendSearchForm()">
     <mat-form-field appearance="standard">
       <div class="center-input-field">
-        <input matInput placeholder="{{'USER_FORM.FULLNAME' | translate}} / {{'USER_FORM.USERNAME' | translate}}" formControlName="name">
+        <input matInput placeholder="{{'USER.FULLNAME' | translate}} / {{'USER.USERNAME' | translate}}" formControlName="name">
       </div>
     </mat-form-field>
     <button class="search-button" mat-raised-button type="submit">{{'FRIEND.SEARCH' | translate}}</button>

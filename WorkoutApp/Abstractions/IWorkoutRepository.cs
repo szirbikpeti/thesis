@@ -10,6 +10,8 @@ namespace WorkoutApp.Abstractions
   {
     Task<ICollection<WorkoutEntity>> ListAsync(int userId, CancellationToken cancellationToken);
     
+    Task<ICollection<WorkoutEntity>> ListUnPostedAsync(int userId, CancellationToken cancellationToken);
+    
     Task<WorkoutEntity?> DoGetAsync(int workoutId, CancellationToken cancellationToken);
     
     Task DoAddAsync(WorkoutEntity workout, IReadOnlyCollection<int> fileIds, CancellationToken cancellationToken);

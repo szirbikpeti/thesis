@@ -39,7 +39,7 @@ export class HomeComponent implements OnInit{
         this.router.navigate(['/dashboard']);
         }, () => {
         this._toast.error(
-          this._translate.instant('USER_FORM.UNSUCCESSFUL_LOGIN'),
+          this._translate.instant('USER.UNSUCCESSFUL_LOGIN'),
           this._translate.instant('GENERAL.ERROR'));
       });
   }

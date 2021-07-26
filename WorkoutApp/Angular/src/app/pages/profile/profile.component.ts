@@ -74,13 +74,13 @@ export class ProfileComponent implements OnInit {
       this._state.user = user;
 
       this._toast.success(
-        this._translate.instant('USER_FORM.SUCCESSFUL_UPDATE'),
+        this._translate.instant('USER.SUCCESSFUL_UPDATE'),
         this._translate.instant( 'GENERAL.INFO'));
 
       this.router.navigate(['/dashboard']);
     }, err => {
       this._toast.error(
-        this._translate.instant('USER_FORM.UNSUCCESSFUL_UPDATE'),
+        this._translate.instant('USER.UNSUCCESSFUL_UPDATE'),
         this._translate.instant( 'GENERAL.ERROR'));
     });
   }
@@ -96,7 +96,7 @@ export class ProfileComponent implements OnInit {
         callback: () => {
           this._user.delete().subscribe(() => {
             this._toast.success(
-              this._translate.instant('USER_FORM.SUCCESSFUL_DELETE'),
+              this._translate.instant('USER.SUCCESSFUL_DELETE'),
               this._translate.instant( 'GENERAL.INFO'));
 
             this._state.user = null;

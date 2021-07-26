@@ -11,9 +11,11 @@
     "CANCEL": "Mégse",
     "ARE_YOU_SURE": "Biztos benne?",
     "INVALID_FORM": "Érvénytelen beviteli mező(k)",
+    "MANDATORY_INPUT": "Kötelező mező",
     "TODAY": "Ma",
     "YESTERDAY": "Tegnap",
-    "OPERATION": "Művelet"
+    "OPERATION": "Művelet",
+    "NO_MEDIA_FILE": "Nincs média fájl"
   },
   "HOME": {
     "ADD_WORKOUTS": "Edzések rögzítése",
@@ -33,7 +35,7 @@
   "PAGE": {
     "PROFILE": "Profil adatok"
   },
-  "USER_FORM": {
+  "USER": {
     "LOGIN": "Bejelentkezés",
     "SIGNUP": "Regisztráció",
     "REGISTRATION": "Új fiók létrehozása",
@@ -52,7 +54,8 @@
     "UNSUCCESSFUL_UPDATE": "Sikertelen módosítás",
     "SUCCESSFUL_DELETE":  "Sikeres törlés"
   },
-  "WORKOUT_FORM": {
+  "WORKOUT": {
+    "WORKOUTS": "Edzések",
     "ADD_TITLE": "Új edzés",
     "MODIFY_TITLE": "Edzés módosítás",
     "DATE": "Dátum",
@@ -70,6 +73,7 @@
     "ADD": "Edzés hozzáadása",
     "MODIFY": "Edzés módosítása",
     "DELETE": "Edzés törlése",
+    "SELECT": "Válasszon edzést",
     "SUCCESSFUL_ADDITION": "Sikeres edzés hozzáadás",
     "UNSUCCESSFUL_ADDITION": "Sikertelen edzés hozzáadás",
     "SUCCESSFUL_MODIFICATION": "Sikeres edzés módosítás",
@@ -99,5 +103,12 @@
     "ACCEPT": "Elfogad",
     "DECLINE": "Elutasít",
     "MARK_AS_READ": "Olvasottként jelöl"
+  },
+  "POST": {
+    "ADD_TITLE": "Új poszt létrehozása",
+    "POST": "Posztolás",
+    "DESCRIPTION": "Leírás",
+    "SUCCESSFUL_ADDITION": "Sikeres posztolás",
+    "UNSUCCESSFUL_ADDITION": "Sikertelen posztolás"
   }
 }

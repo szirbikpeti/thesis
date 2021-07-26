@@ -3,10 +3,10 @@
   <mat-dialog-content class="mat-typography">
     <img class="profile-picture" [src]="getPicture(sentByUser.profilePicture.data)">
     <h3>{{sentByUser.userName}}</h3>
-    <p>{{'USER_FORM.FULLNAME' | translate}}: {{sentByUser.fullName}}</p>
-    <p>{{'USER_FORM.EMAIL' | translate}}: {{sentByUser.email}}</p>
-    <p *ngIf="sentByUser.birthday !== null">{{'USER_FORM.BIRTHDAY' | translate}}: {{sentByUser.birthday | date:'yyyy.MM.dd.'}}</p>
-    <p>{{'USER_FORM.LASTSIGNEDINON' | translate}}: {{sentByUser.lastSignedInOn | dateFormatter: currentLanguage}}</p>
+    <p>{{'USER.FULLNAME' | translate}}: {{sentByUser.fullName}}</p>
+    <p>{{'USER.EMAIL' | translate}}: {{sentByUser.email}}</p>
+    <p *ngIf="sentByUser.birthday !== null">{{'USER.BIRTHDAY' | translate}}: {{sentByUser.birthday | date:'yyyy.MM.dd.'}}</p>
+    <p>{{'USER.LASTSIGNEDINON' | translate}}: {{sentByUser.lastSignedInOn | dateFormatter: currentLanguage}}</p>
     <p style="margin-top: 4px;">{{sentByUser.about}}</p>
 
     <h2 mat-dialog-title style="margin-top: 10px;">{{'NOTIFICATION.NOTIFICATION' | translate}}</h2>

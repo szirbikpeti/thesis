@@ -17,6 +17,11 @@ namespace WorkoutApp.Configurations
 
       builder.Property(_ => _.Id)
         .ValueGeneratedOnAdd();
+
+      builder.HasOne(_ => _.Workout)
+        .WithOne(_ => _!.Post!)
+        .HasForeignKey<PostEntity>(_ => _.WorkoutId)
+        .OnDelete(DeleteBehavior.Restrict);
       
       builder.HasOne(_ => _.User)
         .WithMany(_ => _.Posts)

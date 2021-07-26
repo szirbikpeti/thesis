@@ -12,6 +12,8 @@ namespace WorkoutApp.Dto
 
     public string Description { get; set; } = null!;
 
+    public GetWorkoutDto Workout { get; set; } = null!;
+    
     public GetUserDto User { get; set; } = null!;
     
     public IReadOnlyCollection<GetFileDto> Files { get; set; } = 

@@ -1,0 +1,58 @@
+mat-form-field {
+  width: 80%;
+}
+
+.exercise-container {
+  margin-top: 15px;
+  margin-bottom: 25px;
+}
+
+.exercise-left {
+  display: inline-block;
+  margin-right: 100px;
+  width: 200px;
+}
+
+.exercise-right {
+  display: inline-block;
+  margin-bottom: 20px;
+}
+
+table {
+  width: 88%;
+}
+
+.workout-file-container {
+  display: inline-block;
+  position: relative;
+  margin: 10px;
+}
+
+img, video {
+  cursor: pointer;
+  height: 86px;
+  width: 86px;
+}
+
+img:hover, video:hover {
+  border: 1px solid #47424299;
+  box-shadow: 0 0 10px #4742424d;
+}
+
+mat-checkbox {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+
+::ng-deep mat-checkbox {
+  & .mat-checkbox-background, .mat-checkbox-frame {
+    border-radius: 50% !important;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .exercise-left {
+    margin-right: 0;
+  }
+}

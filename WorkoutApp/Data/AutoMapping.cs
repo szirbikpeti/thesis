@@ -23,6 +23,8 @@ namespace WorkoutApp.Data
             CreateMap<GetFileDto, FileEntity>();
             CreateMap<FileEntity, GetFileDto>();
             CreateMap<NotificationEntity, GetNotificationDto>();
+            CreateMap<PostAdditionDto, PostEntity>();
+            CreateMap<PostEntity, GetPostDto>();
         }
     }
 }

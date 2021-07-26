@@ -34,7 +34,17 @@ namespace WorkoutApp.Repositories
         .ConfigureAwait(false);
 
       return await _dbContext.Posts
+        .AsNoTracking()
+        .AsSplitQuery()
         .Where(_ => _.UserId == currentUserId || followedUserIds.Contains(_.UserId))
+        .Include(_ => _.User)
+        .Include(_ => _.Workout)
+        .ThenInclude(_ => _.Exercises)
+        .ThenInclude(_ => _.Sets)
+        .Include(_ => _.FileRelationEntities)
+        .ThenInclude(_ => _.File)
+        .Include(_ => _.CommentRelationEntities)
+        .Include(_ => _.LikingUsers)  // TODO - ThenInclude
         .ToListAsync(cancellationToken)
         .ConfigureAwait(false);
     }
@@ -45,7 +55,11 @@ namespace WorkoutApp.Repositories
         .AsNoTracking()
         .AsSplitQuery()
         .Where(_ => _.Id == postId)
+        .Include(_ => _.Workout)
+        .ThenInclude(_ => _.Exercises)
+        .ThenInclude(_ => _.Sets)
         .Include(_ => _.FileRelationEntities)
+        .ThenInclude(_ => _.File)
         .Include(_ => _.CommentRelationEntities)
         .Include(_ => _.LikingUsers)  // TODO - ThenInclude
         .FirstOrDefaultAsync(cancellationToken)

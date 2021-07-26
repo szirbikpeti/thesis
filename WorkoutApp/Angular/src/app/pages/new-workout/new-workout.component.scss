@@ -122,9 +122,9 @@ table {
   width: 65%;
 }
 
-img:hover {
-  width: 100px;
-  height: 100px;
+img, video {
+  height: 40px;
+  width: 40px;
 }
 
 @media screen and (max-width: 830px) {

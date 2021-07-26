@@ -1,4 +1,4 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import {Pipe, PipeTransform} from '@angular/core';
 import {DatePipe} from "@angular/common";
 
 @Pipe({
@@ -9,7 +9,7 @@ export class DateFormatterPipe implements PipeTransform {
   constructor(private datePipe: DatePipe) {
   }
 
-  transform(value: Date, language: string, isDateTime = true): unknown {
+  transform(value: Date, language: string, isDateTime = true): string {
     const date = new Date(value);
 
     const format = language === 'hu'

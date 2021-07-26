@@ -22,6 +22,8 @@ namespace WorkoutApp.Entities
 
         public UserEntity User { get; set; } = null!;
         
+        public PostEntity? Post { get; set; }
+        
         public ICollection<ExerciseEntity> Exercises { get; set; } = null!;
         
         public ICollection<WorkoutFileRelationEntity> FileRelationEntities { get; set; } = null!;

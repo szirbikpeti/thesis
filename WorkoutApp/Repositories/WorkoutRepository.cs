@@ -44,6 +44,7 @@ namespace WorkoutApp.Repositories
         .AsNoTracking()
         .AsSplitQuery()
         .Where(_ => _.UserId == userId)
+        .Include(_ => _.Post)
         .Include(_ => _.Exercises)
         .ThenInclude(_ => _.Sets)
         .Include(_ => _.FileRelationEntities)
@@ -52,7 +53,23 @@ namespace WorkoutApp.Repositories
         .ToListAsync(cancellationToken)
         .ConfigureAwait(false);
     }
-    
+
+    public async Task<ICollection<WorkoutEntity>> ListUnPostedAsync(int userId, CancellationToken cancellationToken)
+    {
+      return await _dbContext.Workouts
+        .AsNoTracking()
+        .AsSplitQuery()
+        .Include(_ => _.Post)
+        .Where(_ => _.UserId == userId && _.Post == null)
+        .Include(_ => _.Exercises)
+        .ThenInclude(_ => _.Sets)
+        .Include(_ => _.FileRelationEntities)
+        .ThenInclude(_ => _.File)
+        .OrderByDescending(_ => _.Date)
+        .ToListAsync(cancellationToken)
+        .ConfigureAwait(false);
+    }
+
     public async Task<WorkoutEntity?> DoGetAsync(int workoutId, CancellationToken cancellationToken)
     {
       return await _dbContext.Workouts

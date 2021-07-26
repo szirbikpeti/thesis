@@ -53,6 +53,29 @@ namespace WorkoutApp.Controllers
 
       return Ok(workoutDtoList);
     }
+    
+
+    [HttpGet("unposted")]
+    public async Task<ActionResult<ICollection<GetWorkoutDto>>> ListUnPostedWorkoutsAsync(
+      CancellationToken cancellationToken)
+    {
+      var currentUserId = _userManager.GetUserIdAsInt(HttpContext.User);
+      
+      var fetchedWorkouts = await _workout.ListUnPostedAsync(currentUserId, cancellationToken)
+        .ConfigureAwait(false);
+
+      var workoutDtoList = fetchedWorkouts
+        .Select(workout => {
+          var mappedWorkoutDto = _mapper.Map<GetWorkoutDto>(workout);
+          mappedWorkoutDto.Files = workout.FileRelationEntities
+            .Select(relation => _mapper.Map<GetFileDto>(relation.File))
+            .ToImmutableList();
+          
+          return mappedWorkoutDto;
+        });
+
+      return Ok(workoutDtoList);
+    }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<GetWorkoutDto>> GetAsync(

@@ -11,9 +11,11 @@
     "CANCEL": "Cancel",
     "ARE_YOU_SURE": "Are you sure?",
     "INVALID_FORM": "Invalid input field(s)",
+    "MANDATORY_INPUT": "Mandatory input field",
     "TODAY": "Today",
     "YESTERDAY": "Yesterday",
-    "OPERATION": "Operation"
+    "OPERATION": "Operation",
+    "NO_MEDIA_FILE": "No media file"
   },
   "HOME": {
     "ADD_WORKOUTS": "Adding workouts",
@@ -33,7 +35,7 @@
   "PAGE": {
     "PROFILE": "Profile"
   },
-  "USER_FORM": {
+  "USER": {
     "LOGIN": "Log In",
     "SIGNUP": "Sign Up",
     "REGISTRATION": "Create New Account",
@@ -53,7 +55,8 @@
     "UNSUCCESSFUL_UPDATE": "Unsuccessful update",
     "SUCCESSFUL_DELETE":  "Successful delete"
   },
-  "WORKOUT_FORM": {
+  "WORKOUT": {
+    "WORKOUTS": "Workouts",
     "ADD_TITLE": "New workout",
     "MODIFY_TITLE": "Workout modification",
     "DATE": "Date",
@@ -71,6 +74,7 @@
     "ADD": "Add workout",
     "MODIFY": "Modify workout",
     "DELETE": "Delete workout",
+    "SELECT": "Select a workout",
     "SUCCESSFUL_ADDITION": "Successful workout addition",
     "UNSUCCESSFUL_ADDITION": "Unsuccessful workout addition",
     "SUCCESSFUL_MODIFICATION": "Successful workout modification",
@@ -100,5 +104,12 @@
     "ACCEPT": "Accept",
     "DECLINE": "Decline",
     "MARK_AS_READ": "Mark as read"
+  },
+  "POST": {
+    "ADD_TITLE": "Create new post",
+    "POST": "Post",
+    "DESCRIPTION": "Description",
+    "SUCCESSFUL_ADDITION": "Successful post addition",
+    "UNSUCCESSFUL_ADDITION": "Unsuccessful post addition"
   }
 }

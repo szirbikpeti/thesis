@@ -18,6 +18,10 @@ export class WorkoutService {
     return this._http.request(Resource.WORKOUT, Method.GET);
   }
 
+  list_unposted(): Observable<WorkoutModel[]> {
+    return this._http.request(Resource.UNPOSTED, Method.GET);
+  }
+
   get(id: string): Observable<WorkoutModel> {
     return this._http.request(Resource.WORKOUT, Method.GET, null, id);
   }

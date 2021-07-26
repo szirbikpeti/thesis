@@ -2,7 +2,6 @@ import {Component} from '@angular/core';
 import {PostService} from "../../services/post.service";
 import {PostModel} from "../../models/PostModel";
 import {MatDialog} from "@angular/material/dialog";
-import {ConfirmationDialogComponent} from "../confirmation-dialog/confirmation-dialog.component";
 import {NewPostComponent} from "./new-post/new-post.component";
 
 @Component({
@@ -23,6 +22,7 @@ export class DashboardComponent {
 
   openPostCreatorModal() {
     this.dialog.open(NewPostComponent, {
+      width: '650px',
       disableClose: true,
       // data: {
       //   callback: () => this.deleteWorkout()

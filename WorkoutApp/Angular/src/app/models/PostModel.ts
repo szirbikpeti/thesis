@@ -1,6 +1,7 @@
 ﻿import {UserModel} from "./UserModel";
 import {FileModel} from "./FileModel";
 import {CommentModel} from "./CommentModel";
+import {WorkoutModel} from "./WorkoutModel";
 
 export interface PostModel {
   id: string,
@@ -8,6 +9,7 @@ export interface PostModel {
   description: string,
   user: UserModel,
   files: FileModel[],
+  workout: WorkoutModel,
   comments: CommentModel[],
   likedUsers: UserModel[]
 }

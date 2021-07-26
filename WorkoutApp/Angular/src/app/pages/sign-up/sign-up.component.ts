@@ -67,7 +67,7 @@ export class SignUpComponent implements OnInit {
         this.dialogRef.close();
 
         this._toast.success(
-          this._translate.instant('USER_FORM.SUCCESSFUL_SIGNUP'),
+          this._translate.instant('USER.SUCCESSFUL_SIGNUP'),
           this._translate.instant( 'GENERAL.INFO'));
       });
   }

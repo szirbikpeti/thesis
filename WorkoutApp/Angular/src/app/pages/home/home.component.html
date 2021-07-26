@@ -42,26 +42,26 @@
 </div>
 
 <mat-card>
-  <h2>{{'USER_FORM.LOGIN' | translate}}</h2>
+  <h2>{{'USER.LOGIN' | translate}}</h2>
   <form [formGroup]="loginForm" (ngSubmit)="submitLoginForm()">
     <div class="control-container">
       <mat-form-field appearance="standard">
         <div class="center-input-field">
-          <input matInput placeholder="{{'USER_FORM.USERNAME' | translate}}" formControlName="userName">
+          <input matInput placeholder="{{'USER.USERNAME' | translate}}" formControlName="userName">
         </div>
       </mat-form-field>
     </div>
     <div class="control-container">
       <mat-form-field appearance="standard">
         <div class="center-input-field">
-          <input matInput type="password" placeholder="{{'USER_FORM.PASSWORD' | translate}}" formControlName="password">
+          <input matInput type="password" placeholder="{{'USER.PASSWORD' | translate}}" formControlName="password">
         </div>
       </mat-form-field>
     </div>
 
-    <button type="submit" mat-button >{{'USER_FORM.LOGIN' | translate}}</button>
+    <button type="submit" mat-button >{{'USER.LOGIN' | translate}}</button>
     <hr>
-    <button type="button" mat-raised-button class="signup-button" (click)="openSignUpModal()">{{'USER_FORM.REGISTRATION' | translate}}</button>
+    <button type="button" mat-raised-button class="signup-button" (click)="openSignUpModal()">{{'USER.REGISTRATION' | translate}}</button>
   </form>
 </mat-card>
 <div style="color: #cfcfd6">-</div>

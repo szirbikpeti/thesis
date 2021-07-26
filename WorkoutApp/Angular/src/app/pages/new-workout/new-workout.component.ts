@@ -52,7 +52,7 @@ export class NewWorkoutComponent implements OnInit {
   private createNewSet(): FormGroup {
     return this.fb.group({
       reps: [1, Validators.required],
-      weight: [1.0, Validators.required],
+      weight: [0, Validators.required],
       duration: []
     });
   }
@@ -94,7 +94,6 @@ export class NewWorkoutComponent implements OnInit {
 
   uploadAttachments(): void {
     if (this.workoutForm.invalid) {
-      console.log("invalid form");
       return;
     }
 
@@ -125,13 +124,13 @@ export class NewWorkoutComponent implements OnInit {
 
     this._workout.create(workoutRequest).subscribe(() => {
       this._toast.success(
-        this._translate.instant('WORKOUT_FORM.SUCCESSFUL_ADDITION'),
+        this._translate.instant('WORKOUT.SUCCESSFUL_ADDITION'),
         this._translate.instant( 'GENERAL.INFO'));
 
       this.router.navigate(['/my-workouts']);
     }, () => {
       this._toast.success(
-        this._translate.instant('WORKOUT_FORM.UNSUCCESSFUL_ADDITION'),
+        this._translate.instant('WORKOUT.UNSUCCESSFUL_ADDITION'),
         this._translate.instant( 'GENERAL.ERROR'));
     });
   }

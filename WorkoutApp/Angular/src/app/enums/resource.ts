@@ -9,6 +9,7 @@ export enum Resource {
   USER_FOLLOW_REQUESTS_AND_FOLLOWS = 'user/followRequestsAndFollows/',
   FILE = 'file/',
   WORKOUT = 'workout/',
+  UNPOSTED = 'workout/unposted/',
   NOTIFICATION = "notification/",
   POST = "post/"
 }

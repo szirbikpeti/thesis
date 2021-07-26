@@ -67,6 +67,10 @@ namespace WorkoutApp.Controllers
       [FromBody] [Required] PostAdditionDto newPostDto,
       CancellationToken cancellationToken)
     {
+      if (newPostDto.FileIds.Count == 0) {
+        return BadRequest("One file is must be selected.");
+      }
+      
       var currentUserId = _userManager.GetUserIdAsInt(HttpContext.User);
       
       var mappedPost = _mapper.Map<PostEntity>(newPostDto);
@@ -182,7 +186,7 @@ namespace WorkoutApp.Controllers
       postDto.Files = post.FileRelationEntities
         .Select(relation => _mapper.Map<GetFileDto>(relation.File))
         .ToImmutableList();
-
+      
       postDto.Comments = post.CommentRelationEntities
         .Select(relation => _mapper.Map<GetCommentDto>(relation.Comment))
         .ToImmutableList();

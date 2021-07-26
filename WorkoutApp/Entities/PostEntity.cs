@@ -10,6 +10,8 @@ namespace WorkoutApp.Entities
     
     public int UserId { get; set; }
     
+    public int WorkoutId { get; set; }
+    
     public DateTimeOffset PostedOn { get; set; }
 
     public string Description { get; set; } = null!;
@@ -17,6 +19,8 @@ namespace WorkoutApp.Entities
     public DateTimeOffset? DeletedOn { get; set; }
 
     public UserEntity User { get; set; } = null!;
+    
+    public WorkoutEntity Workout { get; set; } = null!;
     
     public ICollection<PostFileRelationEntity> FileRelationEntities { get; set; } = null!;
     

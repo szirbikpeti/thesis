@@ -108,13 +108,13 @@ export class EditWorkoutComponent {
 
     this._workout.update(this.workout.id, workoutRequest).subscribe(() => {
       this._toast.success(
-        this._translate.instant('WORKOUT_FORM.SUCCESSFUL_MODIFICATION'),
+        this._translate.instant('WORKOUT.SUCCESSFUL_MODIFICATION'),
         this._translate.instant( 'GENERAL.INFO'));
 
       this.router.navigate(['/my-workouts']);
     }, () => {
       this._toast.error(
-        this._translate.instant('WORKOUT_FORM.UNSUCCESSFUL_MODIFICATION'),
+        this._translate.instant('WORKOUT.UNSUCCESSFUL_MODIFICATION'),
         this._translate.instant( 'GENERAL.ERROR'));
     });
   }
@@ -162,13 +162,13 @@ export class EditWorkoutComponent {
     this._workout.delete(this.workout.id)
       .subscribe(() => {
         this._toast.success(
-          this._translate.instant('WORKOUT_FORM.SUCCESSFUL_DELETE'),
+          this._translate.instant('WORKOUT.SUCCESSFUL_DELETE'),
           this._translate.instant( 'GENERAL.INFO'));
 
         this.router.navigate(['/dashboard']);
       }, () => {
         this._toast.success(
-          this._translate.instant('WORKOUT_FORM.UNSUCCESSFUL_DELETE'),
+          this._translate.instant('WORKOUT.UNSUCCESSFUL_DELETE'),
           this._translate.instant( 'GENERAL.INFO'));
 
         this.router.navigate(['/dashboard']);

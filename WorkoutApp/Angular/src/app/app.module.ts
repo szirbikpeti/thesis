@@ -28,6 +28,7 @@ import {NotificationModalComponent} from "./pages/nav-menu/notification-modal/no
 import {FriendsComponent} from "./pages/friends/friends.component";
 import {DateFormatterPipe} from './pipes/date-formatter.pipe';
 import {NewPostComponent} from "./pages/dashboard/new-post/new-post.component";
+import {IsVideoPipe} from "./pipes/is-video.pipe";
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import {NewPostComponent} from "./pages/dashboard/new-post/new-post.component";
     FriendSearchComponent,
     FriendsComponent,
     ConfirmationDialogComponent,
-    DateFormatterPipe
+    DateFormatterPipe,
+    IsVideoPipe
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

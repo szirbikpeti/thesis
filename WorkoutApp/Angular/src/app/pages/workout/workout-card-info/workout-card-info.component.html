@@ -2,20 +2,20 @@
   <mat-card *ngFor="let workout of workouts">
     <button mat-icon-button style="float:right" (click)="editWorkout(workout.id)"><mat-icon>edit</mat-icon></button>
     <div class="detail">
-      {{'WORKOUT_FORM.TYPE' | translate}}: {{workout.type}}
+      {{'WORKOUT.TYPE' | translate}}: {{workout.type}}
     </div>
     <div class="detail">
-      {{'WORKOUT_FORM.EXERCISES' | translate}}: {{workout.exercises.length}}
+      {{'WORKOUT.EXERCISES' | translate}}: {{workout.exercises.length}}
     </div>
     <div class="detail">
-      <span style="margin-right: 10px">{{'WORKOUT_FORM.ATTACHMENTS' | translate}}: {{workout.files.length}}</span>
+      <span style="margin-right: 10px">{{'WORKOUT.ATTACHMENTS' | translate}}: {{workout.files.length}}</span>
       <span *ngFor="let file of workout.files | slice:0:3">
         <img *ngIf="!file.format.startsWith('video')" alt="No image" [src]="getPicture(file.data)">
         <video *ngIf="file.format.startsWith('video')" [src]="getPicture(file.data)"></video>
       </span>
     </div>
     <div class="modified-on-container">
-      {{'WORKOUT_FORM.MODIFIED_ON' | translate}}: {{workout.modifiedOn | dateFormatter : _state.language.value : false}}
+      {{'WORKOUT.MODIFIED_ON' | translate}}: {{workout.modifiedOn | dateFormatter : _state.language.value : false}}
     </div>
   </mat-card>
 </div>
