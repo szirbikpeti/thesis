@@ -8,6 +8,7 @@ import {WorkoutService} from "../../../services/workout.service";
 import {NewPostComponent} from "../../dashboard/new-post/new-post.component";
 import {MatDialog} from "@angular/material/dialog";
 import {ConfirmationDialogComponent} from "../../confirmation-dialog/confirmation-dialog.component";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-workout-card-info',
@@ -20,11 +21,15 @@ export class WorkoutCardInfoComponent{
 
   getPicture = getPicture;
 
-  constructor(public _state: StateService, private _workout: WorkoutService,
+  constructor(public _state: StateService, private _workout: WorkoutService, private _translate: TranslateService,
               private router: Router, public sanitizer: DomSanitizer, private dialog: MatDialog) { }
 
   editWorkout(id: string): void {
     this.router.navigate(['/edit-workout', id]);
+  }
+
+  duplicateWorkout(id: string) {
+    this.router.navigate(['new-workout', id]);
   }
 
   deleteWorkout(id: string) {
@@ -46,5 +51,21 @@ export class WorkoutCardInfoComponent{
         workout: workout
       }
     });
+  }
+
+  isPostButtonDisabled(workout: WorkoutModel): boolean {
+    return workout.files.length === 0 || workout.relatedPost !== null;
+  }
+
+  getTooltipText(workout: WorkoutModel): string {
+    if (workout.relatedPost) {
+      return this._translate.instant('POST.EXISTS');
+    }
+
+    if (workout.files.length === 0) {
+      return this._translate.instant('GENERAL.NO_MEDIA_FILE');
+    }
+
+    return null;
   }
 }

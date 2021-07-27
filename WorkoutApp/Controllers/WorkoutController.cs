@@ -44,6 +44,8 @@ namespace WorkoutApp.Controllers
       var workoutDtoList = fetchedWorkouts
         .Select(workout => {
           var mappedWorkoutDto = _mapper.Map<GetWorkoutDto>(workout);
+          mappedWorkoutDto.RelatedPost = _mapper.Map<GetPostDto>(workout.Post);
+          
           mappedWorkoutDto.Files = workout.FileRelationEntities
             .Select(relation => _mapper.Map<GetFileDto>(relation.File))
             .ToImmutableList();
@@ -67,6 +69,8 @@ namespace WorkoutApp.Controllers
       var workoutDtoList = fetchedWorkouts
         .Select(workout => {
           var mappedWorkoutDto = _mapper.Map<GetWorkoutDto>(workout);
+          mappedWorkoutDto.RelatedPost = _mapper.Map<GetPostDto>(workout.Post);
+          
           mappedWorkoutDto.Files = workout.FileRelationEntities
             .Select(relation => _mapper.Map<GetFileDto>(relation.File))
             .ToImmutableList();
@@ -90,6 +94,7 @@ namespace WorkoutApp.Controllers
       }
 
       var workoutDto = _mapper.Map<GetWorkoutDto>(fetchedWorkout);
+      workoutDto.RelatedPost = _mapper.Map<GetPostDto>(fetchedWorkout.Post);
 
       workoutDto.Files = fetchedWorkout.FileRelationEntities
         .Select(relation => _mapper.Map<GetFileDto>(relation.File))

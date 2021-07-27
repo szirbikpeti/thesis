@@ -74,19 +74,19 @@
           <div formArrayName="sets">
             <div *ngFor="let set of getSet(exerciseIndex).controls; let setIndex = index;">
               <div class="row set-container" [formGroupName]="setIndex">
-                <div >
-                  <div class="placeholder">{{'WORKOUT.SET_REPS' | translate}}</div>
-                  <mat-form-field class="small-mat-form-field">
-                    <div class="center-input-field">
-                      <input type="number" matInput formControlName="reps">
-                    </div>
-                  </mat-form-field>
-                </div>
                 <div>
                   <div class="placeholder">{{'WORKOUT.SET_WEIGHT' | translate}}</div>
                   <mat-form-field class="small-mat-form-field">
                     <div class="center-input-field">
                       <input type="number" matInput formControlName="weight">
+                    </div>
+                  </mat-form-field>
+                </div>
+                <div>
+                  <div class="placeholder">{{'WORKOUT.SET_REPS' | translate}}</div>
+                  <mat-form-field class="small-mat-form-field">
+                    <div class="center-input-field">
+                      <input type="number" matInput formControlName="reps">
                     </div>
                   </mat-form-field>
                 </div>

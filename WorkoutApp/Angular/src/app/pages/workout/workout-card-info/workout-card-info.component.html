@@ -8,11 +8,16 @@
         <mat-icon>edit</mat-icon>
         {{'GENERAL.EDIT' | translate}}
       </button>
-<!--      TODO - disable button if post is already exists for current workout-->
-      <button mat-menu-item (click)="openPostCreatorModal(workout)" [disabled]="workout.files.length === 0">
+      <button mat-menu-item (click)="duplicateWorkout(workout.id)">
+        <mat-icon>content_copy</mat-icon>
+        {{'GENERAL.DUPLICATE' | translate}}
+      </button>
+      <span  [matTooltip]="getTooltipText(workout)" matTooltipPosition="right" [matTooltipDisabled]="!isPostButtonDisabled(workout)">
+      <button mat-menu-item (click)="openPostCreatorModal(workout)" [disabled]="isPostButtonDisabled(workout)">
         <mat-icon>share</mat-icon>
         {{'POST.POST' | translate}}
       </button>
+      </span>
       <button mat-menu-item style="color: red" (click)="deleteWorkout(workout.id)">
         <mat-icon color="warn">delete_forever</mat-icon>
         {{'GENERAL.DELETE' | translate}}

@@ -7,6 +7,7 @@
     "ERROR": "Hiba",
     "SAVE": "Mentés",
     "EDIT": "Módosítás",
+    "DUPLICATE": "Duplikálás",
     "DELETE": "Törlés",
     "YES": "Igen",
     "CANCEL": "Mégse",
@@ -87,7 +88,8 @@
     "FOLLOW": "Követés",
     "UNDO_FOLLOW": "Kérelem visszavonása",
     "UNFOLLOW": "Kikövetés",
-    "FOLLOW_BACK": "Visszakövetés"
+    "FOLLOW_BACK": "Visszakövetés",
+    "NO_FRIENDS": "Nincsenek barátok"
   },
   "NOTIFICATION": {
     "NOTIFICATION": "Értesítés",
@@ -107,6 +109,7 @@
   },
   "POST": {
     "ADD_TITLE": "Új poszt létrehozása",
+    "EXISTS": "Már létezik",
     "NO_POST": "Nincs megjelenítendő poszt",
     "FRIENDS_POSTS": "Barátok posztjai",
     "MY_POSTS": "Saját posztjai",

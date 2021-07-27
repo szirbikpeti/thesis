@@ -10,7 +10,7 @@ import {MatTableDataSource} from "@angular/material/table";
 import {FileTableModel} from "../../models/FileTableModel";
 import {isNull} from "../../utility";
 import {ToastrService} from "ngx-toastr";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-new-workout',
@@ -29,16 +29,45 @@ export class NewWorkoutComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private _workout: WorkoutService,
               private _file: FileService, private _translate: TranslateService,
-              private _toast: ToastrService, private router: Router) { }
+              private _toast: ToastrService, private router: Router, private route: ActivatedRoute) {
+    this.route.params.subscribe(event => {
+      if (event.id) {
+        this._workout.get(event.id)
+          .subscribe(fetchedWorkout => {
+            this.setUpWorkoutForm();
+
+            for (let i = 0; i < fetchedWorkout.exercises.length; i++) {
+              this.exercises.push(
+                this.fb.group({
+                  name: ['', Validators.required],
+                  equipment: ['', Validators.required],
+                  sets: this.fb.array([])
+                }));
+
+              for(let j = 0; j < fetchedWorkout.exercises[i].sets.length; j++) {
+                this.getSet(i).push(this.createNewSet());
+              }
+            }
+
+            this.workoutForm.patchValue(fetchedWorkout);
+          });
+      } else {
+        this.setUpWorkoutForm();
+        this.exercises.push(this.createNewExercise());
+      }
+    });
+  }
 
   ngOnInit(): void {
+    this.dataSource = new MatTableDataSource<FileTableModel>(this.selectedFiles);
+  }
+
+  private setUpWorkoutForm(): void {
     this.workoutForm = this.fb.group({
       date: ['', Validators.required],
       type: ['', Validators.required],
-      exercises: this.fb.array([this.createNewExercise()])
+      exercises: this.fb.array([])
     });
-
-    this.dataSource = new MatTableDataSource<FileTableModel>(this.selectedFiles);
   }
 
   private createNewExercise(): FormGroup {

@@ -95,6 +95,29 @@ mat-card {
   right: 10px;
 }
 
+.exercise-container {
+  margin-top: 15px;
+  margin-bottom: 25px;
+}
+
+.equipment-container {
+  margin-left: 30px;
+  margin-bottom: 10px;
+}
+
+.exercise-table {
+  margin-left: 30px;
+}
+
+table {
+  width: 80%;
+}
+
+table, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
 .comment-container {
   position: relative;
   margin-top: 7px;
@@ -188,7 +211,7 @@ input:focus {
     width: 80%;
     margin-left: 8px;
   }
-  
+
   .confirm-update-comment-button {
     right: -35px;
   }

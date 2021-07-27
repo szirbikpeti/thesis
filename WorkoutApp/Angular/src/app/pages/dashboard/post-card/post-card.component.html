@@ -11,7 +11,7 @@
   <div class="profile-picture-container">
     <img class="profile-picture" [src]="getPicture(post.user.profilePicture.data)">
   </div>
-  <div class="username-container">{{post.user.userName}} <span style="font-weight: normal;"> - {{post.workout.type}}</span></div>
+  <div class="username-container">{{post.user.userName}} <span style="font-weight: normal;"> - {{post.workout.type}} - {{post.workout.date | dateFormatter : _state.language.value : false}}</span></div>
   <hr>
   <div style="position: relative">
     <img class="post-file" [src]="getPicture(post.files[postAdditionData[index].currentFileNumber].data)">
@@ -45,14 +45,11 @@
       <div class="workout-details-container" *ngIf="postAdditionData[index].isShowDetails">
         <span class="edit-label" *ngIf="post.postedOn < post.workout.modifiedOn">{{'POST.EDITED' | translate}}</span>
         <div class="exercise-container" *ngFor="let exercise of post.workout.exercises; index as index">
-          <h2>{{'WORKOUT.EXERCISE' | translate}} {{index + 1}}</h2>
-          <div class="exercise-left">
-            {{'WORKOUT.EXERCISE_NAME' | translate}}: {{exercise.name}}
-          </div>
-          <div class="exercise-right">
+          <h2>{{'WORKOUT.EXERCISE' | translate}} {{index + 1}} - {{exercise.name | titlecase}}</h2>
+          <div class="equipment-container" style="margin-left: 30px;">
             {{'WORKOUT.EXERCISE_EQUIPMENT' | translate}}: {{exercise.equipment}}
           </div>
-          <div>
+          <div class="exercise-table">
             <table>
               <tr>
                 <td>{{'WORKOUT.SET_WEIGHT' | translate}}</td>

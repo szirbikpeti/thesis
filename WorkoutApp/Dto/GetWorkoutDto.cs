@@ -15,6 +15,8 @@ namespace WorkoutApp.Dto
     public DateTimeOffset CreatedOn { get; set; }
         
     public DateTimeOffset ModifiedOn { get; set; }
+    
+    public GetPostDto? RelatedPost { get; set; }
 
     public IReadOnlyCollection<GetExerciseDto> Exercises { get; set; } = 
       ImmutableList<GetExerciseDto>.Empty;

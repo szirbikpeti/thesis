@@ -65,7 +65,7 @@ export class EditWorkoutComponent {
         this.getSet(i).push(
           this.fb.group({
             id: [{value: '', disabled: true}],
-            reps: [11, Validators.required],
+            reps: [0, Validators.required],
             weight: [0, Validators.required],
             duration: []
         }));

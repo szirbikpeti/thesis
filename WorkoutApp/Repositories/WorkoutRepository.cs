@@ -76,6 +76,7 @@ namespace WorkoutApp.Repositories
         .AsNoTracking()
         .AsSplitQuery()
         .Where(_ => _.Id == workoutId)
+        .Include(_ => _.Post)
         .Include(_ => _.Exercises)
         .ThenInclude(_ => _.Sets)
         .Include(_ => _.FileRelationEntities)

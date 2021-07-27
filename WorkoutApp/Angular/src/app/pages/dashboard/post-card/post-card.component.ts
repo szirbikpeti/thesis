@@ -28,7 +28,7 @@ export class PostCardComponent implements OnInit{
   postAdditionData = [];
   commentAdditionData = new Map<string, boolean>();
 
-  constructor(public sanitizer: DomSanitizer, private _state: StateService,
+  constructor(public sanitizer: DomSanitizer, public _state: StateService,
               private _post: PostService) {
     this.currentUser = _state.user.value;
   }

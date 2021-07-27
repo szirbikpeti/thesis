@@ -40,6 +40,10 @@ const routes: Routes = [
         component: NewWorkoutComponent
       },
       {
+        path: 'new-workout/:id',
+        component: NewWorkoutComponent
+      },
+      {
         path: 'edit-workout/:id',
         component: EditWorkoutComponent
       },

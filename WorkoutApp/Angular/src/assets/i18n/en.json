@@ -7,6 +7,7 @@
     "ERROR": "Error",
     "SAVE": "Save",
     "EDIT": "Edit",
+    "DUPLICATE": "Duplicate",
     "DELETE": "Delete",
     "YES": "Yes",
     "CANCEL": "Cancel",
@@ -88,7 +89,8 @@
     "FOLLOW": "Follow",
     "UNDO_FOLLOW": "Undo",
     "UNFOLLOW": "Unfollow",
-    "FOLLOW_BACK": "Follow back"
+    "FOLLOW_BACK": "Follow back",
+    "NO_FRIENDS": "No friends"
   },
   "NOTIFICATION": {
     "NOTIFICATION": "Notification",
@@ -108,6 +110,7 @@
   },
   "POST": {
     "ADD_TITLE": "Create new post",
+    "EXISTS": "Already exists",
     "NO_POST": "No post to show",
     "FRIENDS_POSTS": "Friends posts",
     "MY_POSTS": "My posts",
