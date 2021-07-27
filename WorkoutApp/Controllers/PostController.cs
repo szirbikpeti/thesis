@@ -90,13 +90,14 @@ namespace WorkoutApp.Controllers
       CancellationToken cancellationToken)
     {
       var currentUserId = _userManager.GetUserIdAsInt(HttpContext.User);
+      var now = DateTimeOffset.Now;
       
       // TODO - check that user posts includes postId
       var mappedComment = _mapper.Map<CommentEntity>(newCommentDto);
       mappedComment.UserId = currentUserId;
       mappedComment.PostId = postId;
-      mappedComment.CommentedOn = DateTimeOffset.Now;
-      mappedComment.ModifiedOn = DateTimeOffset.Now;
+      mappedComment.CommentedOn = now;
+      mappedComment.ModifiedOn = now;
 
       var updatedPost = await _post.DoAddCommentAsync(postId, mappedComment, cancellationToken)
         .ConfigureAwait(false);

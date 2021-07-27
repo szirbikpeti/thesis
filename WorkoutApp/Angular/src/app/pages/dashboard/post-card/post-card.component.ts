@@ -7,6 +7,7 @@ import {DomSanitizer} from "@angular/platform-browser";
 import {StateService} from "../../../services/state.service";
 import {PostService} from "../../../services/post.service";
 import {UserModel} from "../../../models/UserModel";
+import {CommentModel} from "../../../models/CommentModel";
 
 @Component({
   selector: 'app-post-card',
@@ -25,6 +26,7 @@ export class PostCardComponent implements OnInit{
   getPicture = getPicture;
 
   postAdditionData = [];
+  commentAdditionData = new Map<string, boolean>();
 
   constructor(public sanitizer: DomSanitizer, private _state: StateService,
               private _post: PostService) {
@@ -35,6 +37,7 @@ export class PostCardComponent implements OnInit{
     this.posts = this.filteredPosts;
     this.posts.forEach(post => {
       this.postAdditionData.push({postId: post.id, currentFileNumber: 0, isLastMediaFile: post.files.length === 1, isShowDetails: false});
+      post.comments.forEach(comment => this.commentAdditionData.set(comment.id, false));
     });
   }
 
@@ -62,16 +65,17 @@ export class PostCardComponent implements OnInit{
     this.postAdditionData[index].isShowDetails = !this.postAdditionData[index].isShowDetails;
   }
 
-  addComment(postId: string, comment: HTMLInputElement): void {
+  addOrUpdateComment(postId: string, comment: HTMLInputElement, method: string, commentId?: string): void {
     if (!comment.value) {
       return;
     }
 
     const commentRequest: CommentRequest = {comment: comment.value};
 
-    this._post.createComment(postId, commentRequest).subscribe(result => {
+    this._post[method + 'Comment'](commentId ?? postId, commentRequest).subscribe(result => {
       comment.value = '';
       this.posts.find(post => post.id === postId).comments = result.comments;
+      result.comments.forEach(comment => this.commentAdditionData.set(comment.id, false));
     })
   }
 
@@ -97,6 +101,17 @@ export class PostCardComponent implements OnInit{
   deleteComment(postId: string, commentId: string) {
     this._post.deleteComment(postId, commentId).subscribe(result => {
       this.posts.find(post => post.id === postId).comments = result.comments;
+      result.comments.forEach(comment => this.commentAdditionData.set(comment.id, false));
     });
+  }
+
+  setEditComment(comment: CommentModel, updateCommentInput?: HTMLInputElement) {
+    if (comment.user.id === this.currentUser.id) {
+      this.commentAdditionData.set(comment.id, !this.commentAdditionData.get(comment.id));
+    }
+
+    if (updateCommentInput) {
+      updateCommentInput.value = comment.comment;
+    }
   }
 }

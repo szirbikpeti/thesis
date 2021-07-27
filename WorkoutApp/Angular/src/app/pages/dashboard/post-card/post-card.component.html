@@ -4,7 +4,9 @@
     <mat-icon>more_vert</mat-icon>
   </button>
   <mat-menu #moreMenu="matMenu" xPosition="before">
-    <button mat-menu-item class="delete-post-button" (click)="deletePost(post)">{{'GENERAL.DELETE' | translate}}</button>
+    <button mat-menu-item class="delete-post-button" (click)="deletePost(post)">
+      <mat-icon color="warn">delete_forever</mat-icon>
+      {{'GENERAL.DELETE' | translate}}</button>
   </mat-menu>
   <div class="profile-picture-container">
     <img class="profile-picture" [src]="getPicture(post.user.profilePicture.data)">
@@ -67,18 +69,38 @@
     </div>
     <div *ngIf="post.comments.length > 0" class="separator">{{'POST.COMMENTS' | translate}}</div>
     <div class="comment-container" *ngFor="let comment of post.comments">
-      <strong>{{comment.user.userName}}</strong> {{comment.comment}}
-      <button *ngIf="comment.user.id === currentUser.id" mat-icon-button class="more-horiz-button" [matMenuTriggerFor]="moreCommentMenu">
+      <div class="commented-username">{{comment.user.userName}}</div>
+      <span *ngIf="!commentAdditionData.get(comment.id)" [ngStyle]="{'cursor': comment.user.id === currentUser.id ? 'default': 'text'}"
+            (dblclick)="setEditComment(comment); updateCommentInput.focus();">{{comment.comment}}
+      </span>
+      <span style="color: #969696" *ngIf="comment.commentedOn < comment.modifiedOn && !commentAdditionData.get(comment.id)"> - {{'POST.EDITED' | translate}}</span>
+      <mat-form-field class="update-comment-container" [ngStyle]="{'display': commentAdditionData.get(comment.id) ? 'inline-block' : 'none'}">
+        <input style="width: 480px;" #updateCommentInput matInput [value]="comment.comment">
+        <button class="confirm-update-comment-button" mat-icon-button (click)="addOrUpdateComment(post.id, updateCommentInput, 'update', comment.id)">
+          <mat-icon>done</mat-icon>
+        </button>
+        <button class="cancel-update-comment-button" mat-icon-button (click)="setEditComment(comment, updateCommentInput)">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+      <button *ngIf="!commentAdditionData.get(comment.id) && comment.user.id === currentUser.id"
+              mat-icon-button class="more-horiz-button" [matMenuTriggerFor]="moreCommentMenu">
         <mat-icon>more_horiz</mat-icon>
       </button>
       <mat-menu #moreCommentMenu="matMenu" xPosition="before">
+        <button mat-menu-item class="edit-comment-mobile" (click)="setEditComment(comment); updateCommentInput.focus();">{{'GENERAL.EDIT' | translate}}</button>
         <button mat-menu-item class="delete-post-button" (click)="deleteComment(post.id, comment.id)">{{'GENERAL.DELETE' | translate}}</button>
       </mat-menu>
     </div>
     <hr>
-    <div class="add-comment-container">
+    <div class="add-comment-input-container">
       <input #comment placeholder="{{'POST.ADD_COMMENT' | translate}}">
-      <button class="comment-button" mat-button (click)="addComment(post.id, comment);">{{'POST.COMMENT' | translate}}</button>
+    </div>
+    <div class="add-comment-button-container">
+      <button class="add-comment-button" mat-button (click)="addOrUpdateComment(post.id, comment, 'create');">{{'POST.COMMENT' | translate}}</button>
+      <button class="add-comment-icon-button" mat-icon-button (click)="addOrUpdateComment(post.id, comment, 'create');">
+        <mat-icon matTooltip="{{'POST.COMMENT' | translate}}">done</mat-icon>
+      </button>
     </div>
   </div>
 </mat-card>

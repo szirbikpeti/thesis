@@ -34,6 +34,10 @@ mat-card {
   color: red;
 }
 
+.edit-comment-mobile {
+  display: none;
+}
+
 .post-file {
   width: 100%;
   height: 650px;
@@ -97,31 +101,55 @@ mat-card {
   margin-left: 5px;
 }
 
+.commented-username {
+  display: inline-block;
+  font-weight: bolder;
+  margin-right: 10px;
+}
+
+.update-comment-container {
+  margin-left: 10px;
+  width: 555px;
+}
+
+.confirm-update-comment-button {
+  position:absolute;
+  top: -50%;
+  right: 25px;
+}
+
+.cancel-update-comment-button {
+  position:absolute;
+  top: -50%;
+  right: -10px;
+}
+
 .more-horiz-button {
   position: absolute;
   top: -50%;
   right: 0;
 }
 
-.add-comment-container {
-  position: relative;
+.add-comment-input-container {
+  display: inline-block;
   margin-left: 5px;
+  width: 85%;
 }
 
 input {
   border: none;
-  width: 555px;
 }
 
 input:focus {
   outline: none;
 }
 
-.comment-button {
-  position: absolute;
-  right: 0;
-  top: -50%;
-  margin-top: 6px;
+.add-comment-button-container {
+  display: inline-block;
+}
+
+.add-comment-icon-button {
+  display: none;
 }
 
 .separator {
@@ -145,4 +173,53 @@ input:focus {
 
 .separator:not(:empty)::after {
   margin-left: .25em;
+}
+
+@media screen and (max-width: 750px) {
+  mat-card {
+    width: 93%;
+  }
+
+  .add-comment-input-container {
+    width: 80%;
+  }
+
+  .update-comment-container {
+    width: 80%;
+    margin-left: 8px;
+  }
+  
+  .confirm-update-comment-button {
+    right: -35px;
+  }
+
+  .cancel-update-comment-button {
+    right: -60px;
+  }
+}
+
+@media screen and (max-width: 580px) {
+  .post-file {
+    height: 450px;
+  }
+
+  .add-comment-icon-button {
+    display: inline;
+  }
+
+  .add-comment-button {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .edit-comment-mobile {
+    display: inline;
+  }
+}
+
+@media screen and (max-width: 430px) {
+  .post-file {
+    height: 300px;
+  }
 }

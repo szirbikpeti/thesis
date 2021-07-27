@@ -146,8 +146,9 @@ namespace WorkoutApp.Repositories
       }
 
       _mapper.Map(commentDto, fetchedComment);
-      
       fetchedComment.ModifiedOn = DateTimeOffset.Now;
+
+      _dbContext.Comments.Update(fetchedComment);
       
       await _dbContext
         .SaveChangesAsync(cancellationToken)

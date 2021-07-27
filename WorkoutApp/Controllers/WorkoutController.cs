@@ -104,11 +104,12 @@ namespace WorkoutApp.Controllers
       CancellationToken cancellationToken)
     {
       var currentUserId = _userManager.GetUserIdAsInt(HttpContext.User);
+      var now = DateTimeOffset.Now;
       
       var mappedWorkout = _mapper.Map<WorkoutEntity>(newWorkoutDto);
       mappedWorkout.UserId = currentUserId;
-      mappedWorkout.CreatedOn = DateTimeOffset.Now;
-      mappedWorkout.ModifiedOn = DateTimeOffset.Now;
+      mappedWorkout.CreatedOn = now;
+      mappedWorkout.ModifiedOn = now;
 
       await _workout.DoAddAsync(mappedWorkout, newWorkoutDto.FileIds, cancellationToken)
         .ConfigureAwait(false);
