@@ -30,6 +30,7 @@ import {DateFormatterPipe} from './pipes/date-formatter.pipe';
 import {NewPostComponent} from "./pages/dashboard/new-post/new-post.component";
 import {IsVideoPipe} from "./pipes/is-video.pipe";
 import {PostCardComponent} from "./pages/dashboard/post-card/post-card.component";
+import {StatisticsComponent} from "./pages/statistics/statistics.component";
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import {PostCardComponent} from "./pages/dashboard/post-card/post-card.component
     ProfileComponent,
     FriendSearchComponent,
     FriendsComponent,
+    StatisticsComponent,
     ConfirmationDialogComponent,
     DateFormatterPipe,
     IsVideoPipe

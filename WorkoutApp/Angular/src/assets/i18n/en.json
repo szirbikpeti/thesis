@@ -32,7 +32,8 @@
     "MY_WORKOUTS": "My workouts",
     "NEW_WORKOUT": "Create new workout",
     "FRIEND_SEARCH": "Friend search",
-    "FRIENDS": "Friends"
+    "FRIENDS": "Friends",
+    "STATISTICS": "Statistics"
   },
   "PAGE": {
     "PROFILE": "Profile"
@@ -85,6 +86,7 @@
     "UNSUCCESSFUL_DELETE": "Unsuccessful workout deletion"
   },
   "FRIEND": {
+    "FRIENDS": "Friends",
     "SEARCH": "Search",
     "FOLLOW": "Follow",
     "UNDO_FOLLOW": "Undo",

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -43,8 +44,14 @@ namespace WorkoutApp
         configuration.RootPath = Path.Combine(AngularRootDirectoryName, AngularDistributionDirectoryName);
       });
 
-      services.AddDbContext<WorkoutDbContext>(_ => 
-        _.UseNpgsql(Configuration.GetConnectionString(PostgreSqlConnectionName)));
+      services.AddDbContext<WorkoutDbContext>(_ => {
+        _.UseNpgsql(Configuration.GetConnectionString(PostgreSqlConnectionName));
+        
+        _.ConfigureWarnings(builder => {
+          builder.Ignore(CoreEventId.PossibleIncorrectRequiredNavigationWithQueryFilterInteractionWarning);
+          builder.Ignore(CoreEventId.RowLimitingOperationWithoutOrderByWarning);
+        });
+      });
       services.AddAutoMapper(typeof(Startup));
 
       services.AddIdentity<UserEntity, RoleEntity>(_ => {

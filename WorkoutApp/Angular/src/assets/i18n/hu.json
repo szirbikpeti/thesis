@@ -32,7 +32,8 @@
     "MY_WORKOUTS": "Edzéseim",
     "NEW_WORKOUT": "Új edzés felvétel",
     "FRIEND_SEARCH": "Barát keresés",
-    "FRIENDS": "Barátok"
+    "FRIENDS": "Barátok",
+    "STATISTICS": "Statisztika"
   },
   "PAGE": {
     "PROFILE": "Profil adatok"
@@ -84,6 +85,7 @@
     "UNSUCCESSFUL_DELETE": "Sikertelen edzés törlés"
   },
   "FRIEND": {
+    "FRIENDS": "Barátok",
     "SEARCH": "Keresés",
     "FOLLOW": "Követés",
     "UNDO_FOLLOW": "Kérelem visszavonása",

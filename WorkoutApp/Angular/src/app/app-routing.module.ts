@@ -11,6 +11,7 @@ import {AuthGuard} from "./guards/auth.guard";
 import {FriendSearchComponent} from "./pages/friend-search/friend-search.component";
 import {FriendsComponent} from "./pages/friends/friends.component";
 import {WorkoutComponent} from "./pages/workout/workout.component";
+import {StatisticsComponent} from "./pages/statistics/statistics.component";
 
 const routes: Routes = [
   {
@@ -54,6 +55,10 @@ const routes: Routes = [
       {
         path: 'friends',
         component: FriendsComponent
+      },
+      {
+        path: 'statistics',
+        component: StatisticsComponent
       },
     ]
   },

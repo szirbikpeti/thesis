@@ -58,6 +58,14 @@
         </div>
         <span [translate]="'NAV.FRIENDS'"></span>
       </a>
+      <mat-divider></mat-divider>
+      <a routerLinkActive="active"
+         (click)="toggleDrawerWhenHandset()" routerLink="/statistics" mat-list-item href="#">
+        <div class="menu-icon-container">
+          <img src="./assets/statistics.svg" class="menu-icon">
+        </div>
+        <span [translate]="'NAV.STATISTICS'"></span>
+      </a>
       <mat-divider class="last-divider"></mat-divider>
     </mat-nav-list>
   </mat-sidenav>
