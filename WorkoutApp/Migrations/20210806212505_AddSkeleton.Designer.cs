@@ -2,23 +2,23 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using WorkoutApp.Data;
 
 namespace WorkoutApp.Migrations
 {
     [DbContext(typeof(WorkoutDbContext))]
-    [Migration("20210717122221_AddPostRelatedEntities")]
-    partial class AddPostRelatedEntities
+    [Migration("20210806212505_AddSkeleton")]
+    partial class AddSkeleton
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 63)
-                .HasAnnotation("ProductVersion", "6.0.0-preview.3.21201.2")
+                .HasAnnotation("ProductVersion", "5.0.8")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
@@ -84,7 +84,14 @@ namespace WorkoutApp.Migrations
                     b.Property<int>("PostId")
                         .HasColumnType("integer");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("PostId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Comments");
                 });
@@ -226,21 +233,6 @@ namespace WorkoutApp.Migrations
                     b.ToTable("Notifications");
                 });
 
-            modelBuilder.Entity("WorkoutApp.Entities.PostCommentRelationEntity", b =>
-                {
-                    b.Property<int>("PostId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("CommentId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("PostId", "CommentId");
-
-                    b.HasIndex("CommentId");
-
-                    b.ToTable("PostCommentRelations");
-                });
-
             modelBuilder.Entity("WorkoutApp.Entities.PostEntity", b =>
                 {
                     b.Property<int>("Id")
@@ -261,9 +253,15 @@ namespace WorkoutApp.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
 
+                    b.Property<int>("WorkoutId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
                     b.HasIndex("UserId");
+
+                    b.HasIndex("WorkoutId")
+                        .IsUnique();
 
                     b.ToTable("Posts");
                 });
@@ -340,6 +338,9 @@ namespace WorkoutApp.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<DateTimeOffset?>("DeletedOn")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<TimeSpan?>("Duration")
                         .HasColumnType("interval");
@@ -559,12 +560,31 @@ namespace WorkoutApp.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("WorkoutApp.Entities.CommentEntity", b =>
+                {
+                    b.HasOne("WorkoutApp.Entities.PostEntity", "Post")
+                        .WithMany("Comments")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WorkoutApp.Entities.UserEntity", "User")
+                        .WithMany("Comments")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Post");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("WorkoutApp.Entities.ExerciseEntity", b =>
                 {
                     b.HasOne("WorkoutApp.Entities.WorkoutEntity", "Workout")
                         .WithMany("Exercises")
                         .HasForeignKey("WorkoutId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Workout");
@@ -646,25 +666,6 @@ namespace WorkoutApp.Migrations
                     b.Navigation("SentByUser");
                 });
 
-            modelBuilder.Entity("WorkoutApp.Entities.PostCommentRelationEntity", b =>
-                {
-                    b.HasOne("WorkoutApp.Entities.CommentEntity", "Comment")
-                        .WithMany("PostRelationEntities")
-                        .HasForeignKey("CommentId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("WorkoutApp.Entities.PostEntity", "Post")
-                        .WithMany("CommentRelationEntities")
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Comment");
-
-                    b.Navigation("Post");
-                });
-
             modelBuilder.Entity("WorkoutApp.Entities.PostEntity", b =>
                 {
                     b.HasOne("WorkoutApp.Entities.UserEntity", "User")
@@ -673,7 +674,15 @@ namespace WorkoutApp.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("WorkoutApp.Entities.WorkoutEntity", "Workout")
+                        .WithOne("Post")
+                        .HasForeignKey("WorkoutApp.Entities.PostEntity", "WorkoutId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.Navigation("User");
+
+                    b.Navigation("Workout");
                 });
 
             modelBuilder.Entity("WorkoutApp.Entities.PostFileRelationEntity", b =>
@@ -711,7 +720,7 @@ namespace WorkoutApp.Migrations
                     b.HasOne("WorkoutApp.Entities.ExerciseEntity", "Exercise")
                         .WithMany("Sets")
                         .HasForeignKey("ExerciseId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Exercise");
@@ -788,11 +797,6 @@ namespace WorkoutApp.Migrations
                     b.Navigation("Workout");
                 });
 
-            modelBuilder.Entity("WorkoutApp.Entities.CommentEntity", b =>
-                {
-                    b.Navigation("PostRelationEntities");
-                });
-
             modelBuilder.Entity("WorkoutApp.Entities.ExerciseEntity", b =>
                 {
                     b.Navigation("Sets");
@@ -809,7 +813,7 @@ namespace WorkoutApp.Migrations
 
             modelBuilder.Entity("WorkoutApp.Entities.PostEntity", b =>
                 {
-                    b.Navigation("CommentRelationEntities");
+                    b.Navigation("Comments");
 
                     b.Navigation("FileRelationEntities");
 
@@ -826,6 +830,8 @@ namespace WorkoutApp.Migrations
             modelBuilder.Entity("WorkoutApp.Entities.UserEntity", b =>
                 {
                     b.Navigation("Claims");
+
+                    b.Navigation("Comments");
 
                     b.Navigation("FollowedUsers");
 
@@ -853,6 +859,8 @@ namespace WorkoutApp.Migrations
                     b.Navigation("Exercises");
 
                     b.Navigation("FileRelationEntities");
+
+                    b.Navigation("Post");
                 });
 #pragma warning restore 612, 618
         }
