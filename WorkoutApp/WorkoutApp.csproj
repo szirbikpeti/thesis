@@ -13,7 +13,7 @@
     </PropertyGroup>
 	
 	  <PropertyGroup>
-		<OutputType>Exe</OutputType>
+		<OutputType>Library</OutputType>
 		<TargetFramework>netcoreapp5.0</TargetFramework>
 		<Nullable>enable</Nullable>
 	  </PropertyGroup>

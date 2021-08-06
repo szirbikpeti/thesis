@@ -31,6 +31,7 @@ import {NewPostComponent} from "./pages/dashboard/new-post/new-post.component";
 import {IsVideoPipe} from "./pipes/is-video.pipe";
 import {PostCardComponent} from "./pages/dashboard/post-card/post-card.component";
 import {StatisticsComponent} from "./pages/statistics/statistics.component";
+import {HighchartsChartModule} from "highcharts-angular";
 
 @NgModule({
   declarations: [
@@ -65,6 +66,7 @@ import {StatisticsComponent} from "./pages/statistics/statistics.component";
     NgPipesModule,
     BrowserAnimationsModule,
     AppRoutingModule,
+    HighchartsChartModule,
     ToastrModule.forRoot({
       preventDuplicates: true,
       positionClass: 'toast-bottom-right',
