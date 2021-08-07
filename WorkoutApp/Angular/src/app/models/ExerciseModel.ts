@@ -4,7 +4,7 @@ import {WorkoutModel} from "./WorkoutModel";
 export interface ExerciseModel {
   id: string,
   name: string,
-  equipment: string,
+  equipment?: string,
   workout: WorkoutModel,
   sets: SetModel[]
 }

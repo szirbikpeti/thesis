@@ -59,7 +59,7 @@ export class EditWorkoutComponent {
         this.fb.group({
           id: [{value: '', disabled: true}],
           name: ['', Validators.required],
-          equipment: ['', Validators.required],
+          equipment: [''],
           sets: this.fb.array([])
       }));
 
@@ -88,7 +88,7 @@ export class EditWorkoutComponent {
   private createNewExercise(): FormGroup {
     return this.fb.group({
       name: ['', Validators.required],
-      equipment: ['', Validators.required],
+      equipment: [''],
       sets: this.fb.array([this.createNewSet()])
     });
   }

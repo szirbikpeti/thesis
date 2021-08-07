@@ -42,7 +42,7 @@ export class NewWorkoutComponent implements OnInit {
               this.exercises.push(
                 this.fb.group({
                   name: ['', Validators.required],
-                  equipment: ['', Validators.required],
+                  equipment: [''],
                   sets: this.fb.array([])
                 }));
 
@@ -75,7 +75,7 @@ export class NewWorkoutComponent implements OnInit {
   private createNewExercise(): FormGroup {
     return this.fb.group({
       name: ['', Validators.required],
-      equipment: ['', Validators.required],
+      equipment: [''],
       sets: this.fb.array([this.createNewSet()])
     });
   }
@@ -160,7 +160,7 @@ export class NewWorkoutComponent implements OnInit {
 
       this.router.navigate(['/my-workouts']);
     }, () => {
-      this._toast.success(
+      this._toast.error(
         this._translate.instant('WORKOUT.UNSUCCESSFUL_ADDITION'),
         this._translate.instant( 'GENERAL.ERROR'));
     });

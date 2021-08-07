@@ -90,14 +90,14 @@
                     </div>
                   </mat-form-field>
                 </div>
-                <div>
-                  <div class="placeholder">{{'WORKOUT.SET_DURATION' | translate}}</div>
-                  <mat-form-field class="small-mat-form-field">
-                    <div class="center-input-field">
-                      <input type="number" matInput formControlName="duration">
-                    </div>
-                  </mat-form-field>
-                </div>
+<!--                <div>-->
+<!--                  <div class="placeholder">{{'WORKOUT.SET_DURATION' | translate}}</div>-->
+<!--                  <mat-form-field class="small-mat-form-field">-->
+<!--                    <div class="center-input-field">-->
+<!--                      <input type="number" matInput formControlName="duration">-->
+<!--                    </div>-->
+<!--                  </mat-form-field>-->
+<!--                </div>-->
                 <button *ngIf="getSet(exerciseIndex).length !== 1" mat-icon-button type="button"
                         class="delete-set-button" (click)="deleteSet(exerciseIndex, setIndex)">
                   <mat-icon>delete_forever</mat-icon>

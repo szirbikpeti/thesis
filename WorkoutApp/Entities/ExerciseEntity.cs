@@ -12,7 +12,7 @@ namespace WorkoutApp.Entities
 
         public string Name { get; set; } = null!;
 
-        public string Equipment { get; set; } = null!;
+        public string? Equipment { get; set; }
 
         public WorkoutEntity Workout { get; set; } = null!;
 

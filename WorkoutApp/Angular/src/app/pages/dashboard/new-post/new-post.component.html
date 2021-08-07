@@ -1,6 +1,6 @@
 <div mat-dialog-title style="position: relative">
   <h2 class="title">{{'POST.ADD_TITLE' | translate}}</h2>
-  <mat-error *ngIf="unPostedWorkouts?.length === 0">{{'POST.NO_UNPOSTED_WORKOUT' | translate}}</mat-error>
+  <mat-error *ngIf="unPostedWorkouts?.length === 0 && !data">{{'POST.NO_UNPOSTED_WORKOUT' | translate}}</mat-error>
 </div>
 <mat-spinner *ngIf="!unPostedWorkouts"></mat-spinner>
 <mat-dialog-content *ngIf="unPostedWorkouts" class="mat-typography">
@@ -28,7 +28,7 @@
       <div class="exercise-left">
         {{'WORKOUT.EXERCISE_NAME' | translate}}: {{exercise.name}}
       </div>
-      <div class="exercise-right">
+      <div *ngIf="exercise.equipment" class="exercise-right">
         {{'WORKOUT.EXERCISE_EQUIPMENT' | translate}}: {{exercise.equipment}}
       </div>
       <div>
