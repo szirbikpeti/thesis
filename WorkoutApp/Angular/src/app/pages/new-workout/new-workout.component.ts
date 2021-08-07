@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
 import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {TranslateService} from "@ngx-translate/core";
 import {WorkoutService} from "../../services/workout.service";
@@ -30,6 +30,8 @@ export class NewWorkoutComponent implements OnInit {
   constructor(private fb: FormBuilder, private _workout: WorkoutService,
               private _file: FileService, private _translate: TranslateService,
               private _toast: ToastrService, private router: Router, private route: ActivatedRoute) {
+    this.displayedColumns = NewWorkoutComponent.getColumnsToDisplay();
+
     this.route.params.subscribe(event => {
       if (event.id) {
         this._workout.get(event.id)
@@ -167,6 +169,25 @@ export class NewWorkoutComponent implements OnInit {
   futureFilter (d: Date | null): boolean {
     const date = (d || new Date());
     return date < new Date();
+  }
+
+  private static getColumnsToDisplay(): string[] {
+    if (window.innerWidth < 545) {
+      return ['position', 'preview', 'operation'];
+    }
+
+    if (window.innerWidth < 980) {
+      return ['position', 'name', 'preview', 'operation'];
+    }
+
+    if (window.innerWidth > 1050) {
+      return ['position', 'name', 'type', 'preview', 'operation'];
+    }
+  }
+
+  @HostListener('window:resize')
+  onResize() {
+    this.displayedColumns = NewWorkoutComponent.getColumnsToDisplay();
   }
 
   get exercises(): FormArray {return this.workoutForm.get('exercises') as FormArray;}

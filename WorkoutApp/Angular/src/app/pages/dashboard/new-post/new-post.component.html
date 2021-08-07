@@ -1,4 +1,7 @@
-<h2 mat-dialog-title>{{'POST.ADD_TITLE' | translate}}</h2>
+<div mat-dialog-title style="position: relative">
+  <h2 class="title">{{'POST.ADD_TITLE' | translate}}</h2>
+  <mat-error *ngIf="unPostedWorkouts?.length === 0">{{'POST.NO_UNPOSTED_WORKOUT' | translate}}</mat-error>
+</div>
 <mat-spinner *ngIf="!unPostedWorkouts"></mat-spinner>
 <mat-dialog-content *ngIf="unPostedWorkouts" class="mat-typography">
   <div *ngIf="!data">
@@ -52,5 +55,5 @@
 
 <mat-dialog-actions align="end">
   <button type="button" mat-button mat-dialog-close>{{'GENERAL.CANCEL' | translate}}</button>
-  <button type="submit" mat-button (click)="submitPostForm()" [disabled]="!selectedWorkout" cdkFocusInitial>{{'POST.POST' | translate}}</button>
+  <button type="submit" mat-button (click)="submitPostForm()" [disabled]="!selectedWorkout">{{'POST.POST' | translate}}</button>
 </mat-dialog-actions>

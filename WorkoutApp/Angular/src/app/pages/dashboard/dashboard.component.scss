@@ -1,12 +1,34 @@
-.title {
-  margin-left: 25px;
-  margin-bottom: 40px;
-  font-size: 36px;
+.header-container {
+  position: relative;
+  margin: 0 25px 40px 25px;
+  padding-top: 13px;
 }
 
+.title {
+  display: inline-block;
+  font-size: 36px;
+  margin-right: 50px;
+}
+
+.add-icon-button {
+  display: none;
+  position: absolute;
+  right: 10px;
+  top: 0;
+}
+
+@media screen and (max-width: 470px) {
+  .add-icon-button {
+    display: inline-block;
+  }
+
+  .add-raised-button {
+    display: none;
+  }
+}
 
 @media screen and (max-width: 600px) {
-  .title {
+  .header-container {
     margin-top: 30px;
   }
 }

@@ -1,4 +1,4 @@
-import {Component, ElementRef, ViewChild} from '@angular/core';
+import {Component, ElementRef, HostListener, ViewChild} from '@angular/core';
 import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {FileTableModel} from "../../models/FileTableModel";
 import {MatTableDataSource} from "@angular/material/table";
@@ -30,13 +30,15 @@ export class EditWorkoutComponent {
   selectedFiles: FileTableModel[] = [];
 
   dataSource: MatTableDataSource<FileTableModel>;
-  displayedColumns: string[] = ['position', 'name', 'type', 'preview', 'operation'];
+  displayedColumns: string[];
 
   getPicture = getPicture;
 
   constructor(private fb: FormBuilder, private _workout: WorkoutService,
               private _file: FileService, private _translate: TranslateService, public sanitizer: DomSanitizer,
               private _toast: ToastrService, private router: Router, private route: ActivatedRoute, private dialog: MatDialog) {
+    this.displayedColumns = EditWorkoutComponent.getColumnsToDisplay();
+
     this.route.params.subscribe(event =>
       this._workout.get(event.id)
         .subscribe(fetchedWorkout => {
@@ -225,6 +227,25 @@ export class EditWorkoutComponent {
     if (newFiles.length === 0) {
       this.submitWorkoutForm([]);
     }
+  }
+
+  private static getColumnsToDisplay(): string[] {
+    if (window.innerWidth < 545) {
+      return ['position', 'preview', 'operation'];
+    }
+
+    if (window.innerWidth < 980) {
+      return ['position', 'name', 'preview', 'operation'];
+    }
+
+    if (window.innerWidth > 1050) {
+      return ['position', 'name', 'type', 'preview', 'operation'];
+    }
+  }
+
+  @HostListener('window:resize')
+  onResize() {
+    this.displayedColumns = EditWorkoutComponent.getColumnsToDisplay();
   }
 
   get exercises(): FormArray {return this.workoutForm.get('exercises') as FormArray;}

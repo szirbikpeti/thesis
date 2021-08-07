@@ -2,7 +2,7 @@
 
 <mat-spinner *ngIf="isNull(workouts)"></mat-spinner>
 <div *ngIf="!isNull(workouts) && workouts.length === 0" class="groupTitle">
-  Nincs még rögzített edzés
+  {{'WORKOUT.NO_WORKOUTS' | translate}}
 </div>
 <div *ngIf="!isNull(workouts) && workouts.length > 0">
   <div *ngFor="let groupedWorkouts of workouts | groupBy:'date' | pairs" class="mat-card-container">

@@ -7,28 +7,28 @@
     <div class="control-container">
       <mat-form-field appearance="standard">
         <div class="center-input-field">
-          <input matInput placeholder="{{'USER.FULLNAME' | translate}}" formControlName="fullName">
+          <input matInput placeholder="{{'USER.FULLNAME' | translate}} *" formControlName="fullName">
         </div>
       </mat-form-field>
     </div>
     <div class="control-container">
       <mat-form-field appearance="standard">
         <div class="center-input-field">
-          <input type="email"  matInput placeholder="{{'USER.EMAIL' | translate}}" formControlName="email">
+          <input type="email"  matInput placeholder="{{'USER.EMAIL' | translate}} *" formControlName="email">
         </div>
       </mat-form-field>
     </div>
     <div class="control-container">
       <mat-form-field appearance="standard">
         <div class="center-input-field">
-          <input matInput placeholder="{{'USER.USERNAME' | translate}}" formControlName="userName">
+          <input matInput placeholder="{{'USER.USERNAME' | translate}} *" formControlName="userName">
         </div>
       </mat-form-field>
     </div>
     <div class="control-container">
       <mat-form-field appearance="standard">
         <div class="center-input-field">
-          <input matInput type="password" placeholder="{{'USER.PASSWORD' | translate}}" formControlName="password">
+          <input matInput type="password" placeholder="{{'USER.PASSWORD' | translate}} *" formControlName="password">
         </div>
       </mat-form-field>
     </div>
@@ -46,6 +46,7 @@
       </mat-form-field>
     </div>
 
+    <mat-error *ngIf="signUpForm.invalid">{{'GENERAL.INVALID_FORM' | translate}}</mat-error>
     <button type="submit" mat-button >{{'USER.SIGNUP' | translate}}</button>
   </form>
 </mat-dialog-content>

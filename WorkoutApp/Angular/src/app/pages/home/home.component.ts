@@ -47,7 +47,7 @@ export class HomeComponent implements OnInit{
   openSignUpModal() {
     this.dialog.open(SignUpComponent, {
       width: '425px',
-      height: '500px',
+      height: '515px',
       disableClose: true
     });
   }

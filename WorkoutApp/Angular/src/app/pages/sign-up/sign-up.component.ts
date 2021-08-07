@@ -59,6 +59,10 @@ export class SignUpComponent implements OnInit {
   }
 
   private submitSignUpForm(fileId: string) {
+    if (this.signUpForm.invalid) {
+      return;
+    }
+
     const signUpRequest: SignUpRequest = this.signUpForm.getRawValue();
     signUpRequest.profilePictureId = fileId;
 

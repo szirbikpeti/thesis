@@ -45,7 +45,6 @@ export class FriendsComponent {
   private getFriends(): void {
     this._user.getFriends().subscribe(friends => {
       this.friends = friends;
-      console.log(friends);
       this.followerDataSource = new MatTableDataSource<UserModel>(friends.followerUsers);
       this.followedDataSource = new MatTableDataSource<UserModel>(friends.followedUsers);
     });

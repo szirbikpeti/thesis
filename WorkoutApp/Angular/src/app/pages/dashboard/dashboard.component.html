@@ -1,5 +1,11 @@
-<div class="title">Dashboard
-  <button mat-raised-button (click)="openPostCreatorModal()">{{'POST.ADD_TITLE' | translate}}</button>
+<div class="header-container">
+  <div class="title">Dashboard</div>
+  <div style="display: inline-block;">
+    <button mat-raised-button class="add-raised-button" (click)="openPostCreatorModal()">{{'POST.ADD_TITLE' | translate}}</button>
+    <button mat-icon-button class="add-icon-button" matTooltip="{{'POST.ADD_TITLE' | translate}}" (click)="openPostCreatorModal()">
+      <img src="./assets/create-post.svg">
+    </button>
+  </div>
 </div>
 
 <mat-spinner *ngIf="!posts"></mat-spinner>

@@ -41,24 +41,39 @@ export class PostCardComponent implements OnInit{
     });
   }
 
+  private addLike(postId: string): void
+  {
+    this.posts.find(post => post.id === postId).likedUsers.push(this.currentUser);
+  }
+
+  private removeLike(postId: string): void
+  {
+    const index = this.posts.find(post => post.id === postId).likedUsers.indexOf(this.currentUser);
+    this.posts.find(post => post.id === postId).likedUsers.splice(index, 1);
+  }
+
   isLikedPost(post: PostModel): boolean {
     return post.likedUsers
       .map(({id}) => id)
       .includes(this.currentUser.id);
   }
 
-  like(id: string): void {
-    const likeRequest: LikeRequest = {postId: id};
+  like(postId: string): void {
+    this.addLike(postId);
+
+    const likeRequest: LikeRequest = {postId: postId};
     this._post.addLike(likeRequest).subscribe(result => {
-      this.posts.find(post => post.id === id).likedUsers = result.likedUsers;
-    });
+      this.posts.find(post => post.id === postId).likedUsers = result.likedUsers;
+    }, () => this.removeLike(postId));
   }
 
-  unlike(id: string): void {
-    const likeRequest: LikeRequest = {postId: id};
+  unlike(postId: string): void {
+    this.removeLike(postId);
+
+    const likeRequest: LikeRequest = {postId: postId};
     this._post.deleteLike(likeRequest).subscribe(result => {
-      this.posts.find(post => post.id === id).likedUsers = result.likedUsers;
-    });
+      this.posts.find(post => post.id === postId).likedUsers = result.likedUsers;
+    }, () => this.addLike(postId));
   }
 
   setShowDetails(index: number): void {

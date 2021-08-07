@@ -68,23 +68,23 @@ export class FriendSearchComponent implements OnInit {
   }
 
   isSourceUser(id: string): boolean {
-    return this.currentFollowRequestsAndFollows.sourceUsers
+    return this.currentFollowRequestsAndFollows?.sourceUsers
       .map(({id}) => id)
-      .includes(id);
+      .includes(id) || false;
   }
 
   isTargetUser(id: string): boolean {
-    return this.currentFollowRequestsAndFollows.targetUsers
+    return this.currentFollowRequestsAndFollows?.targetUsers
       .map(({id}) => id)
-      .includes(id);
+      .includes(id) || false;
   }
 
   isFollowerUser(id: string): boolean {
-    return this.currentFollowRequestsAndFollows.followerUserIds.includes(id);
+    return this.currentFollowRequestsAndFollows?.followerUserIds.includes(id) || false;
   }
 
   isFollowedUser(id: string): boolean {
-    return this.currentFollowRequestsAndFollows.followedUserIds.includes(id);
+    return this.currentFollowRequestsAndFollows?.followedUserIds.includes(id) || false;
   }
 
   isBlockedBySourceUser(id: string): boolean {

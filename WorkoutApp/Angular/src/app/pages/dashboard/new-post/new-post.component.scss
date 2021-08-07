@@ -1,3 +1,14 @@
+.title {
+  display:inline-block;
+}
+
+mat-error {
+  display:inline-block;
+  position:absolute;
+  font-size: 14px;
+  right: 0;
+}
+
 mat-form-field {
   width: 80%;
 }
@@ -54,5 +65,11 @@ mat-checkbox {
 @media screen and (max-width: 450px) {
   .exercise-left {
     margin-right: 0;
+  }
+}
+
+@media screen and (max-width: 590px) {
+  mat-error {
+    position:relative;
   }
 }
