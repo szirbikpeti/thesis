@@ -40,10 +40,18 @@
             placeholder="{{'USER.BIRTHDAY' | translate}}"
             formControlName="birthDay"
             [matDatepicker]="birthdayValue"
+            [matDatepickerFilter]="birthDayPickerFilter"
             (focus)="birthdayValue.open()">
           <mat-datepicker #birthdayValue></mat-datepicker>
         </div>
       </mat-form-field>
+    </div>
+    <div class="control-container">
+      <mat-label>{{'USER.GENDER' | translate}} *</mat-label>
+      <mat-radio-group color="warn" formControlName="gender">
+        <mat-radio-button value="man">{{'USER.MAN' | translate}}</mat-radio-button>
+        <mat-radio-button value="woman">{{'USER.WOMAN' | translate}}</mat-radio-button>
+      </mat-radio-group>
     </div>
 
     <mat-error *ngIf="signUpForm.invalid">{{'GENERAL.INVALID_FORM' | translate}}</mat-error>

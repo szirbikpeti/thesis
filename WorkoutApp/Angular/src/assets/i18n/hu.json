@@ -22,7 +22,7 @@
   "HOME": {
     "ADD_WORKOUTS": "Edzések rögzítése",
     "POST_WORKOUTS": "Edzések posztolása",
-    "MAKE_FRIENDS": "Barátság kötés",
+    "MAKE_FRIENDS": "Barátságkötés",
     "MAKE_STATISTICS": "Statisztika készítése",
     "MULTILINGUALISM": "Többnyelvűség"
   },
@@ -50,6 +50,9 @@
     "NEW_PASSWORD": "Új jelszó",
     "BIRTHDAY": "Születésnap",
     "ABOUT": "Magamról",
+    "GENDER": "Nem",
+    "MAN": "Férfi",
+    "WOMAN": "Nő",
     "LASTSIGNEDINON": "Utolsó bejelentkezés",
     "SUCCESSFUL_SIGNUP": "Sikeres regisztráció",
     "UNSUCCESSFUL_LOGIN": "Sikertelen bejelentkezés",

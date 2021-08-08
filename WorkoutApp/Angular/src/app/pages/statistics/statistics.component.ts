@@ -1,55 +1,115 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import * as Highcharts from 'highcharts';
+import {WorkoutService} from "../../services/workout.service";
+import {WorkoutModel} from "../../models/WorkoutModel";
 
 @Component({
   selector: 'app-statistics',
   templateUrl: './statistics.component.html',
   styleUrls: ['./statistics.component.scss']
 })
-export class StatisticsComponent implements OnInit {
+export class StatisticsComponent {
 
-  Highcharts: typeof Highcharts = Highcharts;
-  chartOptions: Highcharts.Options = {
-    series: [{
-      showInNavigator: true,
-      type: 'area',
-      data : [{x: Date.UTC(2014,0,1), y: 1},
-        {x: Date.UTC(2014,1,1), y: 2},
-        {x: Date.UTC(2014,2,1), y: 3},
-        {x: Date.UTC(2014,3,1), y: 4},
-        {x: Date.UTC(2014,4,1), y: 5},
-        {x: Date.UTC(2014,5,1), y: 6},
-        {x: Date.UTC(2014,6,1), y: 7},
-        {x: Date.UTC(2014,7,1), y: 8},
-        {x: Date.UTC(2014,8,1), y: 9},
-        {x: Date.UTC(2014,9,1), y: 10},
-        {x: Date.UTC(2014,10,1), y: 11},
-        {x: Date.UTC(2014,11,1), y: 12},
-        {x: Date.UTC(2015,0,1), y: 1},
-        {x: Date.UTC(2015,1,1), y: 2},
-        {x: Date.UTC(2015,2,1), y: 3},
-        {x: Date.UTC(2015,3,1), y: 4},
-        {x: Date.UTC(2015,4,1), y: 5}]
-    }],
-    title: {
-      text: 'Title here'
-    },
-    rangeSelector: {
-      enabled:true,
-      // selected: 4
-    },
-    navigator: {
-      enabled: true
-    },
-    xAxis: {
-      type: 'datetime',
-      tickInterval: 1000 * 3600 * 24 *30 // 1 month
-    },
-  };
+  chart: Highcharts.Chart;
+  pieChart: Highcharts.Chart;
 
-  constructor() { }
+  workouts: WorkoutModel[];
 
-  ngOnInit(): void {
+  workoutTypeData = [];
+  workoutTypes = [];
+
+  constructor(private _workout: WorkoutService) {
+    _workout.list().subscribe(workouts => {
+      this.workouts = workouts;
+
+      this.getWorkoutTypeData();
+      this.setUpFirstAreaChart();
+      this.setUpFirstPieChart();
+
+    })
   }
 
+  private getWorkoutTypeData(): void {
+    this.workouts.forEach(workout => {
+      const types = this.workoutTypeData.map(({name}) => name);
+
+      if (!types.includes(workout.type)) {
+        this.workoutTypeData.push({ name: workout.type, y: 1});
+      } else {
+        const index = types.indexOf(workout.type);
+        this.workoutTypeData[index].y += 1;
+      }
+    });
+
+    this.workoutTypes = this.workoutTypeData.map(({name}) => name);
+  }
+
+  private setUpFirstAreaChart(): void {
+    this.chart = Highcharts.chart('area-chart', {
+      chart: { type: 'area' },
+      title: {
+        text: 'Egy edzésen elvégzett összes edzésmunka'
+      },
+      series: [{
+        type: 'area',
+        name: 'Workouts',
+        data : this.getFirstAreaChartData()
+      }],
+      rangeSelector: {
+        enabled: true
+      },
+      navigator: {
+        enabled: true,
+        series: {
+          type: 'area'
+        },
+        yAxis: {
+          min: 0,
+          max: 3,
+          reversed: true,
+          categories: []
+        }
+      },
+      xAxis: {
+        type: 'datetime',
+        // tickInterval: 1000 * 3600 * 24 *30 // 1 month
+      },
+    });
+  }
+
+  private setUpFirstPieChart(): void {
+    this.pieChart = Highcharts.chart('pie-chart', {
+      chart: { type: 'pie' },
+      title: {
+        text: 'Edzés típusok megoszlása'
+      },
+      series: [{
+        type: 'pie',
+        name: 'Darabszám',
+        data : this.workoutTypeData
+      }],
+    });
+  }
+
+  getFirstAreaChartData(type: string = 'GYM'): any[] {
+    const data = [];
+
+    this.workouts.filter(workout => workout.type === type).forEach(workout => {
+      let volume = 0;
+
+      workout.exercises.forEach(exercise => {
+        exercise.sets.forEach(set => {
+          volume += set.reps * (set.weight === 0 ? 1 : set.weight);
+        });
+      });
+
+      data.push({x: Date.parse(workout.date.toString()), y: volume})
+    });
+
+    if (this.chart) {
+      this.chart.series[0].setData(data);
+    }
+
+    return data;
+  }
 }

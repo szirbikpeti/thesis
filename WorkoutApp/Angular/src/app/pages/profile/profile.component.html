@@ -58,6 +58,7 @@
                 matInput
                 formControlName="birthday"
                 [matDatepicker]="birthdayValue"
+                [matDatepickerFilter]="birthDayPickerFilter"
                 (focus)="birthdayValue.open()">
               <mat-datepicker #birthdayValue></mat-datepicker>
             </div>

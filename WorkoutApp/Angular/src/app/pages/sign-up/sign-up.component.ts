@@ -25,11 +25,16 @@ export class SignUpComponent implements OnInit {
       email: ['', [Validators.email, Validators.required]],
       userName: ['', Validators.required],
       password: ['', [Validators.minLength(6), Validators.required]],
-      birthDay: []
+      birthDay: [],
+      gender: ['', Validators.required]
     });
   }
 
   uploadDefaultProfilePicture() {
+    if (this.signUpForm.invalid) {
+      return;
+    }
+
     const that = this;
     const getFileBlob = function (url, cb) {
       const xhr = new XMLHttpRequest();
@@ -53,16 +58,12 @@ export class SignUpComponent implements OnInit {
       });
     };
 
-    getFileObject('../../../assets/avatar.png', function (fileObject) {
+    getFileObject(`../../../assets/avatar-${this.gender}.png`, function (fileObject) {
       that._file.upload(fileObject).subscribe(file => that.submitSignUpForm(file.id));
     });
   }
 
   private submitSignUpForm(fileId: string) {
-    if (this.signUpForm.invalid) {
-      return;
-    }
-
     const signUpRequest: SignUpRequest = this.signUpForm.getRawValue();
     signUpRequest.profilePictureId = fileId;
 
@@ -76,7 +77,20 @@ export class SignUpComponent implements OnInit {
       });
   }
 
+  birthDayPickerFilter (d: Date | null): boolean {
+    const today = new Date();
+    const date = (d || today);
+
+    const oneHundredYearsAgoDate = new Date(today.getFullYear() - 100, today.getMonth(), today.getDay());
+
+    return date < today && date > oneHundredYearsAgoDate;
+  }
+
   close() {
     this.dialogRef.close();
+  }
+
+  get gender(): string {
+    return this.signUpForm.get('gender').value;
   }
 }

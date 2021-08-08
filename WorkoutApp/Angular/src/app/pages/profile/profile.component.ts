@@ -126,6 +126,15 @@ export class ProfileComponent implements OnInit {
     }
   }
 
+  birthDayPickerFilter (d: Date | null): boolean {
+    const today = new Date();
+    const date = (d || today);
+
+    const oneHundredYearsAgoDate = new Date(today.getFullYear() - 100, today.getMonth(), today.getDay());
+
+    return date < today && date > oneHundredYearsAgoDate;
+  }
+
   get email(): string {
     return this.userForm.get('email').value;
   }

@@ -1,8 +1,7 @@
-<p>statistics works!</p>
-
-<highcharts-chart
-  [Highcharts]="Highcharts"
-  [options]="chartOptions"
-
-  style="width: 100%; height: 400px"
-></highcharts-chart>
+<mat-form-field>
+  <mat-select value="GYM" (valueChange)="getFirstAreaChartData($event)">
+    <mat-option *ngFor="let type of workoutTypes" [value]="type">{{type}}</mat-option>
+  </mat-select>
+</mat-form-field>
+<div id="area-chart" style="width: auto"></div>
+<div id="pie-chart" style="width: auto"></div>
