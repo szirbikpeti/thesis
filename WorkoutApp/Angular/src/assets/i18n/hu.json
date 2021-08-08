@@ -33,7 +33,9 @@
     "NEW_WORKOUT": "Új edzés felvétel",
     "FRIEND_SEARCH": "Barát keresés",
     "FRIENDS": "Barátok",
-    "STATISTICS": "Statisztika"
+    "STATISTICS": "Statisztika",
+    "FOLLOWS": "Követések",
+    "NOTIFICATIONS": "Értesítések"
   },
   "PAGE": {
     "PROFILE": "Profil adatok"
@@ -111,7 +113,8 @@
     "UNFOLLOW": "Kikövetés",
     "ACCEPT": "Elfogad",
     "DECLINE": "Elutasít",
-    "MARK_AS_READ": "Olvasottként jelöl"
+    "MARK_AS_READ": "Olvasottként jelöl",
+    "ADD_LIKE": "Lájkolt egy posztot"
   },
   "POST": {
     "ADD_TITLE": "Új poszt létrehozása",

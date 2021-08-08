@@ -8,6 +8,8 @@ import {StateService} from "../../../services/state.service";
 import {PostService} from "../../../services/post.service";
 import {UserModel} from "../../../models/UserModel";
 import {CommentModel} from "../../../models/CommentModel";
+import {ConfirmationDialogComponent} from "../../confirmation-dialog/confirmation-dialog.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-post-card',
@@ -29,7 +31,7 @@ export class PostCardComponent implements OnInit{
   commentAdditionData = new Map<string, boolean>();
 
   constructor(public sanitizer: DomSanitizer, public _state: StateService,
-              private _post: PostService) {
+              private _post: PostService, private dialog: MatDialog) {
     this.currentUser = _state.user.value;
   }
 
@@ -106,11 +108,18 @@ export class PostCardComponent implements OnInit{
   }
 
   deletePost(post: PostModel): void {
-    this._post.delete(post.id)
-      .subscribe(() => {
-        const index = this.posts.indexOf(post);
-        this.posts.splice(index, 1);
-      });
+    this.dialog.open(ConfirmationDialogComponent, {
+      disableClose: true,
+      data: {
+        callback: () => {
+          this._post.delete(post.id).subscribe(() => {
+            const index = this.posts.indexOf(post);
+            this.posts.splice(index, 1);
+          });
+        }
+      }
+    });
+
   }
 
   deleteComment(postId: string, commentId: string) {

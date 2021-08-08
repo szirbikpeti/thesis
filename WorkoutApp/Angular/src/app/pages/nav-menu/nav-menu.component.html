@@ -1,4 +1,4 @@
-<mat-sidenav-container *ngIf="authenticationConfirmed" class="sidenav-container" style="background: #f1f2f3">
+<mat-sidenav-container class="sidenav-container" style="background: #f1f2f3">
   <mat-sidenav  #drawer class="sidenav" fixedInViewport
                [mode]="(isHandset$ | async) ? 'over' : 'side'"
                [opened]="(isHandset$ | async) === false">
@@ -94,88 +94,8 @@
         </mat-form-field>
       </div>
 
-<!--      <div-->
-<!--        *ngIf="!(_notification.notifications | async) || ((_notification.notifications | async) && unreadNotifications.length === 0)">-->
-<!--        <img src="../../../assets/notifications-yellow-icon.svg" [matMenuTriggerFor]="menu"-->
-<!--             class="clickable notification-icon">-->
-<!--      </div>-->
-
-<!--      <div *ngIf="(_notification.notifications | async) && unreadNotifications.length > 0"-->
-<!--           [@notificationAnimation]="notificationAnimationState"-->
-<!--           (@notificationAnimation.done)="onAnimationEnd($event)">-->
-<!--        <img src="../../../assets/notifications-yellow-icon.svg" [matMenuTriggerFor]="menu"-->
-<!--             class="clickable notification-icon">-->
-<!--      </div>-->
-
-<!--      <mat-menu #menu="matMenu" xPosition="after">-->
-<!--        <div class="mat-menu">-->
-<!--          <div class="mat-menu-header text-center">-->
-<!--            {{'NOTIFICATION.NOTIFICATIONS' | translate}} ({{(_notification.notifications | async).length}})-->
-<!--          </div>-->
-<!--          <div mat-menu-item class="menu-item clickable {{noti.deletedOn === undefined ? 'unread' : 'deleted'}}"-->
-<!--               *ngFor="let noti of _notification.notifications | async"-->
-<!--               (click)="openNotification(noti)">-->
-<!--            <div style="overflow: hidden;">-->
-<!--              <span style="float: left; font-weight: bold; padding-left: 10px;" [ngSwitch]="noti.triggeredByUser.user">-->
-<!--                <span *ngSwitchCase="'system@penny.hu'">{{'NOTIFICATION.SYSTEM_MESSAGE' | translate}}</span>-->
-<!--                <span *ngSwitchDefault>{{noti.triggeredByUser.user}}</span>-->
-<!--              </span>-->
-<!--              <br>-->
-<!--              <div class="noti-container">-->
-<!--                <div class="noti-change">{{noti.changedEntityName | truncatetext: 30}}</div>-->
-<!--                <div class="noti-type">-->
-<!--                  {{'NOTIFICATION.' + noti.type | translate}}-->
-<!--                </div>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--            <mat-divider class="noti-divider"></mat-divider>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </mat-menu>-->
-
-      <div class="friend-request-notification-container">
-        <img  src="assets/people.svg" [matMenuTriggerFor]="friendRequestMenu"
-              [ngClass]="getFollowNotificationCount() > 0
-                ? 'people-img-with-request'
-                : 'people-img-without-request'">
-        <div *ngIf="getFollowNotificationCount() > 0"
-             class="red-circle" [matMenuTriggerFor]="friendRequestMenu">
-          {{this.followNotifications.length}}
-        </div>
-        <mat-menu #friendRequestMenu="matMenu">
-          <div class="mat-menu-header text-center">
-            Követések
-          </div>
-          <div class="follow-noti-grid-container menu-item clickable"
-               *ngFor="let followNotification of this.followNotifications"
-               (click)="$event.stopPropagation(); openProfileModal(followNotification)">
-            <div class="item1">
-              <img style="height: 60px; width: 60px;" alt="No image" [src]="getPicture(followNotification.sentByUser.profilePicture.data)">
-            </div>
-            <div class="item2" style="margin-bottom: 15px; font-size: 15px">{{followNotification.sentByUser.userName}}</div>
-            <div class="item3" style="text-align: center;">{{'NOTIFICATION.' + getNotificationType(followNotification.type).toUpperCase() | translate}}</div>
-            <div class="item4" style="font-size: 15px;">{{followNotification.sentByUser.fullName}}</div>
-            <div class="item5" style="margin-top: -8px; text-align: center;">
-              <span *ngIf="followNotification.type === 0">
-              <button mat-icon-button matTooltip="{{'NOTIFICATION.DECLINE' | translate}}"
-                      (click)="$event.stopPropagation(); declineRequest(followNotification.sentByUser.id);">
-                <mat-icon>close</mat-icon>
-              </button>
-              <button mat-icon-button matTooltip="{{'NOTIFICATION.ACCEPT' | translate}}"
-                      (click)="$event.stopPropagation(); acceptRequest(followNotification.sentByUser.id)">
-                <mat-icon>done</mat-icon>
-              </button>
-              </span>
-              <span *ngIf="followNotification.type !== 0">
-              <button mat-icon-button matTooltip="{{'NOTIFICATION.MARK_AS_READ' | translate}}"
-                      (click)="$event.stopPropagation(); markAsReadNotification(followNotification.id)">
-                <mat-icon>mark_as_unread</mat-icon>
-              </button>
-              </span>
-            </div>
-          </div>
-        </mat-menu>
-      </div>
+      <app-notification-card *ngIf="followNotifications" [notifications]="followNotifications" [category]="NotificationCategory.Follow"></app-notification-card>
+      <app-notification-card *ngIf="generalNotifications" [notifications]="generalNotifications" [category]="NotificationCategory.General"></app-notification-card>
 
       <div class="username-container">
         <div class="clickable username"

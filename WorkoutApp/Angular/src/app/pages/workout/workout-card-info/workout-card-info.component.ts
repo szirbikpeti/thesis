@@ -34,6 +34,7 @@ export class WorkoutCardInfoComponent{
 
   deleteWorkout(id: string) {
     this.dialog.open(ConfirmationDialogComponent, {
+      disableClose: true,
       data: {
         callback: () => {
           this._workout.delete(id)

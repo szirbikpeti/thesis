@@ -1,5 +1,5 @@
-::ng-deep.mat-menu-panel {
-  max-width: none !important;
+.main-content {
+  padding: 12px;
 }
 
 .first-char {
@@ -21,36 +21,6 @@
 
 hr {
   width: 85%;
-}
-
-.friend-request-notification-container {
-  margin-left: 12px;
-  margin-right: 12px;
-}
-
-.people-img-with-request {
-  cursor: pointer;
-  margin-top: 13px;
-}
-
-.people-img-without-request {
-  cursor: pointer;
-}
-
-.red-circle {
-  cursor: pointer;
-  background-color: red;
-  border-radius: 50%;
-  position: relative;
-  bottom: 12px;
-  text-align: center;
-  vertical-align: middle;
-  justify-content: center;
-  font-size: 11px;
-  line-height: 15px;
-  left: 18px;
-  height: 15px;
-  width: 15px;
 }
 
 .profile-picture {
@@ -203,113 +173,6 @@ a:active {
   left: 40px;
 }
 
-.main-content {
-  padding: 12px;
-}
-
-.notification-icon {
-  color: #ffc900;
-  font-size: 27px;
-  margin: 10px;
-}
-
-.user-icon {
-  font-size: 45px;
-  margin: 12px 20px 12px 12px;
-}
-
-.toolbox-user-picture {
-  border-radius: 50%;
-  max-width: 45px;
-}
-
-.nav-user-picture {
-  border-radius: 50%;
-  max-width: 100px;
-}
-
-.nav-user-icon {
-  font-size: 120px;
-}
-
-.user-data {
-  overflow-x: hidden;
-}
-
-.name {
-  font-size: 14px;
-  text-align: center;
-  white-space: initial;
-  width: 200px;
-  word-wrap: break-word;
-}
-
-.mat-menu {
-  max-height: 400px;
-  overflow-x: hidden;
-  width: 350px;
-  word-break: break-all;
-}
-
-.mat-menu-header {
-  background: #929292;
-  color: #fff;
-  font-size: 12px;
-  height: 26px;
-  padding-top: 3px;
-}
-
-.menu-item {
-  border-bottom: 1px #323232;
-  font-size: 12px;
-  height: 70px;
-  line-height: initial;
-  padding: 15px 20px;
-
-  &.deleted {
-    background-color: #ececec;
-    color: #000;
-    font-weight: normal !important;
-  }
-
-  &.unread {
-    color: #000;
-
-    .noti-type {
-      color: #323232;
-    }
-  }
-}
-
-.noti-type {
-  color: #323232;
-  float: right;
-  font-weight: bold;
-  text-transform: uppercase;
-}
-
-.noti-change {
-  float: left;
-}
-
-.noti-container {
-  align-items: stretch;
-  flex-direction: row;
-  padding: 10px;
-}
-
-.noti-divider {
-  color: #323232;
-  margin-left: 0;
-  width: 100%;
-}
-
-::ng-deep.mat-menu-panel {
-  margin-top: 15px;
-  max-width: none !important;
-  top: 50px;
-}
-
 .last-divider {
   border: 0;
   padding-bottom: 20px;
@@ -345,21 +208,11 @@ a:active {
   display: none;
 }
 
-.follow-noti-grid-container {
-  width: 300px;
-  height: 60px;
-  margin-top: 5px;
-  margin-bottom: 10px;
-  display: grid;
-  grid-template-columns: auto auto auto;
-  padding: 5px;
-}
-
 .grid-container > div {
   text-align: center;
 }
 
-.item1 {
+.profile-picture-item-container {
   grid-row-start: 1;
   grid-row-end: 3;
 }
@@ -412,15 +265,6 @@ a:active {
     display: block;
     font-size: 11px;
     margin: 0;
-  }
-
-  .notification-icon {
-    margin: 10px 0;
-  }
-
-  ::ng-deep.mat-menu-panel {
-    margin: 0;
-    max-width: 100%;
   }
 
   .sidenav mat-nav-list {

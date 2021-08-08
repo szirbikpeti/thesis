@@ -33,7 +33,9 @@
     "NEW_WORKOUT": "Create new workout",
     "FRIEND_SEARCH": "Friend search",
     "FRIENDS": "Friends",
-    "STATISTICS": "Statistics"
+    "STATISTICS": "Statistics",
+    "FOLLOWS": "Follows",
+    "NOTIFICATIONS": "Notifications"
   },
   "PAGE": {
     "PROFILE": "Profile"
@@ -112,7 +114,8 @@
     "UNFOLLOW": "Unfollow",
     "ACCEPT": "Accept",
     "DECLINE": "Decline",
-    "MARK_AS_READ": "Mark as read"
+    "MARK_AS_READ": "Mark as read",
+    "ADD_LIKE": "Like a post"
   },
   "POST": {
     "ADD_TITLE": "Create new post",

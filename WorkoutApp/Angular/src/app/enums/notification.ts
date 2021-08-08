@@ -6,5 +6,12 @@
   Follow_Back,
   Accept_Follow_Request,
   Decline_Follow_Request,
-  UnFollow
+  UnFollow,
+  Add_Like
+}
+
+export enum NotificationCategory {
+  Follow,
+  General,
+  Message
 }

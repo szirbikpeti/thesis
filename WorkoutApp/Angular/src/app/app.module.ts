@@ -32,11 +32,13 @@ import {IsVideoPipe} from "./pipes/is-video.pipe";
 import {PostCardComponent} from "./pages/dashboard/post-card/post-card.component";
 import {StatisticsComponent} from "./pages/statistics/statistics.component";
 import {HighchartsChartModule} from "highcharts-angular";
+import {NotificationCardComponent} from "./pages/nav-menu/notification-card/notification-card.component";
 
 @NgModule({
   declarations: [
     AppComponent,
     NavMenuComponent,
+    NotificationCardComponent,
     NotificationModalComponent,
     HomeComponent,
     SignUpComponent,

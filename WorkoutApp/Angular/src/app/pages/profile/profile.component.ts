@@ -92,6 +92,7 @@ export class ProfileComponent implements OnInit {
 
   deleteUser(): void {
     this.dialog.open(ConfirmationDialogComponent, {
+      disableClose: true,
       data: {
         callback: () => {
           this._user.delete().subscribe(() => {

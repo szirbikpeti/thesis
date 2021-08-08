@@ -179,6 +179,7 @@ export class EditWorkoutComponent {
 
   openConfirmationDialog() {
     this.dialog.open(ConfirmationDialogComponent, {
+      disableClose: true,
       data: {
         callback: () => this.deleteWorkout()
       }

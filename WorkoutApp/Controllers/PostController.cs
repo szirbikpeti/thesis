@@ -25,12 +25,18 @@ namespace WorkoutApp.Controllers
     private readonly IMapper _mapper;
     private readonly UserManager<UserEntity> _userManager;
     private readonly IPostRepository _post;
+    private readonly INotificationRepository _notification;
 
-    public PostController(IMapper mapper, UserManager<UserEntity> userManager, IPostRepository post)
+    public PostController(
+      IMapper mapper,
+      UserManager<UserEntity> userManager,
+      IPostRepository post,
+      INotificationRepository notification)
     {
       _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
       _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
       _post = post ?? throw new ArgumentNullException(nameof(post));
+      _notification = notification ?? throw new ArgumentNullException(nameof(notification));
     }
 
     [HttpGet]
@@ -118,6 +124,19 @@ namespace WorkoutApp.Controllers
       };
 
       var updatedPost = await _post.DoAddLikeAsync(likeEntity, cancellationToken)
+        .ConfigureAwait(false);
+      
+      var notification = new NotificationEntity {
+        Type = NotificationType.AddLike,
+        SentByUserId = currentUserId,
+        ReceivedUserId = updatedPost!.UserId,
+        TriggeredOn = DateTimeOffset.Now  // TODO - add post to notification
+      };
+      
+      await _notification.DoAddAsync(notification, cancellationToken)
+        .ConfigureAwait(false);
+      
+      await _notification.DoBroadcastFollowNotifications(updatedPost!.UserId)
         .ConfigureAwait(false);
 
       return Ok(CreatePostDto(updatedPost!));

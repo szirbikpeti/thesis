@@ -9,6 +9,7 @@
     FollowBack,
     AcceptFollowRequest,
     DeclineFollowRequest,
-    UnFollow
+    UnFollow,
+    AddLike
   }
 }

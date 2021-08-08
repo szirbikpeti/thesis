@@ -1,0 +1,73 @@
+.mat-menu-header {
+  background: #929292;
+  color: #fff;
+  font-size: 12px;
+  height: 26px;
+  padding-top: 3px;
+}
+
+.mat-menu {
+  max-height: 400px;
+  overflow-x: hidden;
+  width: 350px;
+  word-break: break-all;
+}
+
+.notification-container {
+  margin-left: 12px;
+  margin-right: 12px;
+}
+
+.notification-icon-with-badge {
+  margin-top: 13px;
+}
+
+.red-circle {
+  background-color: red;
+  border-radius: 50%;
+  position: relative;
+  bottom: 12px;
+  vertical-align: middle;
+  justify-content: center;
+  font-size: 11px;
+  line-height: 15px;
+  left: 18px;
+  height: 15px;
+  width: 15px;
+}
+
+.notification-grid-container {
+  width: 300px;
+  height: 60px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  display: grid;
+  grid-template-columns: auto auto auto;
+  padding: 5px;
+}
+
+.menu-item {
+  border-bottom: 1px #323232;
+  font-size: 12px;
+  height: 70px;
+  line-height: initial;
+  padding: 15px 20px;
+}
+
+.profile-picture-item-container {
+  grid-row-start: 1;
+  grid-row-end: 3;
+}
+
+.username {
+  font-size: 15px;
+  margin-bottom: 15px;
+}
+
+.fullname {
+  font-size: 15px;
+}
+
+.action-button-container {
+  margin-top: -8px;
+}

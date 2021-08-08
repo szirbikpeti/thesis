@@ -14,9 +14,8 @@ import {UserService} from "../../services/user.service";
 import * as signalR from '@microsoft/signalr';
 import {NotificationService} from "../../services/notification.service";
 import {NotificationModel} from "../../models/NotificationModel";
-import {NotificationType} from "../../enums/notification";
+import {NotificationCategory, NotificationType} from "../../enums/notification";
 import {MatDialog} from "@angular/material/dialog";
-import {NotificationModalComponent} from "./notification-modal/notification-modal.component";
 
 @Component({
   selector: 'app-nav-menu',
@@ -31,19 +30,19 @@ export class NavMenuComponent {
 
   isNull = isNull;
   getPicture = getPicture;
+  NotificationCategory = NotificationCategory;
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(map(result => result.matches), shareReplay());
 
   currentUser: UserModel;
-  authenticationConfirmed: boolean = true;
 
-  notifications: NotificationModel[];
   followNotifications: NotificationModel[];
+  generalNotifications: NotificationModel[];
 
   constructor(private breakpointObserver: BreakpointObserver, public _auth: AuthService, private _notification: NotificationService,
               private _user: UserService, private _translate: TranslateService, @Inject('BASE_URL') baseUrl: string,
-              private _state: StateService, private dialog: MatDialog, public router: Router, public sanitizer: DomSanitizer) {
+              private _state: StateService, public router: Router, public sanitizer: DomSanitizer) {
     _state.user.subscribe(storedUser => this.currentUser = storedUser);
     this.isHandset$.subscribe((next) => this.isHandset = next);
     this.getNotifications();
@@ -64,12 +63,12 @@ export class NavMenuComponent {
     this._notification.get().subscribe(notis => {
       // TODO - delete is not working right now, console.log(notis);
 
-      this.notifications = notis
-        .filter(_ => !this.getNotificationType(_.type).toLowerCase().includes('follow'));
-
       this.followNotifications = notis
         .filter(_ => this.getNotificationType(_.type).toLowerCase().includes('follow')
           && isNull(_.deletedOn));
+
+      this.generalNotifications = notis
+        .filter(_ => !this.getNotificationType(_.type).toLowerCase().includes('follow'));
     });
   }
 
@@ -103,21 +102,6 @@ export class NavMenuComponent {
     this.router.navigate(['/profile']);
   }
 
-  acceptRequest(id: string): void {
-    this._user.acceptFollowRequest(id)
-      .subscribe(null);
-  }
-
-  declineRequest(id: string): void {
-    this._user.declineFollowRequest(id)
-      .subscribe(null);
-  }
-
-  markAsReadNotification(id: string): void {
-    this._notification.delete(id)
-      .subscribe(null);
-  }
-
   isSideNavOpened(): boolean {
     return this.sideNav?.opened ?? window.innerWidth > 960;
   }
@@ -126,23 +110,8 @@ export class NavMenuComponent {
     return this.followNotifications?.length ?? 0;
   }
 
-  openProfileModal(notification: NotificationModel) {
-    this.dialog.open(NotificationModalComponent, {
-      width: '350px',
-      data: {
-        language: this._state.language.value,
-        notification: notification,
-        acceptCallback: () => {
-          this.acceptRequest(notification.sentByUser.id);
-        },
-        declineCallback: () => {
-          this.declineRequest(notification.sentByUser.id);
-        },
-        markAsReadCallback: () => {
-          this.markAsReadNotification(notification.id);
-        }
-      }
-    });
+  getNotificationCount(): number {
+    return this.generalNotifications?.length ?? 0;
   }
 
   getNotificationType(type: NotificationType): string {
