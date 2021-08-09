@@ -27,6 +27,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatRippleModule} from "@angular/material/core";
+import {MatPasswordStrengthModule} from '@angular-material-extensions/password-strength';
 
 @NgModule({
   declarations: [],
@@ -61,6 +62,7 @@ import {MatRippleModule} from "@angular/material/core";
     MatMenuModule,
     MatTooltipModule,
     MatRippleModule,
+    MatPasswordStrengthModule,
   ],
   exports: [
     MatToolbarModule,
@@ -93,6 +95,7 @@ import {MatRippleModule} from "@angular/material/core";
     MatMenuModule,
     MatTooltipModule,
     MatRippleModule,
+    MatPasswordStrengthModule,
   ]
 })
 

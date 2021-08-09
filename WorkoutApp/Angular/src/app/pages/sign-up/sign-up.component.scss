@@ -3,8 +3,9 @@ h2 {
   margin-top: 10px;
 }
 
-button {
+.add-button {
   font-size: 18px;
+  width: 200px;
 }
 
 mat-form-field {
@@ -22,8 +23,8 @@ mat-form-field:hover {
 }
 
 mat-form-field.mat-focused {
-  border: 1px solid #3298dc;
-  box-shadow: 0 0 10px #3298dc4d;
+  border: 1px solid #47424299;
+  box-shadow: 0 0 10px #b0a9a9;
 }
 
 mat-form-field.ng-dirty.ng-invalid {
@@ -34,8 +35,14 @@ mat-form-field.ng-dirty.ng-invalid {
 .control-container {
   display: flex;
   overflow: hidden;
-  padding: 10px;
+  padding: 9px;
   width: 100%;
+}
+
+mat-password-strength {
+  display: flex;
+  margin: -3px auto 3px auto;
+  width: 90%;
 }
 
 mat-label {
@@ -51,9 +58,19 @@ mat-label, mat-radio-button {
   margin-left: 10px;
 }
 
+.password-hint {
+  position: absolute;
+  top: -4px;
+  right: 8px;
+}
+
 @media screen and (max-width: 420px) {
   mat-label, mat-radio-button {
     margin-right: 10px;
+  }
+
+  mat-password-strength {
+    width: 85%;
   }
 }
 

@@ -15,6 +15,8 @@ import {SignUpRequest} from "../../requests/SignUpRequest";
 export class SignUpComponent implements OnInit {
   signUpForm: FormGroup;
 
+  isSubmittingForm: boolean;
+
   constructor(private fb: FormBuilder, private _auth: AuthService, public _file: FileService,
               private _toast: ToastrService, private _translate: TranslateService,
               private dialogRef: MatDialogRef<SignUpComponent>) { }
@@ -30,10 +32,14 @@ export class SignUpComponent implements OnInit {
     });
   }
 
-  uploadDefaultProfilePicture() {
+  uploadDefaultProfilePicture(): void {
     if (this.signUpForm.invalid) {
       return;
     }
+
+    this.isSubmittingForm = true;
+
+    return;
 
     const that = this;
     const getFileBlob = function (url, cb) {
@@ -63,18 +69,26 @@ export class SignUpComponent implements OnInit {
     });
   }
 
-  private submitSignUpForm(fileId: string) {
+  private submitSignUpForm(fileId: string): void {
     const signUpRequest: SignUpRequest = this.signUpForm.getRawValue();
     signUpRequest.profilePictureId = fileId;
 
     this._auth.signUp(signUpRequest)
       .subscribe(() => {
+        this.isSubmittingForm = false;
         this.dialogRef.close();
 
         this._toast.success(
           this._translate.instant('USER.SUCCESSFUL_SIGNUP'),
           this._translate.instant( 'GENERAL.INFO'));
-      });
+      }, err => {
+        this.isSubmittingForm = false;
+        console.log(err);
+
+        this._toast.error(
+          this._translate.instant('USER.UNSUCCESSFUL_SIGNUP'),
+          this._translate.instant( 'GENERAL.ERROR'));
+    });
   }
 
   birthDayPickerFilter (d: Date | null): boolean {
@@ -86,8 +100,16 @@ export class SignUpComponent implements OnInit {
     return date < today && date > oneHundredYearsAgoDate;
   }
 
-  close() {
+  close(): void {
+    if (this.isSubmittingForm) {
+      return;
+    }
+
     this.dialogRef.close();
+  }
+
+  get password(): string {
+    return this.signUpForm.get('password').value;
   }
 
   get gender(): string {

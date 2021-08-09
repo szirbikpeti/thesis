@@ -27,11 +27,13 @@
     </div>
     <div class="control-container">
       <mat-form-field appearance="standard">
-        <div class="center-input-field">
+        <div class="center-input-field" style="position: relative">
           <input matInput type="password" placeholder="{{'USER.PASSWORD' | translate}} *" formControlName="password">
+          <img *ngIf="password.length < 6" class="password-hint" matTooltip="{{'USER.MIN_PASSWORD_LENGTH' | translate}}: 6" src="assets/alert.svg">
         </div>
       </mat-form-field>
     </div>
+    <mat-password-strength [password]="password"></mat-password-strength>
     <div class="control-container">
       <mat-form-field appearance="standard">
         <div class="center-input-field">
@@ -55,6 +57,13 @@
     </div>
 
     <mat-error *ngIf="signUpForm.invalid">{{'GENERAL.INVALID_FORM' | translate}}</mat-error>
-    <button type="submit" mat-button >{{'USER.SIGNUP' | translate}}</button>
+    <button *ngIf="!isSubmittingForm" class="add-button" type="submit" mat-button
+            [ngStyle]="{'margin-top': signUpForm.valid ? '10px' : '0'}">
+      {{'USER.SIGNUP' | translate}}
+    </button>
+    <button *ngIf="isSubmittingForm" class="add-button" type="submit" mat-raised-button disabled
+            [ngStyle]="{'margin-top': signUpForm.valid ? '10px' : '0'}">
+      <mat-spinner style="margin: 4px auto" diameter="28" color="warn" strokeWidth="4"></mat-spinner>
+    </button>
   </form>
 </mat-dialog-content>

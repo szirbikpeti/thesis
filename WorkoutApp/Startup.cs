@@ -29,6 +29,7 @@ namespace WorkoutApp
     private const string NpmScriptCommand = "start";
 
     private const int RequiredMinimumPasswordLength = 6;
+    private const string AllowedUserNameCharacters = "AÁBCDEÉFGHIÍJKLMNOÓÖŐPQRSTUÚÜŰVWXYZaábcdeéfghiíjklmnoóöőpqrstuúüűvwxyz0123456789";
     private const int SessionExpireTimeInHours = 7;
     private IConfiguration Configuration { get; }
 
@@ -61,6 +62,10 @@ namespace WorkoutApp
           _.Password.RequireNonAlphanumeric = false;
           _.Password.RequiredLength = RequiredMinimumPasswordLength;
 
+          _.User.RequireUniqueEmail = true;
+          _.User.AllowedUserNameCharacters = AllowedUserNameCharacters;
+          // _.SignIn.RequireConfirmedEmail = true;
+          
           _.Lockout.MaxFailedAccessAttempts = 5;
         })
         .AddEntityFrameworkStores<WorkoutDbContext>()
