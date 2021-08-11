@@ -5,7 +5,8 @@
   </button>
 </div>
 
-<div *ngIf="workoutForm" class="content">
+<mat-spinner *ngIf="feature !== WorkoutFeature.ADD && !workout"></mat-spinner>
+<div *ngIf="workoutForm && ((feature !== WorkoutFeature.ADD && workout) || feature === WorkoutFeature.ADD)" class="content">
   <form [formGroup]="workoutForm" (ngSubmit)="uploadAttachments()">
     <div class="control-pair-container">
       <div class="pair-left">
@@ -72,38 +73,36 @@
             <button type="button" mat-icon-button (click)="addNewSet(exerciseIndex)"><mat-icon>add</mat-icon></button>
           </div>
 
-          <div formArrayName="sets">
-            <div *ngFor="let set of getSet(exerciseIndex).controls; let setIndex = index;">
-              <div class="row set-container" [formGroupName]="setIndex">
-                <div>
-                  <div class="placeholder">{{'WORKOUT.SET_WEIGHT' | translate}} *</div>
-                  <mat-form-field class="small-mat-form-field">
-                    <div class="center-input-field">
-                      <input type="number" matInput formControlName="weight">
-                    </div>
-                  </mat-form-field>
-                </div>
-                <div>
-                  <div class="placeholder">{{'WORKOUT.SET_REPS' | translate}} *</div>
-                  <mat-form-field class="small-mat-form-field">
-                    <div class="center-input-field">
-                      <input type="number" matInput formControlName="reps">
-                    </div>
-                  </mat-form-field>
-                </div>
-                <div>
-                  <div class="placeholder">{{'WORKOUT.DURATION' | translate}}</div>
-                  <mat-form-field class="small-mat-form-field">
-                    <div class="center-input-field">
-                      <input type="number" matInput formControlName="duration" (change)="formatDurationInput(getDurationOfSet(exerciseIndex))">
-                    </div>
-                  </mat-form-field>
-                </div>
-                <button *ngIf="getSet(exerciseIndex).length !== 1" mat-icon-button type="button"
-                        class="delete-set-button" (click)="deleteSet(exerciseIndex, setIndex)">
-                  <mat-icon>delete_forever</mat-icon>
-                </button>
+          <div *ngFor="let set of getSets(exerciseIndex).controls; let setIndex = index;" formArrayName="sets">
+            <div class="row set-container" [formGroupName]="setIndex">
+              <div>
+                <div class="placeholder">{{'WORKOUT.SET_WEIGHT' | translate}} *</div>
+                <mat-form-field class="small-mat-form-field">
+                  <div class="center-input-field">
+                    <input type="number" matInput formControlName="weight">
+                  </div>
+                </mat-form-field>
               </div>
+              <div>
+                <div class="placeholder">{{'WORKOUT.SET_REPS' | translate}} *</div>
+                <mat-form-field class="small-mat-form-field">
+                  <div class="center-input-field">
+                    <input type="number" matInput formControlName="reps">
+                  </div>
+                </mat-form-field>
+              </div>
+              <div>
+                <div class="placeholder">{{'WORKOUT.DURATION' | translate}}</div>
+                <mat-form-field class="small-mat-form-field">
+                  <div class="center-input-field">
+                    <input matInput formControlName="duration" (change)="formatDurationInput(getDurationOfSet(exerciseIndex, setIndex))">
+                  </div>
+                </mat-form-field>
+              </div>
+              <button *ngIf="getSets(exerciseIndex).length !== 1" mat-icon-button type="button"
+                      class="delete-set-button" (click)="deleteSet(exerciseIndex, setIndex)">
+                <mat-icon>delete_forever</mat-icon>
+              </button>
             </div>
           </div>
         </div>

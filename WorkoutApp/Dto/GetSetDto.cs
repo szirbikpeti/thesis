@@ -10,6 +10,6 @@ namespace WorkoutApp.Dto
 
     public double Weight { get; set; }
         
-    public TimeSpan? Duration { get; set; }
+    public string? Duration { get; set; }
   }
 }

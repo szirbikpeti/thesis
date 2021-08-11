@@ -116,7 +116,7 @@ export class NewWorkoutComponent {
             }));
 
           for(let j = 0; j < fetchedWorkout.exercises[i].sets.length; j++) {
-            this.getSet(i).push(this.createNewSet());
+            this.getSets(i).push(this.createNewSet());
           }
         }
       } else {
@@ -186,7 +186,7 @@ export class NewWorkoutComponent {
     return this.fb.group({
       reps: [1, Validators.required],
       weight: [0, Validators.required],
-      duration: []
+      duration: [null, Validators.pattern('[[0-9]*[h]{0,1}]{0,1}[ ]{0,1}[[0-9]*[m]{0,1}]{0,1}[ ]{0,1}[[0-9]*[s]{0,1}]{0,1}')]
     });
   }
 
@@ -254,7 +254,7 @@ export class NewWorkoutComponent {
   }
 
   addNewSet(exerciseIndex: number): void {
-    this.getSet(exerciseIndex).push(this.createNewSet());
+    this.getSets(exerciseIndex).push(this.createNewSet());
   }
 
   addAttachment() {
@@ -267,7 +267,7 @@ export class NewWorkoutComponent {
   }
 
   deleteSet(exerciseIndex: number, setIndex: number): void {
-    this.getSet(exerciseIndex).removeAt(setIndex);
+    this.getSets(exerciseIndex).removeAt(setIndex);
   }
 
   deleteSelectedAttachment(element: FileTableModel) {
@@ -343,12 +343,12 @@ export class NewWorkoutComponent {
 
   get exercises(): FormArray { return this.workoutForm.get('exercises') as FormArray; }
 
-  getSet(exerciseIndex: number): FormArray {
+  getSets(exerciseIndex: number): FormArray {
     return (this.exercises.at(exerciseIndex) as FormGroup).get('sets') as FormArray;
   }
 
-  getDurationOfSet(exerciseIndex: number): AbstractControl {
-    return this.getSet(exerciseIndex).get('duration');
+  getDurationOfSet(exerciseIndex: number, setIndex: number): AbstractControl {
+    return this.getSets(exerciseIndex).at(setIndex).get('duration');
   }
 
   formatDurationInput(control: AbstractControl) {

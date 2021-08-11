@@ -11,7 +11,11 @@
   <div class="profile-picture-container">
     <img class="profile-picture" [src]="getPicture(post.user.profilePicture.data)">
   </div>
-  <div class="username-container">{{post.user.userName}} <span style="font-weight: normal;"> - {{post.workout.type}} - {{post.workout.date | dateFormatter : _state.language.value : false}}</span></div>
+  <div class="username-container">{{post.user.userName}}
+    <span class="post-title">
+      - {{'WORKOUT.TYPES.' + post.workout.type | uppercase | translate}} - {{post.workout.date | dateFormatter : _state.language.value : false}}
+    </span>
+  </div>
   <hr>
   <div style="position: relative">
     <img class="post-file" [src]="getPicture(post.files[postAdditionData[index].currentFileNumber].data)">
@@ -19,7 +23,7 @@
          (click)="setCurrentFileNumber(index, '--')" class="arrow-img left-arrow-img" src="assets/left-pagination.png">
     <img *ngIf="!postAdditionData[index].isLastMediaFile"
          (click)="setCurrentFileNumber(index, '++')" class="arrow-img right-arrow-img" src="assets/right-pagination.png">
-    <div style="text-align: center">{{postAdditionData[index].currentFileNumber + 1}}/{{post.files.length}}</div>
+    <div class="text-center">{{postAdditionData[index].currentFileNumber + 1}}/{{post.files.length}}</div>
   </div>
   <div class="post-related-container">
     <div>
@@ -46,7 +50,7 @@
         <span class="edit-label" *ngIf="post.postedOn < post.workout.modifiedOn">{{'POST.EDITED' | translate}}</span>
         <div class="exercise-container" *ngFor="let exercise of post.workout.exercises; index as index">
           <h2>{{'WORKOUT.EXERCISE' | translate}} {{index + 1}} - {{exercise.name | titlecase}}</h2>
-          <div class="equipment-container" style="margin-left: 30px;">
+          <div *ngIf="exercise.equipment" class="equipment-container">
             {{'WORKOUT.EXERCISE_EQUIPMENT' | translate}}: {{exercise.equipment}}
           </div>
           <div class="exercise-table">
@@ -60,6 +64,15 @@
                 <td *ngFor="let set of exercise.sets">{{set.reps}}</td>
               </tr>
             </table>
+          </div>
+        </div>
+        <div *ngIf="post.workout.exercises.length === 0">
+          <h2>{{'WORKOUT.TYPES.' + post.workout.type | uppercase | translate}}</h2>
+          <div class="pair-left">
+            {{'WORKOUT.DISTANCE' | translate}}: {{post.workout.distance}}km
+          </div>
+          <div class="pair-right">
+            {{'WORKOUT.DURATION' | translate}}: {{post.workout.duration}}
           </div>
         </div>
       </div>

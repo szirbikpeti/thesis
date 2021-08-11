@@ -1,10 +1,10 @@
 <div class="notification-container">
-  <img *ngIf="category === NotificationCategory.Follow" src="assets/people.svg" [matMenuTriggerFor]="notificationMenu"
+  <img *ngIf="category === NotificationCategory.FOLLOW" src="assets/people.svg" [matMenuTriggerFor]="notificationMenu"
        [ngClass]="notifications.length > 0
                 ? 'notification-icon-with-badge clickable'
                 : 'clickable'">
 
-  <span *ngIf="category === NotificationCategory.General">
+  <span *ngIf="category === NotificationCategory.GENERAL">
     <img *ngIf="notifications.length === 0" class="clickable" src="assets/notification.svg" [matMenuTriggerFor]="notificationMenu">
     <img *ngIf="notifications.length > 0" class="notification-icon-with-badge clickable" src="assets/notifications_active.svg" [matMenuTriggerFor]="notificationMenu">
   </span>
@@ -15,25 +15,26 @@
   </div>
   <mat-menu #notificationMenu="matMenu">
     <div class="mat-menu-header text-center">
-      <span *ngIf="category === NotificationCategory.Follow">
-        {{'NAV.FOLLOWS' | translate}}
-      </span>
-      <span *ngIf="category === NotificationCategory.General">
-        {{'NAV.NOTIFICATIONS' | translate}}
-      </span>
+      {{'NAV.' + category | translate}}
     </div>
     <div class="notification-grid-container menu-item clickable"
          *ngFor="let notification of notifications"
          (click)="$event.stopPropagation(); openNotificationModal(notification)">
       <div class="profile-picture-item-container">
-        <img style="height: 60px; width: 60px;" alt="No image"
+        <img class="profile-picture" alt="No image"
              [src]="getPicture(notification.sentByUser.profilePicture.data)">
       </div>
-      <div class="username">{{notification.sentByUser.userName}}</div>
+      <div class="username" [matTooltip]="notification.sentByUser.userName"
+           [matTooltipDisabled]="notification.sentByUser.userName.length <= 8">
+        {{notification.sentByUser.userName | truncate}}
+      </div>
       <div class="text-center">
         {{'NOTIFICATION.' + getNotificationType(notification.type) | uppercase | translate}}
       </div>
-      <div class="fullname">{{notification.sentByUser.fullName}}</div>
+      <div class="fullname" [matTooltip]="notification.sentByUser.fullName"
+           [matTooltipDisabled]="notification.sentByUser.fullName.length <= 12">
+        {{notification.sentByUser.fullName | truncate: 12}}
+      </div>
       <div class="action-button-container text-center">
         <span *ngIf="notification.type === NotificationType.FOLLOW_REQUEST">
           <button mat-icon-button matTooltip="{{'NOTIFICATION.DECLINE' | translate}}"

@@ -18,13 +18,13 @@ mat-form-field {
   margin-bottom: 25px;
 }
 
-.exercise-left {
+.pair-left {
   display: inline-block;
   margin-right: 100px;
-  width: 200px;
+  margin-bottom: 8px;
 }
 
-.exercise-right {
+.pair-right {
   display: inline-block;
   margin-bottom: 20px;
 }
@@ -63,7 +63,7 @@ mat-checkbox {
 }
 
 @media screen and (max-width: 450px) {
-  .exercise-left {
+  .pair-left {
     margin-right: 0;
   }
 }
@@ -71,5 +71,11 @@ mat-checkbox {
 @media screen and (max-width: 590px) {
   mat-error {
     position:relative;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .pair-left {
+    margin-right: 50px;
   }
 }

@@ -10,7 +10,7 @@
 }
 
 export enum NotificationCategory {
-  Follow,
-  General,
-  Message
+  FOLLOW = 'FOLLOWS',
+  GENERAL = 'NOTIFICATIONS',
+  MESSAGE = 'MESSAGES'
 }

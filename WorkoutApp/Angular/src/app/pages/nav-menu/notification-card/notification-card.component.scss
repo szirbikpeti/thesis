@@ -8,14 +8,10 @@
 
 .mat-menu {
   max-height: 400px;
-  overflow-x: hidden;
-  width: 350px;
-  word-break: break-all;
 }
 
 .notification-container {
-  margin-left: 12px;
-  margin-right: 12px;
+  margin: 0 12px
 }
 
 .notification-icon-with-badge {
@@ -37,7 +33,6 @@
 }
 
 .notification-grid-container {
-  width: 300px;
   height: 60px;
   margin-top: 5px;
   margin-bottom: 10px;
@@ -57,6 +52,11 @@
 .profile-picture-item-container {
   grid-row-start: 1;
   grid-row-end: 3;
+}
+
+.profile-picture {
+  height: 60px;
+  width: 60px;
 }
 
 .username {

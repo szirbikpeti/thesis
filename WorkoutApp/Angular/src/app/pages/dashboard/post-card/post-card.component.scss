@@ -18,6 +18,10 @@ mat-card {
   font-weight: bolder;
 }
 
+.post-title {
+  font-weight: normal;
+}
+
 .profile-picture {
   border-radius: 50%;
   height: 45px;
@@ -116,6 +120,18 @@ table {
 table, td {
   border: 1px solid black;
   border-collapse: collapse;
+}
+
+.pair-left {
+  display: inline-block;
+  margin-left: 30px;
+  margin-right: 100px;
+}
+
+.pair-right {
+  display: inline-block;
+  margin-left: 30px;
+  margin-right: 15px;
 }
 
 .comment-container {
@@ -239,10 +255,18 @@ input:focus {
   .edit-comment-mobile {
     display: inline;
   }
+
+  .pair-left {
+    margin-right: 50px;
+  }
 }
 
 @media screen and (max-width: 430px) {
   .post-file {
     height: 300px;
+  }
+
+  .pair-left {
+    margin-right: 25px;
   }
 }

@@ -94,8 +94,8 @@
         </mat-form-field>
       </div>
 
-      <app-notification-card *ngIf="followNotifications" [notifications]="followNotifications" [category]="NotificationCategory.Follow"></app-notification-card>
-      <app-notification-card *ngIf="generalNotifications" [notifications]="generalNotifications" [category]="NotificationCategory.General"></app-notification-card>
+      <app-notification-card *ngIf="followNotifications" [notifications]="followNotifications" [category]="NotificationCategory.FOLLOW"></app-notification-card>
+      <app-notification-card *ngIf="generalNotifications" [notifications]="generalNotifications" [category]="NotificationCategory.GENERAL"></app-notification-card>
 
       <div class="username-container">
         <div class="clickable username"

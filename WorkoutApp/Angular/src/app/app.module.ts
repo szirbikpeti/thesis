@@ -33,6 +33,7 @@ import {PostCardComponent} from "./pages/dashboard/post-card/post-card.component
 import {StatisticsComponent} from "./pages/statistics/statistics.component";
 import {HighchartsChartModule} from "highcharts-angular";
 import {NotificationCardComponent} from "./pages/nav-menu/notification-card/notification-card.component";
+import {TruncatePipe} from "./pipes/truncate.pipe";
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import {NotificationCardComponent} from "./pages/nav-menu/notification-card/noti
     StatisticsComponent,
     ConfirmationDialogComponent,
     DateFormatterPipe,
-    IsVideoPipe
+    IsVideoPipe,
+    TruncatePipe,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
