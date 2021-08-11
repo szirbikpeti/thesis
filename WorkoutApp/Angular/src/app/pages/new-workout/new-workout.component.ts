@@ -60,40 +60,8 @@ export class NewWorkoutComponent {
         ? WorkoutFeature.EDIT
         : WorkoutFeature.DUPLICATE;
 
-      this._workout.get(workoutId).subscribe(fetchedWorkout => {
-        this.workout = fetchedWorkout;
-        this.type.setValue(fetchedWorkout.type);
-        this.type.disable();
+      this.patchWorkoutForm(workoutId);
 
-        if (this.hasExercise()) {
-          for (let i = 0; i < fetchedWorkout.exercises.length; i++) {
-            this.exercises.push(
-              this.fb.group({
-                name: ['', Validators.required],
-                equipment: [''],
-                sets: this.fb.array([])
-              }));
-
-            for(let j = 0; j < fetchedWorkout.exercises[i].sets.length; j++) {
-              this.getSet(i).push(this.createNewSet());
-            }
-          }
-        } else {
-          this.workoutForm.addControl('distance', new FormControl('', Validators.required));
-          this.workoutForm.addControl('duration', new FormControl('', Validators.required));
-          this.workoutDuration.setValidators(Validators.pattern('[[0-9]*[h]{0,1}]{0,1}[ ]{0,1}[[0-9]*[m]{0,1}]{0,1}[ ]{0,1}[[0-9]*[s]{0,1}]{0,1}'));
-        }
-
-        this.workoutForm.patchValue(fetchedWorkout);
-
-        if (this.feature === WorkoutFeature.EDIT) {
-          let i = 1;
-          for(let file of this.workout.files) {
-            this.selectedFiles.push(
-              new FileTableModel(i++, null, file.data, file.id, file.name, file.format));
-          }
-        }
-      });
     } else {
       this.feature = WorkoutFeature.ADD;
       this.exercises.push(this.createNewExercise());
@@ -129,6 +97,43 @@ export class NewWorkoutComponent {
       date: ['', Validators.required],
       type: [WorkoutType.GYM, Validators.required],
       exercises: this.fb.array([])
+    });
+  }
+
+  private patchWorkoutForm(workoutId: string): void {
+    this._workout.get(workoutId).subscribe(fetchedWorkout => {
+      this.workout = fetchedWorkout;
+      this.type.setValue(fetchedWorkout.type);
+      this.type.disable();
+
+      if (this.hasExercise()) {
+        for (let i = 0; i < fetchedWorkout.exercises.length; i++) {
+          this.exercises.push(
+            this.fb.group({
+              name: ['', Validators.required],
+              equipment: [''],
+              sets: this.fb.array([])
+            }));
+
+          for(let j = 0; j < fetchedWorkout.exercises[i].sets.length; j++) {
+            this.getSet(i).push(this.createNewSet());
+          }
+        }
+      } else {
+        this.workoutForm.addControl('distance', new FormControl('', Validators.required));
+        this.workoutForm.addControl('duration', new FormControl('', Validators.required));
+        this.workoutDuration.setValidators(Validators.pattern('[[0-9]*[h]{0,1}]{0,1}[ ]{0,1}[[0-9]*[m]{0,1}]{0,1}[ ]{0,1}[[0-9]*[s]{0,1}]{0,1}'));
+      }
+
+      this.workoutForm.patchValue(fetchedWorkout);
+
+      if (this.feature === WorkoutFeature.EDIT) {
+        let i = 1;
+        for(let file of this.workout.files) {
+          this.selectedFiles.push(
+            new FileTableModel(i++, null, file.data, file.id, file.name, file.format));
+        }
+      }
     });
   }
 
@@ -218,6 +223,11 @@ export class NewWorkoutComponent {
 
     const filesToUpload = this.feature === WorkoutFeature.EDIT ? newFiles : this.selectedFiles;
 
+    if (filesToUpload.length === 0) {
+      this.submitWorkoutForm([]);
+      return;
+    }
+
     Object.keys(filesToUpload).forEach(key => {
       const currentFile: FileTableModel = filesToUpload[key];
 
@@ -228,10 +238,6 @@ export class NewWorkoutComponent {
       const fileIds = uploadedFiles.map(file => file.id);
       this.submitWorkoutForm(fileIds);
     });
-
-    if (filesToUpload.length === 0) {
-      this.submitWorkoutForm([]);
-    }
   }
 
   openConfirmationDialogToDelete(): void {
@@ -264,10 +270,15 @@ export class NewWorkoutComponent {
     this.getSet(exerciseIndex).removeAt(setIndex);
   }
 
-  deleteSelectedAttachment(position: number) {
+  deleteSelectedAttachment(element: FileTableModel) {
     this.selectedFiles.forEach((value,index)=>{
-      if(value.position === position) this.selectedFiles.splice(index,1);
+      if(value.position === element.position) this.selectedFiles.splice(index,1);
     });
+
+    if (this.feature === WorkoutFeature.EDIT && !isNull(element.id)) {
+      const deletedIndex = this.workout.files.findIndex(fileModel => fileModel.id === element.id);
+      this.workout.files.splice(deletedIndex, 1);
+    }
 
     this.dataSource.data = this.selectedFiles;
   }
@@ -283,7 +294,7 @@ export class NewWorkoutComponent {
 
       reader.onload = (_event) => {
         this.selectedFiles.push(
-          new FileTableModel(this.selectedFiles.length + 1, currentFile, reader.result));
+          new FileTableModel(this.selectedFiles.length + 1, currentFile, reader.result, null, currentFile.name, currentFile.type));
       }
 
       reader.onloadend = () => {this.dataSource.data = this.selectedFiles};
@@ -338,14 +349,6 @@ export class NewWorkoutComponent {
 
   getDurationOfSet(exerciseIndex: number): AbstractControl {
     return this.getSet(exerciseIndex).get('duration');
-  }
-
-  getFileName(element: FileTableModel): string {
-    return element.file?.name ?? element.name;
-  }
-
-  getType(element: FileTableModel): string {
-    return element.file?.type ?? element.format;
   }
 
   formatDurationInput(control: AbstractControl) {
