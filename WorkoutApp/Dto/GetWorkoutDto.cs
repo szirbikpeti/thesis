@@ -12,6 +12,10 @@ namespace WorkoutApp.Dto
 
     public string Type { get; set; } = null!;
     
+    public double? Distance { get; set; }
+        
+    public string? Duration { get; set; }
+    
     public DateTimeOffset CreatedOn { get; set; }
         
     public DateTimeOffset ModifiedOn { get; set; }

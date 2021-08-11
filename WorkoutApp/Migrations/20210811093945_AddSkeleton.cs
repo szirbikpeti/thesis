@@ -245,7 +245,7 @@ namespace WorkoutApp.Migrations
                     ReceivedUserId = table.Column<int>(type: "integer", nullable: false),
                     TriggeredOn = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     DeletedOn = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
-                    Type = table.Column<int>(type: "integer", nullable: false)
+                    Type = table.Column<short>(type: "smallint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -272,7 +272,9 @@ namespace WorkoutApp.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     UserId = table.Column<int>(type: "integer", nullable: false),
                     Date = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    Type = table.Column<string>(type: "text", nullable: false),
+                    Type = table.Column<short>(type: "smallint", nullable: false),
+                    Distance = table.Column<double>(type: "double precision", nullable: true),
+                    Duration = table.Column<string>(type: "text", nullable: true),
                     CreatedOn = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     ModifiedOn = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     DeletedOn = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true)
@@ -296,7 +298,7 @@ namespace WorkoutApp.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     WorkoutId = table.Column<int>(type: "integer", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
-                    Equipment = table.Column<string>(type: "text", nullable: false),
+                    Equipment = table.Column<string>(type: "text", nullable: true),
                     DeletedOn = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
@@ -372,7 +374,7 @@ namespace WorkoutApp.Migrations
                     ExerciseId = table.Column<int>(type: "integer", nullable: false),
                     Reps = table.Column<int>(type: "integer", nullable: false),
                     Weight = table.Column<double>(type: "double precision", nullable: false),
-                    Duration = table.Column<TimeSpan>(type: "interval", nullable: true),
+                    Duration = table.Column<string>(type: "text", nullable: true),
                     DeletedOn = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>

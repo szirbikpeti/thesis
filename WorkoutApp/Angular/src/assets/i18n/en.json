@@ -72,15 +72,16 @@
     "NO_WORKOUTS": "No workouts",
     "DATE": "Date",
     "TYPE": "Workout type",
+    "DISTANCE": "Distance",
+    "DURATION": "Duration",
     "MODIFIED_ON": "Modified on",
     "EXERCISE": "Exercise",
     "EXERCISES": "Exercises",
     "EXERCISE_NAME": "Exercise name",
     "EXERCISE_EQUIPMENT": "Equipment",
-    "SET": "Sets",
+    "SETS": "Sets",
     "SET_REPS": "Reps",
     "SET_WEIGHT": "Weight",
-    "SET_DURATION": "Duration",
     "ATTACHMENTS": "Attachments",
     "ADD": "Add workout",
     "MODIFY": "Modify workout",
@@ -91,7 +92,15 @@
     "SUCCESSFUL_MODIFICATION": "Successful workout modification",
     "UNSUCCESSFUL_MODIFICATION": "Unsuccessful workout modification",
     "SUCCESSFUL_DELETE": "Successful workout deletion",
-    "UNSUCCESSFUL_DELETE": "Unsuccessful workout deletion"
+    "UNSUCCESSFUL_DELETE": "Unsuccessful workout deletion",
+    "TYPES": {
+      "GYM": "Gym",
+      "HOME": "Home",
+      "STREET": "Street workout",
+      "RUN": "Run",
+      "WALK": "Walk",
+      "SWIMMING": "Swimming"
+    }
   },
   "FRIEND": {
     "FRIENDS": "Friends",

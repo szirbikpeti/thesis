@@ -124,15 +124,14 @@ namespace WorkoutApp.Repositories
       if (fetchedWorkout is null) {
         return null;
       }
-
-      var beforeExerciseIds = fetchedWorkout.Exercises.Select(_ => _.Id).ToImmutableList();
-      var beforeSetsIds = fetchedWorkout.Exercises.SelectMany(_ => _.Sets).Select(_ => _.Id).ToImmutableList();
+ 
+      var beforeExerciseIds = fetchedWorkout!.Exercises!.Select(_ => _.Id).ToImmutableList();
+      var beforeSetsIds = fetchedWorkout!.Exercises!.SelectMany(_ => _.Sets).Select(_ => _.Id).ToImmutableList();
 
       _mapper.Map(workoutDto, fetchedWorkout);
-      fetchedWorkout.ModifiedOn = DateTimeOffset.Now;
       
-      var afterExerciseIds = fetchedWorkout.Exercises.Select(_ => _.Id).ToImmutableList();
-      var afterSetsIds = fetchedWorkout.Exercises.SelectMany(_ => _.Sets).Select(_ => _.Id).ToImmutableList();
+      var afterExerciseIds = fetchedWorkout!.Exercises!.Select(_ => _.Id).ToImmutableList();
+      var afterSetsIds = fetchedWorkout!.Exercises!.SelectMany(_ => _.Sets).Select(_ => _.Id).ToImmutableList();
 
       var removedExercises =
         beforeExerciseIds.Except(afterExerciseIds)
@@ -147,6 +146,7 @@ namespace WorkoutApp.Repositories
       _dbContext.DoDeleteRange(removedExercises);
       _dbContext.DoDeleteRange(removedSets);
 
+      fetchedWorkout.ModifiedOn = DateTimeOffset.Now;
       _dbContext.Workouts.Update(fetchedWorkout);
 
       var removedFileIds = fetchedWorkout.FileRelationEntities.Select(_ => _.FileId).Except(workoutDto.FileIds);

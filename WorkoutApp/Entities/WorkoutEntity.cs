@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using WorkoutApp.Abstractions;
 
 namespace WorkoutApp.Entities
@@ -12,7 +13,11 @@ namespace WorkoutApp.Entities
 
         public DateTimeOffset Date { get; set; }
 
-        public string Type { get; set; } = null!;
+        public WorkoutType Type { get; set; }
+        
+        public double? Distance { get; set; }
+        
+        public string? Duration { get; set; }
         
         public DateTimeOffset CreatedOn { get; set; }
         
@@ -24,7 +29,7 @@ namespace WorkoutApp.Entities
         
         public PostEntity? Post { get; set; }
         
-        public ICollection<ExerciseEntity> Exercises { get; set; } = null!;
+        public ICollection<ExerciseEntity>? Exercises { get; set; }
         
         public ICollection<WorkoutFileRelationEntity> FileRelationEntities { get; set; } = null!;
     }

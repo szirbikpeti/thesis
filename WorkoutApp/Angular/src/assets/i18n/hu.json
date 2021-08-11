@@ -71,15 +71,16 @@
     "NO_WORKOUTS": "Nincs még rögzített edzés",
     "DATE": "Dátum",
     "TYPE": "Edzés típus",
+    "DISTANCE": "Távolság",
+    "DURATION": "Időtartam",
     "MODIFIED_ON": "Módosítva",
     "EXERCISE": "Gyakorlat",
     "EXERCISES": "Gyakorlatok",
     "EXERCISE_NAME": "Gyakorlat neve",
     "EXERCISE_EQUIPMENT": "Felszerelés",
-    "SET": "Set-ek",
+    "SETS": "Set-ek",
     "SET_REPS": "Ismétlés szám",
     "SET_WEIGHT": "Súly",
-    "SET_DURATION": "Időtartam",
     "ATTACHMENTS": "Csatolmányok",
     "ADD": "Edzés hozzáadása",
     "MODIFY": "Edzés módosítása",
@@ -90,7 +91,15 @@
     "SUCCESSFUL_MODIFICATION": "Sikeres edzés módosítás",
     "UNSUCCESSFUL_MODIFICATION": "Sikertelen edzés módosítás",
     "SUCCESSFUL_DELETE": "Sikeres edzés törlés",
-    "UNSUCCESSFUL_DELETE": "Sikertelen edzés törlés"
+    "UNSUCCESSFUL_DELETE": "Sikertelen edzés törlés",
+    "TYPES": {
+      "GYM": "Edzőtermi",
+      "HOME": "Otthoni",
+      "STREET": "Street workout",
+      "RUN": "Futás",
+      "WALK": "Gyaloglás",
+      "SWIMMING": "Úszás"
+    }
   },
   "FRIEND": {
     "FRIENDS": "Barátok",

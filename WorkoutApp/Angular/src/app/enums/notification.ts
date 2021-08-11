@@ -1,13 +1,12 @@
 ﻿export enum NotificationType {
-  Follow_Request,
-  Delete_Follow_Request,
-  Delete_Declined_Follow_Request,
-  Follow,
-  Follow_Back,
-  Accept_Follow_Request,
-  Decline_Follow_Request,
-  UnFollow,
-  Add_Like
+  FOLLOW_REQUEST = 0,
+  DELETE_FOLLOW_REQUEST = 1,
+  DELETE_DECLINED_FOLLOW_REQUEST = 2,
+  FOLLOW_BACK = 3,
+  ACCEPT_FOLLOW_REQUEST = 4,
+  DECLINE_FOLLOW_REQUEST = 5,
+  UNFOLLOW = 6,
+  ADD_LIKE = 10,
 }
 
 export enum NotificationCategory {

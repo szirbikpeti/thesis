@@ -39,8 +39,6 @@ export class SignUpComponent implements OnInit {
 
     this.isSubmittingForm = true;
 
-    return;
-
     const that = this;
     const getFileBlob = function (url, cb) {
       const xhr = new XMLHttpRequest();
@@ -83,7 +81,6 @@ export class SignUpComponent implements OnInit {
           this._translate.instant( 'GENERAL.INFO'));
       }, err => {
         this.isSubmittingForm = false;
-        console.log(err);
 
         this._toast.error(
           this._translate.instant('USER.UNSUCCESSFUL_SIGNUP'),

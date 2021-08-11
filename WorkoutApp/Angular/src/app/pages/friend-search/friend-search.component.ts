@@ -28,7 +28,7 @@ export class FriendSearchComponent implements OnInit {
       .subscribe(foundedUsers => {this.users = foundedUsers; console.log(this.users);}); // TODO - delete
 
     this._user.getFollowRequestsAndFollows()
-      .subscribe(frf => {this.currentFollowRequestsAndFollows = frf; console.log(frf)});
+      .subscribe(frf => this.currentFollowRequestsAndFollows = frf);
   }
 
   ngOnInit(): void {

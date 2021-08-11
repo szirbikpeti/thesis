@@ -1,5 +1,5 @@
 import {Component, ElementRef, HostListener, ViewChild} from '@angular/core';
-import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {FileTableModel} from "../../models/FileTableModel";
 import {MatTableDataSource} from "@angular/material/table";
 import {WorkoutService} from "../../services/workout.service";
@@ -15,6 +15,7 @@ import {WorkoutModel} from "../../models/WorkoutModel";
 import {DomSanitizer} from "@angular/platform-browser";
 import {ConfirmationDialogComponent} from "../confirmation-dialog/confirmation-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
+import {WorkoutType} from "../../enums/workout";
 
 @Component({
   selector: 'app-edit-workout',
@@ -34,6 +35,10 @@ export class EditWorkoutComponent {
 
   getPicture = getPicture;
 
+  workoutTypes = Object.keys(WorkoutType)
+    .map(key => WorkoutType[key])
+    .filter(value => typeof value === 'string') as string[];
+
   constructor(private fb: FormBuilder, private _workout: WorkoutService,
               private _file: FileService, private _translate: TranslateService, public sanitizer: DomSanitizer,
               private _toast: ToastrService, private router: Router, private route: ActivatedRoute, private dialog: MatDialog) {
@@ -47,12 +52,42 @@ export class EditWorkoutComponent {
         }));
   }
 
+  private static getColumnsToDisplay(): string[] {
+    if (window.innerWidth < 545) {
+      return ['position', 'preview', 'operation'];
+    }
+
+    if (window.innerWidth < 980) {
+      return ['position', 'name', 'preview', 'operation'];
+    }
+
+    if (window.innerWidth > 1050) {
+      return ['position', 'name', 'type', 'preview', 'operation'];
+    }
+  }
+
+  private static getSpecifiedTime(number: number, time: string): string {
+    return number > 0 ? (number + time) : '';
+  }
+
+  private static getSpace(minutes: number): string {
+    return minutes > 0 ? ' ' : '';
+  }
+
   private setUpWorkoutForm(): void {
     this.workoutForm = this.fb.group({
       date: ['', Validators.required],
       type: ['', Validators.required],
       exercises: this.fb.array([])
     });
+
+    if (this.hasExercise()) {
+      this.workoutForm.addControl('exercises', this.fb.array([]));
+    } else {
+      this.workoutForm.addControl('distance', new FormControl('', Validators.required));
+      this.workoutForm.addControl('duration', new FormControl('', Validators.required));
+      this.workoutDuration.setValidators(Validators.pattern('[[0-9]*[h]{0,1}]{0,1}[ ]{0,1}[[0-9]*[m]{0,1}]{0,1}[ ]{0,1}[[0-9]*[s]{0,1}]{0,1}'));
+    }
 
     for (let i = 0; i < this.workout.exercises.length; i++) {
       this.exercises.push(
@@ -75,6 +110,7 @@ export class EditWorkoutComponent {
     }
 
     this.workoutForm.patchValue(this.workout);
+    this.type.disable();
 
     let i = 1;
     for(let file of this.workout.files) {
@@ -99,6 +135,23 @@ export class EditWorkoutComponent {
       weight: [0, Validators.required],
       duration: []
     });
+  }
+
+  private deleteWorkout() {
+    this._workout.delete(this.workout.id)
+      .subscribe(() => {
+        this._toast.success(
+          this._translate.instant('WORKOUT.SUCCESSFUL_DELETE'),
+          this._translate.instant( 'GENERAL.INFO'));
+
+        this.router.navigate(['/dashboard']);
+      }, () => {
+        this._toast.success(
+          this._translate.instant('WORKOUT.UNSUCCESSFUL_DELETE'),
+          this._translate.instant( 'GENERAL.INFO'));
+
+        this.router.navigate(['/dashboard']);
+      });
   }
 
   private submitWorkoutForm(fileIds: string[]): void {
@@ -126,6 +179,31 @@ export class EditWorkoutComponent {
     return date < new Date();
   }
 
+  uploadAttachments(): void {
+    if (this.workoutForm.invalid) {
+      return;
+    }
+
+    const uploadCalls$: Observable<FileModel>[] = [];
+
+    const newFiles = this.selectedFiles.filter(file => !isNull(file.file));
+
+    Object.keys(newFiles).forEach(key => {
+      const currentFile: FileTableModel = newFiles[key];
+      uploadCalls$.push(this._file.upload(currentFile.file));
+    });
+
+    zip(...uploadCalls$).subscribe((uploadedFiles: FileModel[]) => {
+      let fileIds = uploadedFiles.map(file => file.id);
+
+      this.submitWorkoutForm(fileIds);
+    });
+
+    if (newFiles.length === 0) {
+      this.submitWorkoutForm([]);
+    }
+  }
+
   addNewExercise(): void {
     this.exercises.push(this.createNewExercise());
   }
@@ -134,7 +212,7 @@ export class EditWorkoutComponent {
     this.getSet(exerciseIndex).push(this.createNewSet());
   }
 
-  addAttachment() {
+  addAttachment(): void {
     const e: HTMLElement = this.fileInput.nativeElement;
     e.click();
   }
@@ -147,7 +225,7 @@ export class EditWorkoutComponent {
     this.getSet(exerciseIndex).removeAt(setIndex);
   }
 
-  deleteSelectedAttachment(element: FileTableModel) {
+  deleteSelectedAttachment(element: FileTableModel): void {
     this.selectedFiles.forEach((value,index)=>{
       if(value.position === element.position) this.selectedFiles.splice(index,1);
     });
@@ -160,24 +238,7 @@ export class EditWorkoutComponent {
     this.dataSource.data = this.selectedFiles;
   }
 
-  private deleteWorkout() {
-    this._workout.delete(this.workout.id)
-      .subscribe(() => {
-        this._toast.success(
-          this._translate.instant('WORKOUT.SUCCESSFUL_DELETE'),
-          this._translate.instant( 'GENERAL.INFO'));
-
-        this.router.navigate(['/dashboard']);
-      }, () => {
-        this._toast.success(
-          this._translate.instant('WORKOUT.UNSUCCESSFUL_DELETE'),
-          this._translate.instant( 'GENERAL.INFO'));
-
-        this.router.navigate(['/dashboard']);
-      });
-  }
-
-  openConfirmationDialog() {
+  openConfirmationDialog(): void {
     this.dialog.open(ConfirmationDialogComponent, {
       disableClose: true,
       data: {
@@ -204,55 +265,27 @@ export class EditWorkoutComponent {
     });
   }
 
-  uploadAttachments(): void {
-    if (this.workoutForm.invalid) {
-      console.log("invalid form");
-      return;
-    }
-
-    const uploadCalls$: Observable<FileModel>[] = [];
-
-    const newFiles = this.selectedFiles.filter(file => !isNull(file.file));
-
-    Object.keys(newFiles).forEach(key => {
-      const currentFile: FileTableModel = newFiles[key];
-      uploadCalls$.push(this._file.upload(currentFile.file));
-    });
-
-    zip(...uploadCalls$).subscribe((uploadedFiles: FileModel[]) => {
-      let fileIds = uploadedFiles.map(file => file.id);
-
-      this.submitWorkoutForm(fileIds);
-    });
-
-    if (newFiles.length === 0) {
-      this.submitWorkoutForm([]);
-    }
-  }
-
-  private static getColumnsToDisplay(): string[] {
-    if (window.innerWidth < 545) {
-      return ['position', 'preview', 'operation'];
-    }
-
-    if (window.innerWidth < 980) {
-      return ['position', 'name', 'preview', 'operation'];
-    }
-
-    if (window.innerWidth > 1050) {
-      return ['position', 'name', 'type', 'preview', 'operation'];
-    }
+  hasExercise(): boolean {
+    return this.workout.exercises.length > 0;
   }
 
   @HostListener('window:resize')
-  onResize() {
+  onResize(): void {
     this.displayedColumns = EditWorkoutComponent.getColumnsToDisplay();
   }
+
+  get type(): AbstractControl { return this.workoutForm.get('type'); }
+
+  get workoutDuration(): AbstractControl { return this.workoutForm.get('duration'); }
 
   get exercises(): FormArray {return this.workoutForm.get('exercises') as FormArray;}
 
   getSet(exerciseIndex: number): FormArray {
     return (this.exercises.at(exerciseIndex) as FormGroup).get('sets') as FormArray;
+  }
+
+  getDurationOfSet(exerciseIndex: number): AbstractControl {
+    return this.getSet(exerciseIndex).get('duration');
   }
 
   getFileName(element: FileTableModel): string {
@@ -261,5 +294,51 @@ export class EditWorkoutComponent {
 
   getType(element: FileTableModel): string {
     return element.file?.type ?? element.format;
+  }
+
+  formatDurationInput(control: AbstractControl): void {
+    if (control.invalid) {
+      return;
+    }
+
+    let value = control.value.replace(/\s/g, "");
+
+    if (Number(value)) {
+      value = `0h${value}m0s`;
+    } else {
+      if (!value.includes('h')){
+        value = '0h' + value;
+      }
+      if (!value.includes('s')) {
+        value += '0s';
+      }
+      if (!value.includes('m')) {
+        const hIndex = value.indexOf('h') + 1;
+        const hours = value.substring(0, hIndex);
+        value = value.substring(hIndex);
+        value = hours + '0m' + value;
+      }
+    }
+
+    const hIndex = value.indexOf('h');
+    let hours = Number(value.substring(0, hIndex));
+
+    const mIndex = value.indexOf('m');
+    let minutes = Number(value.substring(hIndex+1, mIndex));
+
+    const sIndex = value.indexOf('s');
+    let seconds = Number(value.substring(mIndex+1, sIndex));
+
+    const allSeconds = hours*60*60 + minutes*60 + seconds;
+
+    const resultHours = Math.floor(allSeconds/60/60);
+    const resultMinutes = Math.floor((allSeconds - resultHours*60*60)/60);
+    const resultSeconds = Math.floor(allSeconds - resultHours*60*60 - resultMinutes*60);
+
+    const result = (EditWorkoutComponent.getSpecifiedTime(resultHours, 'h') + EditWorkoutComponent.getSpace(resultMinutes)
+      + EditWorkoutComponent.getSpecifiedTime(resultMinutes, 'm') + EditWorkoutComponent.getSpace(resultMinutes)
+      + EditWorkoutComponent.getSpecifiedTime(resultSeconds, 's')).trim();
+
+    control.setValue(result);
   }
 }

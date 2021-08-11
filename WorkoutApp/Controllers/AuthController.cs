@@ -2,19 +2,14 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.DataAnnotations;
-using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using System.Security.Claims;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Tokens;
 
 using WorkoutApp.Abstractions;
 using WorkoutApp.Data;
@@ -29,7 +24,6 @@ namespace WorkoutApp.Controllers
   public class AuthController : ControllerBase
   {
     private readonly IMapper _mapper;
-    private readonly IConfiguration _configuration;
     private readonly IFileRepository _file;
     private readonly UserManager<UserEntity> _userManager;
     private readonly SignInManager<UserEntity> _signInManager;
@@ -38,17 +32,15 @@ namespace WorkoutApp.Controllers
     private readonly ILogger<AuthController> _logger;
 
     public AuthController(
-      IMapper mapper, 
-      IConfiguration configuration,
+      IMapper mapper,
       IFileRepository file,
       UserManager<UserEntity> userManager,
       SignInManager<UserEntity> signInManager,
-      WorkoutDbContext dbContext, 
+      WorkoutDbContext dbContext,
       RoleManager<RoleEntity> roleManager,
       ILogger<AuthController> logger)
     {
       _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-      _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
       _file = file ?? throw new ArgumentNullException(nameof(file));
       _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
       _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
@@ -184,20 +176,6 @@ namespace WorkoutApp.Controllers
       await _dbContext.SaveChangesAsync(cancellationToken)
         .ConfigureAwait(false);
       return Ok();
-    }
-
-    private string GenerateToken(IIdentityAwareEntity user)
-    {
-      var tokenHandler = new JwtSecurityTokenHandler();
-      var key = Encoding.ASCII.GetBytes(_configuration.GetSection("AppSettings:Secret").Value);
-      var tokenDescriptor = new SecurityTokenDescriptor {
-        Subject = new ClaimsIdentity(new[] {new Claim("id", user.Id.ToString())}),
-        Expires = DateTime.UtcNow.AddDays(1),
-        SigningCredentials =
-          new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha512Signature)
-      };
-      var token = tokenHandler.CreateToken(tokenDescriptor);
-      return tokenHandler.WriteToken(token);
     }
   }
 }

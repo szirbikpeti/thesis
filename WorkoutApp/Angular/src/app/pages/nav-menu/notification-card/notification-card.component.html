@@ -31,11 +31,11 @@
       </div>
       <div class="username">{{notification.sentByUser.userName}}</div>
       <div class="text-center">
-        {{'NOTIFICATION.' + getNotificationType(notification.type).toUpperCase() | translate}}
+        {{'NOTIFICATION.' + getNotificationType(notification.type) | uppercase | translate}}
       </div>
       <div class="fullname">{{notification.sentByUser.fullName}}</div>
       <div class="action-button-container text-center">
-        <span *ngIf="notification.type === NotificationType.Follow_Request">
+        <span *ngIf="notification.type === NotificationType.FOLLOW_REQUEST">
           <button mat-icon-button matTooltip="{{'NOTIFICATION.DECLINE' | translate}}"
                   (click)="$event.stopPropagation(); declineRequest(notification.sentByUser.id);">
             <mat-icon>close</mat-icon>
@@ -45,7 +45,7 @@
             <mat-icon>done</mat-icon>
           </button>
         </span>
-        <span *ngIf="notification.type !== NotificationType.Follow_Request">
+        <span *ngIf="notification.type !== NotificationType.FOLLOW_REQUEST">
           <button mat-icon-button matTooltip="{{'NOTIFICATION.MARK_AS_READ' | translate}}"
                   (click)="$event.stopPropagation(); markAsReadNotification(notification.id)">
             <mat-icon>mark_as_unread</mat-icon>

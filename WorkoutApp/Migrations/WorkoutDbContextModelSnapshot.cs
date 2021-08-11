@@ -218,8 +218,8 @@ namespace WorkoutApp.Migrations
                     b.Property<DateTimeOffset>("TriggeredOn")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("integer");
+                    b.Property<short>("Type")
+                        .HasColumnType("smallint");
 
                     b.HasKey("Id");
 
@@ -339,8 +339,8 @@ namespace WorkoutApp.Migrations
                     b.Property<DateTimeOffset?>("DeletedOn")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<TimeSpan?>("Duration")
-                        .HasColumnType("interval");
+                    b.Property<string>("Duration")
+                        .HasColumnType("text");
 
                     b.Property<int>("ExerciseId")
                         .HasColumnType("integer");
@@ -507,12 +507,17 @@ namespace WorkoutApp.Migrations
                     b.Property<DateTimeOffset?>("DeletedOn")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<double?>("Distance")
+                        .HasColumnType("double precision");
+
+                    b.Property<string>("Duration")
+                        .HasColumnType("text");
+
                     b.Property<DateTimeOffset>("ModifiedOn")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<short>("Type")
+                        .HasColumnType("smallint");
 
                     b.Property<int>("UserId")
                         .HasColumnType("integer");

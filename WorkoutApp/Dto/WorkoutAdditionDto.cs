@@ -12,9 +12,13 @@ namespace WorkoutApp.Dto
 
     [Required]
     public string Type { get; set; } = null!;
+    
+    public double? Distance { get; set; }
+        
+    public string? Duration { get; set; }
 
-    [Required]
-    public ICollection<ExerciseAdditionDto> Exercises { get; set; } = null!;
+    public ICollection<ExerciseAdditionDto> Exercises { get; set; }
+      = ImmutableList<ExerciseAdditionDto>.Empty;
     
     public IReadOnlyCollection<int> FileIds { get; set; } = ImmutableList<int>.Empty;
   }

@@ -13,7 +13,7 @@ namespace WorkoutApp.Entities
 
         public double Weight { get; set; }
         
-        public TimeSpan? Duration { get; set; }
+        public string? Duration { get; set; }
 
         public ExerciseEntity Exercise { get; set; } = null!;
         

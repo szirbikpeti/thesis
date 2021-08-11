@@ -15,14 +15,15 @@ import {TranslateService} from "@ngx-translate/core";
   templateUrl: './workout-card-info.component.html',
   styleUrls: ['./workout-card-info.component.scss']
 })
-export class WorkoutCardInfoComponent{
+export class WorkoutCardInfoComponent {
 
   @Input() workouts: WorkoutModel[];
 
   getPicture = getPicture;
 
   constructor(public _state: StateService, private _workout: WorkoutService, private _translate: TranslateService,
-              private router: Router, public sanitizer: DomSanitizer, private dialog: MatDialog) { }
+              private router: Router, public sanitizer: DomSanitizer, private dialog: MatDialog) {
+  }
 
   editWorkout(id: string): void {
     this.router.navigate(['/edit-workout', id]);

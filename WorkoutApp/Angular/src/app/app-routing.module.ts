@@ -41,12 +41,12 @@ const routes: Routes = [
         component: NewWorkoutComponent
       },
       {
-        path: 'new-workout/:id',
+        path: 'new-workout/:duplicatedWorkoutId',
         component: NewWorkoutComponent
       },
       {
-        path: 'edit-workout/:id',
-        component: EditWorkoutComponent
+        path: 'edit-workout/:editedWorkoutId',
+        component: NewWorkoutComponent
       },
       {
         path: 'friend-search',

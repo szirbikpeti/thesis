@@ -24,6 +24,7 @@
 
 .attachment-subtitle {
   font-size: 28px;
+  margin-top: 20px;
 }
 
 .exercise-index {
@@ -36,7 +37,8 @@
 }
 
 .set-container {
-  margin: 0 10px 20px 35px;
+  margin-right: 10px;
+  margin-left: 35px;
 }
 
 mat-divider {
@@ -104,12 +106,12 @@ mat-form-field.ng-dirty.ng-invalid {
   margin-top: 22px;
 }
 
-.add-button-container {
+.submit-button-container {
   margin-top: 20px;
   margin-bottom: 15px;
 }
 
-.add-button {
+.submit-button {
   font-size: 18px;
   outline: none;
   background-color: #363636;

@@ -24,16 +24,31 @@
       </button>
     </mat-menu>
     <div class="detail">
-      {{'WORKOUT.TYPE' | translate}}: {{workout.type}}
+      {{'WORKOUT.TYPE' | translate}}: {{'WORKOUT.TYPES.' + workout.type | uppercase | translate}}
     </div>
-    <div class="detail">
+    <div class="detail" *ngIf="workout.exercises.length > 0">
       {{'WORKOUT.EXERCISES' | translate}}: {{workout.exercises.length}}
+    </div>
+    <div class="detail" *ngIf="workout.exercises.length > 0">
+      {{'WORKOUT.SETS' | translate}}: (
+      <span *ngFor="let exercise of workout.exercises; index as index">
+        {{exercise.sets.length}}<span *ngIf="workout.exercises.length !== index+1">, </span>
+      </span>
+      )
+    </div>
+    <div *ngIf="workout.exercises.length === 0">
+      <div class="detail">
+        {{'WORKOUT.DISTANCE' | translate}}: {{workout?.distance}}km
+      </div>
+      <div class="detail">
+        {{'WORKOUT.DURATION' | translate}}: {{workout?.duration}}
+      </div>
     </div>
     <div class="detail">
       <span style="margin-right: 10px">{{'WORKOUT.ATTACHMENTS' | translate}}: {{workout.files.length}}</span>
       <span *ngFor="let file of workout.files | slice:0:2">
-        <img *ngIf="!file.format.startsWith('video')" alt="No image" [src]="getPicture(file.data)">
-        <video *ngIf="file.format.startsWith('video')" [src]="getPicture(file.data)"></video>
+        <img *ngIf="!(file.format | isVideo)" alt="No image" [src]="getPicture(file.data)">
+        <video *ngIf="file.format | isVideo" [src]="getPicture(file.data)"></video>
       </span>
     </div>
     <div class="modified-on-container">
