@@ -91,7 +91,7 @@ export class StatisticsComponent {
     });
   }
 
-  getFirstAreaChartData(type: string = 'GYM'): any[] {
+  getFirstAreaChartData(type: string = 'Gym'): any[] {
     const data = [];
 
     this.workouts.filter(workout => workout.type === type).forEach(workout => {

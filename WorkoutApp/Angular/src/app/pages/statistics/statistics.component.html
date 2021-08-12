@@ -1,7 +1,7 @@
 <mat-form-field>
-  <mat-select value="GYM" (valueChange)="getFirstAreaChartData($event)">
+  <mat-select value="Gym" (valueChange)="getFirstAreaChartData($event)">
     <mat-option *ngFor="let type of workoutTypes" [value]="type">{{type}}</mat-option>
   </mat-select>
 </mat-form-field>
-<div id="area-chart" style="width: auto"></div>
-<div id="pie-chart" style="width: auto"></div>
+<div id="area-chart" style="width: auto; margin-bottom: 30px;"></div>
+<div id="pie-chart" style="width: auto; margin-bottom: 30px;"></div>

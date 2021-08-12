@@ -10,12 +10,13 @@ export class TruncatePipe implements PipeTransform {
       return value;
     }
 
-    const newValue = value.substring(0, length);
+    const truncateValue = value.substring(0, length);
+    const result = truncateValue + '...';
 
-    if (newValue === value) {
+    if (truncateValue === value  || result.length >= value.length) {
       return value;
     }
 
-    return newValue + '...';
+    return result;
   }
 }

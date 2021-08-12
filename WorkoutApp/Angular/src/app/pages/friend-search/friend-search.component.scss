@@ -59,8 +59,26 @@ mat-card {
   width: 60px;
 }
 
+mat-paginator {
+  margin: 5px auto;
+  width: 70%;
+}
+
 @media screen and (max-width: 505px) {
   .search-button {
     margin-top: 10px;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .card-container, mat-paginator {
+    width: 90%;
+  }
+}
+
+
+@media screen and (max-width: 420px) {
+  mat-paginator {
+    width: 98%;
   }
 }

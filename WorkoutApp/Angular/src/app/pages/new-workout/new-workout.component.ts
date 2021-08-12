@@ -24,6 +24,8 @@ import {DomSanitizer} from "@angular/platform-browser";
   styleUrls: ['./new-workout.component.scss']
 })
 export class NewWorkoutComponent {
+  private readonly DURATION_REGEX = '[[0-9]*[h]{0,1}]{0,1}[ ]{0,1}[[0-9]*[m]{0,1}]{0,1}[ ]{0,1}[[0-9]*[s]{0,1}]{0,1}';
+
   @ViewChild('fileInput') fileInput: ElementRef;
 
   workoutForm: FormGroup;
@@ -94,7 +96,7 @@ export class NewWorkoutComponent {
 
   private setUpWorkoutForm(): void {
     this.workoutForm = this.fb.group({
-      date: ['', Validators.required],
+      date: [new Date(), Validators.required],
       type: [WorkoutType.GYM, Validators.required],
       exercises: this.fb.array([])
     });
@@ -121,8 +123,8 @@ export class NewWorkoutComponent {
         }
       } else {
         this.workoutForm.addControl('distance', new FormControl('', Validators.required));
-        this.workoutForm.addControl('duration', new FormControl('', Validators.required));
-        this.workoutDuration.setValidators(Validators.pattern('[[0-9]*[h]{0,1}]{0,1}[ ]{0,1}[[0-9]*[m]{0,1}]{0,1}[ ]{0,1}[[0-9]*[s]{0,1}]{0,1}'));
+        this.workoutForm.addControl('duration',
+          new FormControl('', [Validators.required, Validators.pattern(this.DURATION_REGEX)]));
       }
 
       this.workoutForm.patchValue(fetchedWorkout);
@@ -186,7 +188,7 @@ export class NewWorkoutComponent {
     return this.fb.group({
       reps: [1, Validators.required],
       weight: [0, Validators.required],
-      duration: [null, Validators.pattern('[[0-9]*[h]{0,1}]{0,1}[ ]{0,1}[[0-9]*[m]{0,1}]{0,1}[ ]{0,1}[[0-9]*[s]{0,1}]{0,1}')]
+      duration: [null, Validators.pattern(this.DURATION_REGEX)]
     });
   }
 
@@ -238,6 +240,52 @@ export class NewWorkoutComponent {
       const fileIds = uploadedFiles.map(file => file.id);
       this.submitWorkoutForm(fileIds);
     });
+  }
+
+  formatDurationInput(control: AbstractControl) {
+    if (control.invalid) {
+      return;
+    }
+
+    let value = control.value.replace(/\s/g, "");
+
+    if (Number(value)) {
+      value = `0h${value}m0s`;
+    } else {
+      if (!value.includes('h')){
+        value = '0h' + value;
+      }
+      if (!value.includes('s')) {
+        value += '0s';
+      }
+      if (!value.includes('m')) {
+        const hIndex = value.indexOf('h') + 1;
+        const hours = value.substring(0, hIndex);
+        value = value.substring(hIndex);
+        value = hours + '0m' + value;
+      }
+    }
+
+    const hIndex = value.indexOf('h');
+    let hours = Number(value.substring(0, hIndex));
+
+    const mIndex = value.indexOf('m');
+    let minutes = Number(value.substring(hIndex+1, mIndex));
+
+    const sIndex = value.indexOf('s');
+    let seconds = Number(value.substring(mIndex+1, sIndex));
+
+    const allSeconds = hours*60*60 + minutes*60 + seconds;
+
+    const resultHours = Math.floor(allSeconds/60/60);
+    const resultMinutes = Math.floor((allSeconds - resultHours*60*60)/60);
+    const resultSeconds = Math.floor(allSeconds - resultHours*60*60 - resultMinutes*60);
+
+    const result = (NewWorkoutComponent.getSpecifiedTime(resultHours, 'h') + NewWorkoutComponent.getSpace(resultMinutes)
+      + NewWorkoutComponent.getSpecifiedTime(resultMinutes, 'm') + NewWorkoutComponent.getSpace(resultMinutes)
+      + NewWorkoutComponent.getSpecifiedTime(resultSeconds, 's')).trim();
+
+    control.setValue(result);
   }
 
   openConfirmationDialogToDelete(): void {
@@ -317,8 +365,8 @@ export class NewWorkoutComponent {
     if (!this.hasExercise()) {
       this.workoutForm.removeControl('exercises');
       this.workoutForm.addControl('distance', new FormControl('', Validators.required));
-      this.workoutForm.addControl('duration', new FormControl('', Validators.required));
-      this.workoutDuration.setValidators(Validators.pattern('[[0-9]*[h]{0,1}]{0,1}[ ]{0,1}[[0-9]*[m]{0,1}]{0,1}[ ]{0,1}[[0-9]*[s]{0,1}]{0,1}'));
+      this.workoutForm.addControl('duration',
+        new FormControl('', [Validators.required, Validators.pattern(this.DURATION_REGEX)]));
     }
 
     this.previousWorkoutType = event.value;
@@ -330,11 +378,6 @@ export class NewWorkoutComponent {
 
   hasPreviousTypeExercise(): boolean {
     return [WorkoutType.GYM, WorkoutType.HOME, WorkoutType.STREET].includes(this.previousWorkoutType as WorkoutType);
-  }
-
-  @HostListener('window:resize')
-  onResize(): void {
-    this.displayedColumns = NewWorkoutComponent.getColumnsToDisplay();
   }
 
   get type(): AbstractControl { return this.workoutForm.get('type'); }
@@ -351,50 +394,14 @@ export class NewWorkoutComponent {
     return this.getSets(exerciseIndex).at(setIndex).get('duration');
   }
 
-  formatDurationInput(control: AbstractControl) {
-    if (control.invalid) {
-      return;
-    }
+  @HostListener('window:resize')
+  onResize(): void {
+    this.displayedColumns = NewWorkoutComponent.getColumnsToDisplay();
+  }
 
-    let value = control.value.replace(/\s/g, "");
-
-    if (Number(value)) {
-      value = `0h${value}m0s`;
-    } else {
-      if (!value.includes('h')){
-        value = '0h' + value;
-      }
-      if (!value.includes('s')) {
-        value += '0s';
-      }
-      if (!value.includes('m')) {
-        const hIndex = value.indexOf('h') + 1;
-        const hours = value.substring(0, hIndex);
-        value = value.substring(hIndex);
-        value = hours + '0m' + value;
-      }
-    }
-
-    const hIndex = value.indexOf('h');
-    let hours = Number(value.substring(0, hIndex));
-
-    const mIndex = value.indexOf('m');
-    let minutes = Number(value.substring(hIndex+1, mIndex));
-
-    const sIndex = value.indexOf('s');
-    let seconds = Number(value.substring(mIndex+1, sIndex));
-
-    const allSeconds = hours*60*60 + minutes*60 + seconds;
-
-    const resultHours = Math.floor(allSeconds/60/60);
-    const resultMinutes = Math.floor((allSeconds - resultHours*60*60)/60);
-    const resultSeconds = Math.floor(allSeconds - resultHours*60*60 - resultMinutes*60);
-
-    const result = (NewWorkoutComponent.getSpecifiedTime(resultHours, 'h') + NewWorkoutComponent.getSpace(resultMinutes)
-      + NewWorkoutComponent.getSpecifiedTime(resultMinutes, 'm') + NewWorkoutComponent.getSpace(resultMinutes)
-      + NewWorkoutComponent.getSpecifiedTime(resultSeconds, 's')).trim();
-
-    control.setValue(result);
+  @HostListener('window:beforeunload')
+  beforeUnloadHandler(): boolean {
+    return !this.workoutForm.dirty;
   }
 }
 

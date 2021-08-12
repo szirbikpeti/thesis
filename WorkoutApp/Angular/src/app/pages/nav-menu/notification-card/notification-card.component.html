@@ -13,7 +13,7 @@
        class="red-circle clickable text-center" [matMenuTriggerFor]="notificationMenu">
     {{notifications.length}}
   </div>
-  <mat-menu #notificationMenu="matMenu">
+  <mat-menu #notificationMenu="matMenu" xPosition="before">
     <div class="mat-menu-header text-center">
       {{'NAV.' + category | translate}}
     </div>

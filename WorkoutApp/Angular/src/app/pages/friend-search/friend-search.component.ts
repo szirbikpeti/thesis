@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {UserService} from "../../services/user.service";
 import {UserModel} from "../../models/UserModel";
@@ -6,6 +6,9 @@ import {StateService} from "../../services/state.service";
 import {getPicture} from "../../utility";
 import {DomSanitizer} from "@angular/platform-browser";
 import {FollowRequestAndFollowModel} from "../../models/FollowRequestAndFollowModel";
+import {MatPaginator} from "@angular/material/paginator";
+import {MatTableDataSource} from "@angular/material/table";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-friend-search',
@@ -13,10 +16,11 @@ import {FollowRequestAndFollowModel} from "../../models/FollowRequestAndFollowMo
   styleUrls: ['./friend-search.component.scss']
 })
 export class FriendSearchComponent implements OnInit {
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  dataSource: MatTableDataSource<UserModel>;
+  users: Observable<UserModel[]>;
 
   friendSearchForm: FormGroup;
-
-  users: UserModel[];
 
   currentFollowRequestsAndFollows: FollowRequestAndFollowModel;
 
@@ -25,7 +29,11 @@ export class FriendSearchComponent implements OnInit {
   constructor(private fb: FormBuilder, private _user: UserService, private _state: StateService,
               public sanitizer: DomSanitizer) {
     this._user.search('bok')
-      .subscribe(foundedUsers => {this.users = foundedUsers; console.log(this.users);}); // TODO - delete
+      .subscribe(foundedUsers => {
+        this.dataSource = new MatTableDataSource<UserModel>(foundedUsers);
+        this.dataSource.paginator = this.paginator;
+        this.users = this.dataSource.connect();
+      }); // TODO - delete
 
     this._user.getFollowRequestsAndFollows()
       .subscribe(frf => this.currentFollowRequestsAndFollows = frf);
@@ -39,7 +47,7 @@ export class FriendSearchComponent implements OnInit {
 
   submitFriendSearchForm(): void {
     this._user.search(this.name)
-      .subscribe(foundedUsers => {this.users = foundedUsers; console.log(this.users);});
+      .subscribe(foundedUsers => this.dataSource.data = foundedUsers);
   }
 
   follow(id: string) {
@@ -65,6 +73,11 @@ export class FriendSearchComponent implements OnInit {
   unfollow(id: string) {
     this._user.unfollow(id)
       .subscribe(frf => this.currentFollowRequestsAndFollows = frf);
+  }
+
+  declineFollowRequest(id: string): void {
+    this._user.declineFollowRequest(id)
+      .subscribe(null);
   }
 
   isSourceUser(id: string): boolean {
