@@ -15,6 +15,6 @@ jobs:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "workout-tracking-thesis"
           heroku_email: "szirbikpeti@gmail.com"
-          dontuseforce: true
+          dontuseforce: false
           usedocker: true
           appdir: WorkoutApp
