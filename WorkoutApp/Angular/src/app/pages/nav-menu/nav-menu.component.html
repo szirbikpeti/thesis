@@ -68,6 +68,8 @@
       </a>
       <mat-divider class="last-divider"></mat-divider>
     </mat-nav-list>
+
+    <div class="feedback clickable" (click)="openFeedbackBottomSheet()">{{'FEEDBACK.FEEDBACK' | translate}}</div>
   </mat-sidenav>
   <mat-sidenav-content>
     <mat-toolbar class="mat-elevation-z4">
@@ -94,8 +96,8 @@
         </mat-form-field>
       </div>
 
-      <app-notification-card *ngIf="followNotifications" [notifications]="followNotifications" [category]="NotificationCategory.FOLLOW"></app-notification-card>
-      <app-notification-card *ngIf="generalNotifications" [notifications]="generalNotifications" [category]="NotificationCategory.GENERAL"></app-notification-card>
+      <app-notification-menu *ngIf="followNotifications" [notifications]="followNotifications" [category]="NotificationCategory.FOLLOW"></app-notification-menu>
+      <app-notification-menu *ngIf="generalNotifications" [notifications]="generalNotifications" [category]="NotificationCategory.GENERAL"></app-notification-menu>
 
       <div class="username-container">
         <div class="clickable username"

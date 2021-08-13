@@ -10,11 +10,11 @@ import {getPicture} from '../../../utility';
 import {DomSanitizer} from "@angular/platform-browser";
 
 @Component({
-  selector: 'app-notification-card',
-  templateUrl: './notification-card.component.html',
-  styleUrls: ['./notification-card.component.scss']
+  selector: 'app-notification-menu',
+  templateUrl: './notification-menu.component.html',
+  styleUrls: ['./notification-menu.component.scss']
 })
-export class NotificationCardComponent {
+export class NotificationMenuComponent {
 
   @Input() notifications: NotificationModel[];
   @Input() category: NotificationCategory;

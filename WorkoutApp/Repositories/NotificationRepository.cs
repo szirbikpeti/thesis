@@ -32,7 +32,7 @@ namespace WorkoutApp.Repositories
     public async Task DoBroadcastFollowNotifications(int receiverUserId) => 
       await _hubContext.Clients.User(receiverUserId.ToString()).BroadcastFollowNotifications();
     
-    public async Task<ICollection<NotificationEntity>> DoGetAsync(int id, CancellationToken cancellationToken)
+    public async Task<ICollection<NotificationEntity>> DoListAsync(int id, CancellationToken cancellationToken)
     {
       return await _dbContext.Notifications
         .Where(_ => _.ReceivedUserId == id)

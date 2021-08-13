@@ -16,6 +16,8 @@ import {NotificationService} from "../../services/notification.service";
 import {NotificationModel} from "../../models/NotificationModel";
 import {NotificationCategory, NotificationType} from "../../enums/notification";
 import {MatDialog} from "@angular/material/dialog";
+import {MatBottomSheet} from "@angular/material/bottom-sheet";
+import {FeedbackBottomSheetComponent} from "./feedback-bottom-sheet/feedback-bottom-sheet.component";
 
 @Component({
   selector: 'app-nav-menu',
@@ -42,7 +44,7 @@ export class NavMenuComponent {
 
   constructor(private breakpointObserver: BreakpointObserver, public _auth: AuthService, private _notification: NotificationService,
               private _user: UserService, private _translate: TranslateService, @Inject('BASE_URL') baseUrl: string,
-              private _state: StateService, public router: Router, public sanitizer: DomSanitizer) {
+              private _state: StateService, private bottomSheet: MatBottomSheet, public router: Router, public sanitizer: DomSanitizer) {
     _state.user.subscribe(storedUser => this.currentUser = storedUser);
     this.isHandset$.subscribe((next) => this.isHandset = next);
     this.getNotifications();
@@ -87,14 +89,19 @@ export class NavMenuComponent {
     }
   }
 
+  toggleSideNav(): void {
+    this.sideNav.toggle();
+  }
+
+  openFeedbackBottomSheet(): void {
+    this.toggleDrawerWhenHandset();
+    this.bottomSheet.open(FeedbackBottomSheetComponent);
+  }
+
   signOut(): void {
     this._state.user = null;
     this._auth.signOut();
     this.router.navigate(['/']);
-  }
-
-  toggleSideNav(): void {
-    this.sideNav.toggle();
   }
 
   editProfile(): void {

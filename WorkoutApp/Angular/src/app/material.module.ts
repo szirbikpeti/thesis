@@ -28,6 +28,8 @@ import {MatMenuModule} from '@angular/material/menu';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatRippleModule} from "@angular/material/core";
 import {MatPasswordStrengthModule} from '@angular-material-extensions/password-strength';
+import {MatBottomSheetModule} from "@angular/material/bottom-sheet";
+import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 
 @NgModule({
   declarations: [],
@@ -57,12 +59,14 @@ import {MatPasswordStrengthModule} from '@angular-material-extensions/password-s
     MatTabsModule,
     MatProgressBarModule,
     MatDialogModule,
+    MatBottomSheetModule,
     MatButtonToggleModule,
     MatProgressSpinnerModule,
     MatMenuModule,
     MatTooltipModule,
     MatRippleModule,
     MatPasswordStrengthModule,
+    NgbModule,
   ],
   exports: [
     MatToolbarModule,
@@ -96,6 +100,7 @@ import {MatPasswordStrengthModule} from '@angular-material-extensions/password-s
     MatTooltipModule,
     MatRippleModule,
     MatPasswordStrengthModule,
+    NgbModule,
   ]
 })
 

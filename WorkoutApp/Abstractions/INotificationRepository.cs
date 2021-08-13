@@ -17,6 +17,6 @@ namespace WorkoutApp.Abstractions
     
     Task DoDeleteAsync(int sentByUserId, int receivedUserId, NotificationType type, CancellationToken cancellationToken);
     
-    Task<ICollection<NotificationEntity>> DoGetAsync(int id, CancellationToken cancellationToken);
+    Task<ICollection<NotificationEntity>> DoListAsync(int id, CancellationToken cancellationToken);
   }
 }

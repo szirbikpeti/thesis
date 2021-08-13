@@ -32,14 +32,15 @@ import {IsVideoPipe} from "./pipes/is-video.pipe";
 import {PostCardComponent} from "./pages/dashboard/post-card/post-card.component";
 import {StatisticsComponent} from "./pages/statistics/statistics.component";
 import {HighchartsChartModule} from "highcharts-angular";
-import {NotificationCardComponent} from "./pages/nav-menu/notification-card/notification-card.component";
+import {NotificationMenuComponent} from "./pages/nav-menu/notification-menu/notification-menu.component";
 import {TruncatePipe} from "./pipes/truncate.pipe";
+import {FeedbackBottomSheetComponent} from "./pages/nav-menu/feedback-bottom-sheet/feedback-bottom-sheet.component";
 
 @NgModule({
   declarations: [
     AppComponent,
     NavMenuComponent,
-    NotificationCardComponent,
+    NotificationMenuComponent,
     NotificationModalComponent,
     HomeComponent,
     SignUpComponent,
@@ -55,6 +56,7 @@ import {TruncatePipe} from "./pipes/truncate.pipe";
     FriendsComponent,
     StatisticsComponent,
     ConfirmationDialogComponent,
+    FeedbackBottomSheetComponent,
     DateFormatterPipe,
     IsVideoPipe,
     TruncatePipe,

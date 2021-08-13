@@ -4,9 +4,9 @@ using WorkoutApp.Entities;
 
 namespace WorkoutApp.Data
 {
-    public class AutoMapping : Profile
+    public class AutoMapper : Profile
     {
-        public AutoMapping()
+        public AutoMapper()
         {
             CreateMap<UserAdditionDto, UserEntity>();
             CreateMap<UpdateUserDto, UserEntity>();
@@ -28,6 +28,8 @@ namespace WorkoutApp.Data
             CreateMap<CommentAdditionDto, CommentEntity>();
             CreateMap<CommentModificationDto, CommentEntity>();
             CreateMap<CommentEntity, GetCommentDto>();
+            CreateMap<FeedbackAdditionDto, FeedbackEntity>();
+            CreateMap<FeedbackEntity, GetFeedbackDto>();
         }
     }
 }

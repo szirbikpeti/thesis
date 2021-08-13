@@ -38,12 +38,12 @@ namespace WorkoutApp.Controllers
     }
     
     [HttpGet]
-    public async Task<ActionResult<ICollection<GetNotificationDto>>> GetAsync(CancellationToken cancellationToken)
+    public async Task<ActionResult<ICollection<GetNotificationDto>>> ListAsync(CancellationToken cancellationToken)
     {
       var currentUserId = _userManager.GetUserIdAsInt(HttpContext.User);
 
       var notifications = await _notification
-        .DoGetAsync(currentUserId, cancellationToken)
+        .DoListAsync(currentUserId, cancellationToken)
         .ConfigureAwait(false);
 
       foreach (var notification in notifications) {
@@ -52,9 +52,9 @@ namespace WorkoutApp.Controllers
           .ConfigureAwait(false);
       }
 
-      var notificationDto = notifications.Select(_ => _mapper.Map<GetNotificationDto>(_));
+      var notificationListDto = notifications.Select(_ => _mapper.Map<GetNotificationDto>(_));
 
-      return Ok(notificationDto);
+      return Ok(notificationListDto);
     }
     
     [HttpDelete("{id}")]

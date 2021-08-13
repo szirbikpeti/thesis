@@ -11,5 +11,6 @@ export enum Resource {
   WORKOUT = 'workout/',
   UNPOSTED = 'workout/unposted/',
   NOTIFICATION = "notification/",
-  POST = "post/"
+  POST = "post/",
+  FEEDBACK = "feedback/",
 }

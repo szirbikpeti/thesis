@@ -146,5 +146,11 @@
     "EDITED": "Edited",
     "SUCCESSFUL_ADDITION": "Successful post addition",
     "UNSUCCESSFUL_ADDITION": "Unsuccessful post addition"
+  },
+  "FEEDBACK": {
+    "FEEDBACK": "Feedback",
+    "SEND": "Send",
+    "WRITE": "Write down your experiences",
+    "SUCCESSFUL_ADDITION": "Successful feedback addition"
   }
 }

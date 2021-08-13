@@ -53,5 +53,7 @@ namespace WorkoutApp.Entities
         public ICollection<LikeEntity> LikedPosts { get; set; } = null!;
         
         public ICollection<CommentEntity> Comments { get; set; } = null!;
+        
+        public ICollection<FeedbackEntity> Feedbacks { get; set; } = null!;
     }
 }

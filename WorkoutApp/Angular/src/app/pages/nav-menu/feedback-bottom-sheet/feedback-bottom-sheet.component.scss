@@ -1,0 +1,22 @@
+.header-container {
+  position: relative;
+}
+
+.rating {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+
+mat-form-field {
+  width: 85%;
+}
+
+.star {
+  font-size: 1.5rem;
+  color: #deb0b0;
+}
+
+.filled {
+  color: #ff1e1e;
+}

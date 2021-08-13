@@ -132,6 +132,7 @@ namespace WorkoutApp
       services.AddScoped<IWorkoutRepository, WorkoutRepository>();
       services.AddScoped<INotificationRepository, NotificationRepository>();
       services.AddScoped<IPostRepository, PostRepository>();
+      services.AddScoped<IFeedbackRepository, FeedbackRepository>();
     }
 
     public void Configure(IApplicationBuilder appBuilder, IWebHostEnvironment environment, WorkoutDbContext dbContext)
