@@ -24,5 +24,5 @@
       </div>
     </mat-card>
   </div>
-  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+  <mat-paginator *ngIf="(users | async)?.length > 0" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
 </div>
