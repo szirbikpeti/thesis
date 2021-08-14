@@ -103,6 +103,14 @@ mat-form-field.ng-dirty.ng-invalid {
   margin-top: -5px;
 }
 
+.distance-unit {
+  position: absolute;
+  top: 0;
+  right: 20px;
+  color: grey;
+  user-select: none;
+}
+
 .delete-set-button {
   margin-top: 22px;
 }
