@@ -31,7 +31,6 @@ namespace WorkoutApp.Repositories
     public Task<GetUserDto> BlockUserAsync(CancellationToken cancellationToken)
     {
       // TODO - implement it
-
       throw new NotImplementedException();
     }
   }
