@@ -28,6 +28,11 @@ namespace WorkoutApp.Repositories
         .ConfigureAwait(false);
     }
 
-    public Task<GetUserDto> BlockUserAsync(CancellationToken cancellationToken) => throw new System.NotImplementedException();
+    public Task<GetUserDto> BlockUserAsync(CancellationToken cancellationToken)
+    {
+      // TODO - implement it
+
+      throw new NotImplementedException();
+    }
   }
 }
