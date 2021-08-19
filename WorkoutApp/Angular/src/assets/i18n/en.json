@@ -58,6 +58,7 @@
     "WOMAN": "Woman",
     "LASTSIGNEDINON": "Last login",
     "OPERATION": "Operation",
+    "ME": "Me",
     "SUCCESSFUL_SIGNUP": "Successful sign-up",
     "UNSUCCESSFUL_SIGNUP": "Unsuccessful sign-up",
     "UNSUCCESSFUL_LOGIN": "Unsuccessful login",

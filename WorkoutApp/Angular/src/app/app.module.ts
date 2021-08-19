@@ -35,6 +35,7 @@ import {HighchartsChartModule} from "highcharts-angular";
 import {NotificationMenuComponent} from "./pages/nav-menu/notification-menu/notification-menu.component";
 import {TruncatePipe} from "./pipes/truncate.pipe";
 import {FeedbackBottomSheetComponent} from "./pages/nav-menu/feedback-bottom-sheet/feedback-bottom-sheet.component";
+import {LikeModalComponent} from "./pages/dashboard/post-card/like-modal/like-modal.component";
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import {FeedbackBottomSheetComponent} from "./pages/nav-menu/feedback-bottom-she
     SignUpComponent,
     DashboardComponent,
     PostCardComponent,
+    LikeModalComponent,
     NewPostComponent,
     WorkoutComponent,
     WorkoutCardInfoComponent,

@@ -24,7 +24,8 @@ namespace WorkoutApp.Data
             CreateMap<FileEntity, GetFileDto>();
             CreateMap<NotificationEntity, GetNotificationDto>();
             CreateMap<PostAdditionDto, PostEntity>();
-            CreateMap<PostEntity, GetPostDto>();
+            CreateMap<PostEntity, GetPostDto>()
+                .ForMember(_ => _.LikingUsers, option => option.Ignore());
             CreateMap<CommentAdditionDto, CommentEntity>();
             CreateMap<CommentModificationDto, CommentEntity>();
             CreateMap<CommentEntity, GetCommentDto>();

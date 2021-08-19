@@ -10,6 +10,7 @@ import {UserModel} from "../../../models/UserModel";
 import {CommentModel} from "../../../models/CommentModel";
 import {ConfirmationDialogComponent} from "../../confirmation-dialog/confirmation-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
+import {LikeModalComponent} from "./like-modal/like-modal.component";
 
 @Component({
   selector: 'app-post-card',
@@ -45,17 +46,17 @@ export class PostCardComponent implements OnInit{
 
   private addLike(postId: string): void
   {
-    this.posts.find(post => post.id === postId).likedUsers.push(this.currentUser);
+    this.posts.find(post => post.id === postId).likingUsers.push(this.currentUser);
   }
 
   private removeLike(postId: string): void
   {
-    const index = this.posts.find(post => post.id === postId).likedUsers.indexOf(this.currentUser);
-    this.posts.find(post => post.id === postId).likedUsers.splice(index, 1);
+    const index = this.posts.find(post => post.id === postId).likingUsers.indexOf(this.currentUser);
+    this.posts.find(post => post.id === postId).likingUsers.splice(index, 1);
   }
 
   isLikedPost(post: PostModel): boolean {
-    return post.likedUsers
+    return post.likingUsers
       .map(({id}) => id)
       .includes(this.currentUser.id);
   }
@@ -65,7 +66,7 @@ export class PostCardComponent implements OnInit{
 
     const likeRequest: LikeRequest = {postId: postId};
     this._post.addLike(likeRequest).subscribe(result => {
-      this.posts.find(post => post.id === postId).likedUsers = result.likedUsers;
+      this.posts.find(post => post.id === postId).likingUsers = result.likingUsers;
     }, () => this.removeLike(postId));
   }
 
@@ -74,7 +75,7 @@ export class PostCardComponent implements OnInit{
 
     const likeRequest: LikeRequest = {postId: postId};
     this._post.deleteLike(likeRequest).subscribe(result => {
-      this.posts.find(post => post.id === postId).likedUsers = result.likedUsers;
+      this.posts.find(post => post.id === postId).likingUsers = result.likingUsers;
     }, () => this.addLike(postId));
   }
 
@@ -119,17 +120,16 @@ export class PostCardComponent implements OnInit{
         }
       }
     });
-
   }
 
-  deleteComment(postId: string, commentId: string) {
+  deleteComment(postId: string, commentId: string): void {
     this._post.deleteComment(postId, commentId).subscribe(result => {
       this.posts.find(post => post.id === postId).comments = result.comments;
       result.comments.forEach(comment => this.commentAdditionData.set(comment.id, false));
     });
   }
 
-  setEditComment(comment: CommentModel, updateCommentInput?: HTMLInputElement) {
+  setEditComment(comment: CommentModel, updateCommentInput?: HTMLInputElement): void {
     if (comment.user.id === this.currentUser.id) {
       this.commentAdditionData.set(comment.id, !this.commentAdditionData.get(comment.id));
     }
@@ -137,5 +137,15 @@ export class PostCardComponent implements OnInit{
     if (updateCommentInput) {
       updateCommentInput.value = comment.comment;
     }
+  }
+
+  openLikeModal(likingUsers: UserModel[]): void {
+    this.dialog.open(LikeModalComponent, {
+      width: '350px',
+      height: '450px',
+      data: {
+        users: likingUsers
+      }
+    });
   }
 }

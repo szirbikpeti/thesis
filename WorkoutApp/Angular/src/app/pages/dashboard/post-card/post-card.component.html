@@ -33,12 +33,12 @@
       <button *ngIf="isLikedPost(post)" mat-icon-button (click)="unlike(post.id)">
         <img src="assets/liked-dumbell.png">
       </button>
-      <button style="margin-left: 10px;" mat-icon-button (click)="comment.focus()">
+      <button class="comment-button" mat-icon-button (click)="comment.focus()">
         <img src="assets/comment.png">
       </button>
     </div>
-    <div *ngIf="post.likedUsers.length > 0">
-      {{post.likedUsers.length}} {{'POST.LIKE' | translate}}
+    <div *ngIf="post.likingUsers.length > 0" class="like-count clickable" (click)="openLikeModal(post.likingUsers)">
+      {{post.likingUsers.length}} {{'POST.LIKE' | translate}}
     </div>
     <div class="description-container">
       <strong style="margin-right: 8px;">{{post.user.userName}}</strong> {{post.description}}

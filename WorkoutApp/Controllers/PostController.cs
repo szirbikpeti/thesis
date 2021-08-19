@@ -26,17 +26,20 @@ namespace WorkoutApp.Controllers
     private readonly UserManager<UserEntity> _userManager;
     private readonly IPostRepository _post;
     private readonly INotificationRepository _notification;
+    private readonly IFileRepository _file;
 
     public PostController(
       IMapper mapper,
       UserManager<UserEntity> userManager,
       IPostRepository post,
-      INotificationRepository notification)
+      INotificationRepository notification,
+      IFileRepository file)
     {
       _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
       _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
       _post = post ?? throw new ArgumentNullException(nameof(post));
       _notification = notification ?? throw new ArgumentNullException(nameof(notification));
+      _file = file ?? throw new ArgumentNullException(nameof(file));
     }
 
     [HttpGet]
@@ -48,7 +51,7 @@ namespace WorkoutApp.Controllers
       var fetchedPosts = await _post.DoListAsync(currentUserId, cancellationToken)
         .ConfigureAwait(false);
 
-      var postDtoList = fetchedPosts.Select(CreatePostDto);
+      var postDtoList = fetchedPosts.Select(post => CreatePostDto(post, cancellationToken).Result);
 
       return Ok(postDtoList);
     }
@@ -65,7 +68,7 @@ namespace WorkoutApp.Controllers
         return BadRequest($"There is no post with this id ({id})");
       }
 
-      return Ok(CreatePostDto(fetchedPost));
+      return Ok(CreatePostDto(fetchedPost, cancellationToken).Result);
     }
 
     [HttpPost]
@@ -108,7 +111,7 @@ namespace WorkoutApp.Controllers
       var updatedPost = await _post.DoAddCommentAsync(postId, mappedComment, cancellationToken)
         .ConfigureAwait(false);
       
-      return Ok(CreatePostDto(updatedPost!));
+      return Ok(CreatePostDto(updatedPost!, cancellationToken).Result);
     }
 
     [HttpPost("like")]
@@ -139,7 +142,7 @@ namespace WorkoutApp.Controllers
       await _notification.DoBroadcastFollowNotifications(updatedPost!.UserId)
         .ConfigureAwait(false);
 
-      return Ok(CreatePostDto(updatedPost!));
+      return Ok(CreatePostDto(updatedPost!, cancellationToken).Result);
     }
 
     [HttpPut("{commentId}")]
@@ -155,7 +158,7 @@ namespace WorkoutApp.Controllers
         return NotFound();
       }
 
-      return Ok(CreatePostDto(post));
+      return Ok(CreatePostDto(post, cancellationToken).Result);
     }
 
     [HttpDelete("{postId}")]
@@ -195,11 +198,11 @@ namespace WorkoutApp.Controllers
         return NotFound($"Comment is not found with id: {commentId}");
       }
       
-      return Ok(CreatePostDto(updatedPost!));
+      return Ok(CreatePostDto(updatedPost!, cancellationToken).Result);
     }
 
     [HttpDelete("like")]
-    public async Task<IActionResult> DeleteLikeAsync(
+    public async Task<ActionResult<GetPostDto>> DeleteLikeAsync(
       [FromBody] [Required] LikeDto deletedLikeDto,
       CancellationToken cancellationToken)
     {
@@ -213,18 +216,23 @@ namespace WorkoutApp.Controllers
       var updatedPost = await _post.DoDeleteLikeAsync(likeEntity, cancellationToken)
         .ConfigureAwait(false);
 
-      return Ok(CreatePostDto(updatedPost!));
+      return Ok(CreatePostDto(updatedPost!, cancellationToken).Result);
     }
 
-    private GetPostDto CreatePostDto(PostEntity post)
+    private async Task<GetPostDto> CreatePostDto(PostEntity post, CancellationToken cancellationToken)
     {
       var postDto = _mapper.Map<GetPostDto>(post);
 
       postDto.Files = post.FileRelationEntities
         .Select(relation => _mapper.Map<GetFileDto>(relation.File))
         .ToImmutableList();
-
-      postDto.LikedUsers = post.LikingUsers
+      
+      foreach (var likingUser in post.LikingUsers) {
+        likingUser.User.ProfilePicture = await _file.DoGetAsync(likingUser.User.ProfilePictureId, cancellationToken)
+          .ConfigureAwait(false);
+      }
+      
+      postDto.LikingUsers = post.LikingUsers
         .Select(relation => _mapper.Map<GetUserDto>(relation.User))
         .ToImmutableList();
 

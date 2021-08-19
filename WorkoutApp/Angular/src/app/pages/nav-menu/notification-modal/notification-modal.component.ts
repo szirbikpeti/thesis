@@ -22,10 +22,9 @@ export class NotificationModalComponent  {
 
   currentLanguage: string;
 
-  constructor(
-    @Inject(MAT_DIALOG_DATA) private data: any,
-    private dialogRef: MatDialogRef<NotificationModalComponent>,
-    private _translate: TranslateService, public sanitizer: DomSanitizer) {
+  constructor(@Inject(MAT_DIALOG_DATA) private data: any,
+              private dialogRef: MatDialogRef<NotificationModalComponent>,
+              private _translate: TranslateService, public sanitizer: DomSanitizer) {
     this.currentLanguage = data.language;
     this.notification = data.notification;
     this.sentByUser = this.notification.sentByUser;

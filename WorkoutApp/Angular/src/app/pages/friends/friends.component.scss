@@ -50,3 +50,9 @@ tr.simple-table-row:not(.example-expanded-row):active {
   font-size: 40px;
   line-height: normal;
 }
+
+@media screen and (max-width: 950px) {
+  table {
+    width: 100%;
+  }
+}

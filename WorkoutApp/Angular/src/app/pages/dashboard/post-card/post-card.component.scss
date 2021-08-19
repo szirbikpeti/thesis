@@ -75,6 +75,10 @@ mat-card {
   margin-left: 5px;
 }
 
+.comment-button {
+  margin-left: 10px;
+}
+
 .description-container {
   margin-top: 12px;
 }
@@ -85,7 +89,8 @@ mat-card {
   margin-left: 30px;
 }
 
-.show-details:hover {
+.show-details:hover,
+.like-count:hover {
   text-decoration: underline grey;
 }
 

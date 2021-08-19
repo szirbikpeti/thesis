@@ -11,5 +11,5 @@ export interface PostModel {
   files: FileModel[],
   workout: WorkoutModel,
   comments: CommentModel[],
-  likedUsers: UserModel[]
+  likingUsers: UserModel[]
 }

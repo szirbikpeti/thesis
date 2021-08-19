@@ -22,7 +22,7 @@ namespace WorkoutApp.Dto
     public IReadOnlyCollection<GetCommentDto> Comments { get; set; } = 
       ImmutableList<GetCommentDto>.Empty;
     
-    public IReadOnlyCollection<GetUserDto> LikedUsers { get; set; } = 
+    public IReadOnlyCollection<GetUserDto> LikingUsers { get; set; } = 
       ImmutableList<GetUserDto>.Empty;
   }
 }
