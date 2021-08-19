@@ -20,7 +20,7 @@ export class DashboardComponent {
   constructor(private _post: PostService, private _state: StateService, private dialog: MatDialog) {
     this.currentUser = _state.user.value;
 
-    _post.list().subscribe(posts => this.posts = posts);
+    _post.list().subscribe(posts => {this.posts = posts; console.log(posts)});
   }
 
   openPostCreatorModal(): void {
