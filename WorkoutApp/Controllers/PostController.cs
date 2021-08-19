@@ -9,6 +9,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using WorkoutApp.Abstractions;
 using WorkoutApp.Dto;
 using WorkoutApp.Entities;
@@ -27,31 +28,40 @@ namespace WorkoutApp.Controllers
     private readonly IPostRepository _post;
     private readonly INotificationRepository _notification;
     private readonly IFileRepository _file;
+    private readonly ILogger<PostController> _logger;
 
     public PostController(
       IMapper mapper,
       UserManager<UserEntity> userManager,
       IPostRepository post,
       INotificationRepository notification,
-      IFileRepository file)
+      IFileRepository file,
+      ILogger<PostController> logger)
     {
       _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
       _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
       _post = post ?? throw new ArgumentNullException(nameof(post));
       _notification = notification ?? throw new ArgumentNullException(nameof(notification));
       _file = file ?? throw new ArgumentNullException(nameof(file));
+      _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
     [HttpGet]
     public async Task<ActionResult<ICollection<GetPostDto>>> ListAsync(
       CancellationToken cancellationToken)
     {
+      _logger.Log(LogLevel.Information, "Listing posts");
+      
       var currentUserId = _userManager.GetUserIdAsInt(HttpContext.User);
       
       var fetchedPosts = await _post.DoListAsync(currentUserId, cancellationToken)
         .ConfigureAwait(false);
 
       var postDtoList = fetchedPosts.Select(post => CreatePostDto(post, cancellationToken).Result);
+      
+      _logger.Log(LogLevel.Information, "Listed posts");
+      _logger.Log(LogLevel.Information, postDtoList.ToList()[0].Description);
+      _logger.Log(LogLevel.Information, postDtoList.ToList()[0].LikingUsers.ToList()[0].FullName);
 
       return Ok(postDtoList);
     }

@@ -17,7 +17,7 @@ import {LikeModalComponent} from "./like-modal/like-modal.component";
   templateUrl: './post-card.component.html',
   styleUrls: ['./post-card.component.scss']
 })
-export class PostCardComponent implements OnInit{
+export class PostCardComponent implements OnInit {
 
   @Input() filteredPosts: PostModel[];
   @Input() tabIndex: number;
