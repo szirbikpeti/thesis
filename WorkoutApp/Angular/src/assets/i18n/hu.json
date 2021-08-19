@@ -129,7 +129,7 @@
     "ADD_LIKE": "Lájkolt egy posztot"
   },
   "POST": {
-    "ADD_TITLE": "Új poszt létrehozás",
+    "ADD_TITLE": "Új poszt létrehozása",
     "EXISTS": "Már létezik",
     "NO_POST": "Nincs megjelenítendő poszt",
     "NO_UNPOSTED_WORKOUT": "Nincs rögzített edzés, ami posztolható",

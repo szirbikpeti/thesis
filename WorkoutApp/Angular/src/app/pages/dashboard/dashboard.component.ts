@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {PostService} from "../../services/post.service";
 import {PostModel} from "../../models/PostModel";
 import {MatDialog} from "@angular/material/dialog";
@@ -11,7 +11,7 @@ import {StateService} from "../../services/state.service";
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent {
 
   currentUser: UserModel;
 
@@ -19,13 +19,8 @@ export class DashboardComponent implements OnInit {
 
   constructor(private _post: PostService, private _state: StateService, private dialog: MatDialog) {
     this.currentUser = _state.user.value;
-  }
 
-  ngOnInit(): void {
-    this._post.list().subscribe(posts => {
-      this.posts = posts;
-      console.log(posts);
-    });
+    _post.list().subscribe(posts => this.posts = posts);
   }
 
   openPostCreatorModal(): void {
