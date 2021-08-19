@@ -1,7 +1,13 @@
-<mat-form-field>
-  <mat-select value="Gym" (valueChange)="getFirstAreaChartData($event)">
-    <mat-option *ngFor="let type of workoutTypes" [value]="type">{{type}}</mat-option>
-  </mat-select>
-</mat-form-field>
-<div id="area-chart" style="width: auto; margin-bottom: 30px;"></div>
-<div id="pie-chart" style="width: auto; margin-bottom: 30px;"></div>
+<div class="title">{{'NAV.STATISTICS' | translate}}</div>
+
+<mat-spinner *ngIf="!workouts"></mat-spinner>
+
+<div *ngIf="workouts">
+  <mat-form-field>
+    <mat-select [(value)]="selectedWorkoutType" (valueChange)="getFirstAreaChartData($event)">
+      <mat-option *ngFor="let type of workoutTypes" [value]="type">{{'WORKOUT.TYPES.' + type | uppercase | translate}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <div id="area-chart" style="width: auto; margin-bottom: 30px;"></div>
+  <div id="pie-chart" style="width: auto; margin-bottom: 30px;"></div>
+</div>

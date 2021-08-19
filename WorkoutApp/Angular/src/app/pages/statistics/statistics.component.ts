@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import * as Highcharts from 'highcharts';
 import {WorkoutService} from "../../services/workout.service";
 import {WorkoutModel} from "../../models/WorkoutModel";
+import {DateFormatterPipe} from "../../pipes/date-formatter.pipe";
+import {StateService} from "../../services/state.service";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-statistics',
@@ -18,42 +21,60 @@ export class StatisticsComponent {
   workoutTypeData = [];
   workoutTypes = [];
 
-  constructor(private _workout: WorkoutService) {
+  selectedWorkoutType: string = 'Gym';
+
+  constructor(private _workout: WorkoutService, private _state: StateService,
+              private _translate: TranslateService, private _dateFormatter: DateFormatterPipe) {
     _workout.list().subscribe(workouts => {
       this.workouts = workouts;
 
-      this.getWorkoutTypeData();
-      this.setUpFirstAreaChart();
-      this.setUpFirstPieChart();
+      setTimeout(() => this.getAllData(), 100);
+    });
 
-    })
+    _state.language.subscribe(() => {
+      if (this.chart) {
+        this.getAllData();
+      }
+    });
+  }
+
+  private getAllData(): void {
+    this.getWorkoutTypeData();
+    this.setUpFirstAreaChart();
+    this.setUpFirstPieChart();
   }
 
   private getWorkoutTypeData(): void {
-    this.workouts.forEach(workout => {
-      const types = this.workoutTypeData.map(({name}) => name);
+    this.workoutTypes = [];
+    this.workoutTypeData = [];
+    const workoutTypesName = [];
 
-      if (!types.includes(workout.type)) {
-        this.workoutTypeData.push({ name: workout.type, y: 1});
+    this.workouts.forEach(workout => {
+      if (!workoutTypesName.includes(workout.type)) {
+        this.workoutTypeData.push({ name: this._translate.instant('WORKOUT.TYPES.' + workout.type.toUpperCase()), y: 1});
+        workoutTypesName.push(workout.type);
       } else {
-        const index = types.indexOf(workout.type);
+        const index = workoutTypesName.indexOf(workout.type);
         this.workoutTypeData[index].y += 1;
       }
     });
 
-    this.workoutTypes = this.workoutTypeData.map(({name}) => name);
+    this.workoutTypes = workoutTypesName;
   }
 
   private setUpFirstAreaChart(): void {
+    const that = this;
+    const data = this.getFirstAreaChartData(this.selectedWorkoutType);
+
     this.chart = Highcharts.chart('area-chart', {
       chart: { type: 'area' },
       title: {
-        text: 'Egy edzésen elvégzett összes edzésmunka'
+        text: that._translate.instant('STATISTICS.SUM_VOLUMEN_IN_ONE_WORKOUT')
       },
       series: [{
         type: 'area',
-        name: 'Workouts',
-        data : this.getFirstAreaChartData()
+        name: that._translate.instant('WORKOUT.WORKOUTS'),
+        data : data
       }],
       rangeSelector: {
         enabled: true
@@ -74,36 +95,81 @@ export class StatisticsComponent {
         type: 'datetime',
         // tickInterval: 1000 * 3600 * 24 *30 // 1 month
       },
+      tooltip: {
+        useHTML: true,
+        formatter: function() {
+          const workout: WorkoutModel = data.find(that => that.x === this.x && that.y === this.y).workout;
+          let result = `<b>${that._translate.instant('WORKOUT.DATE')}:</b> ${that._dateFormatter.transform(workout.date, that._state.language.value, false)} <br>`;
+
+          if (workout.exercises.length !== 0) {
+            let exercises = '<ul>';
+
+            for (let exercise of workout.exercises) {
+              exercises += '<li>' + exercise.name;
+
+              const setsReps = [];
+
+              for(let set of exercise.sets) {
+                setsReps.push(set.reps)
+              }
+
+              let sets = ' (' + setsReps.join(", ") + ')';
+
+              exercises += sets;
+
+              if (exercise.equipment) {
+                exercises += `<ul><li>${exercise.equipment}</li></ul>`
+              }
+              exercises += '</li>';
+            }
+
+            exercises += '</ul>';
+
+            result += `<b>${that._translate.instant('WORKOUT.EXERCISES')}: </b>` + exercises
+          } else {
+            result += `<b>${that._translate.instant('WORKOUT.DISTANCE')}:</b> ${workout.distance}km <br>`;
+            result += `<b>${that._translate.instant('WORKOUT.DURATION')}:</b> ${workout.duration}`;
+          }
+
+          return result;
+        }
+      }
     });
   }
 
   private setUpFirstPieChart(): void {
+    const that = this;
+
     this.pieChart = Highcharts.chart('pie-chart', {
       chart: { type: 'pie' },
       title: {
-        text: 'Edzés típusok megoszlása'
+        text: that._translate.instant('STATISTICS.DISTRIBUTION_BY_WORKOUT_TYPES')
       },
       series: [{
         type: 'pie',
-        name: 'Darabszám',
+        name: that._translate.instant('STATISTICS.QUANTITY'),
         data : this.workoutTypeData
       }],
     });
   }
 
-  getFirstAreaChartData(type: string = 'Gym'): any[] {
+  getFirstAreaChartData(type: string): any[] {
     const data = [];
 
     this.workouts.filter(workout => workout.type === type).forEach(workout => {
-      let volume = 0;
+      let volumen = 0;
 
       workout.exercises.forEach(exercise => {
         exercise.sets.forEach(set => {
-          volume += set.reps * (set.weight === 0 ? 1 : set.weight);
+          volumen += set.reps * (set.weight === 0 ? 1 : set.weight);
         });
       });
 
-      data.push({x: Date.parse(workout.date.toString()), y: volume})
+      if (volumen === 0) {
+        volumen = workout.distance;
+      }
+
+      data.push({x: Date.parse(workout.date.toString()), y: volumen, workout: workout})
     });
 
     if (this.chart) {

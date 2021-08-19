@@ -1,0 +1,23 @@
+<h2 mat-dialog-title class="text-center">{{'POST.LIKE' | translate | titlecase}}</h2>
+<mat-dialog-content class="mat-typography">
+  <div *ngFor="let user of users" class="user-row">
+    <div style="display: inline-block">
+      <img [src]="getPicture(user.profilePicture.data)">
+    </div>
+    <div class="names-container">
+      <div>
+        {{user.userName}}
+      </div>
+      <div>
+        {{user.fullName}}
+      </div>
+    </div>
+    <div class="action-button-container">
+      <span *ngIf="isCurrentUser(user.id)">{{'USER.ME' | translate}}</span>
+      <button *ngIf="!isSourceUser(user.id) && !isTargetUser(user.id) && !isFollowedUser(user.id) && !isFollowerUser(user.id) && !isCurrentUser(user.id)" mat-raised-button (click)="follow(user.id)">{{'FRIEND.FOLLOW' | translate}}</button>
+      <button *ngIf="isFollowedUser(user.id)" mat-raised-button (click)="unfollow(user.id)">{{'FRIEND.UNFOLLOW' | translate}}</button>
+      <button *ngIf="isFollowerUser(user.id) && !isFollowedUser(user.id)" mat-raised-button (click)="followBack(user.id)">{{'FRIEND.FOLLOW_BACK' | translate}}</button>
+    </div>
+    <mat-divider></mat-divider>
+  </div>
+</mat-dialog-content>

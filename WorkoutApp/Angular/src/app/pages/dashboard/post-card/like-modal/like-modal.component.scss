@@ -1,0 +1,24 @@
+img {
+  height: 50px;
+  width: 50px;
+}
+
+.user-row {
+  position: relative;
+}
+
+.names-container {
+  display: inline-block;
+  margin-left: 5px;
+}
+
+.action-button-container {
+  position: absolute;
+  top: 12px;
+  right: 5px;
+}
+
+mat-divider {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}

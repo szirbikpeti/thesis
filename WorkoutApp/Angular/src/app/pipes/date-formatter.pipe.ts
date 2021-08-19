@@ -13,7 +13,7 @@ export class DateFormatterPipe implements PipeTransform {
     const date = new Date(value);
 
     const format = language === 'hu'
-      ? 'yyyy.MM.dd' + (isDateTime ? ' HH:mm' : '')
+      ? 'yyyy.MM.dd.' + (isDateTime ? ' HH:mm' : '')
       : (isDateTime ? 'medium' : 'mediumDate');
     return this.datePipe.transform(date, format);
   }

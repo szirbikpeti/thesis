@@ -152,5 +152,10 @@
     "SEND": "Küldés",
     "WRITE": "Írja le a tapasztalatait",
     "SUCCESSFUL_ADDITION": "Sikeres visszajelzés"
+  },
+  "STATISTICS": {
+    "SUM_VOLUMEN_IN_ONE_WORKOUT": "Egy edzésen elvégzett összes edzésmunka",
+    "QUANTITY": "Darabszám",
+    "DISTRIBUTION_BY_WORKOUT_TYPES": "Edzés típusok megoszlása"
   }
 }
