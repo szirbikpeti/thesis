@@ -1,0 +1,4 @@
+<div class="container">
+  <mat-spinner *ngIf="!message"></mat-spinner>
+  <h2 *ngIf="message">{{message}} --> <a routerLink="home">{{'USER.LOGIN' | translate}}</a></h2>
+</div>

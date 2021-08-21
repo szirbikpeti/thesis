@@ -13,8 +13,9 @@
     </div>
     <div class="control-container">
       <mat-form-field appearance="standard">
-        <div class="center-input-field">
+        <div class="center-input-field relative-element">
           <input type="email"  matInput placeholder="{{'USER.EMAIL' | translate}} *" formControlName="email">
+          <img class="input-hint" matTooltip="{{'USER.ENTER_VALID_EMAIL' | translate}}" src="assets/alert.svg">
         </div>
       </mat-form-field>
     </div>
@@ -27,9 +28,9 @@
     </div>
     <div class="control-container">
       <mat-form-field appearance="standard">
-        <div class="center-input-field" style="position: relative">
+        <div class="center-input-field relative-element">
           <input matInput type="password" placeholder="{{'USER.PASSWORD' | translate}} *" formControlName="password">
-          <img *ngIf="password.length < 6" class="password-hint" matTooltip="{{'USER.MIN_PASSWORD_LENGTH' | translate}}: 6" src="assets/alert.svg">
+          <img *ngIf="password.length < 6" class="input-hint" matTooltip="{{'USER.MIN_PASSWORD_LENGTH' | translate}}: 6" src="assets/alert.svg">
         </div>
       </mat-form-field>
     </div>

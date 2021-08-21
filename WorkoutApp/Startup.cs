@@ -15,6 +15,7 @@ using Microsoft.Extensions.Hosting;
 using WorkoutApp.Abstractions;
 using WorkoutApp.Data;
 using WorkoutApp.Entities;
+using WorkoutApp.Frameworks;
 using WorkoutApp.Hubs;
 using WorkoutApp.Repositories;
 
@@ -29,8 +30,9 @@ namespace WorkoutApp
     private const string NpmScriptCommand = "start";
 
     private const int RequiredMinimumPasswordLength = 6;
-    private const string AllowedUserNameCharacters = "AÁBCDEÉFGHIÍJKLMNOÓÖŐPQRSTUÚÜŰVWXYZaábcdeéfghiíjklmnoóöőpqrstuúüűvwxyz0123456789";
+    private const int MaxFailedAccessAttemptsBeforeLockout = 7;
     private const int SessionExpireTimeInHours = 7;
+    private const string AllowedUserNameCharacters = "AÁBCDEÉFGHIÍJKLMNOÓÖŐPQRSTUÚÜŰVWXYZaábcdeéfghiíjklmnoóöőpqrstuúüűvwxyz0123456789";
     private IConfiguration Configuration { get; }
 
     public Startup(IConfiguration configuration)
@@ -64,9 +66,10 @@ namespace WorkoutApp
 
           _.User.RequireUniqueEmail = true;
           _.User.AllowedUserNameCharacters = AllowedUserNameCharacters;
-          // _.SignIn.RequireConfirmedEmail = true;
+          _.User.RequireUniqueEmail = false;
+          _.SignIn.RequireConfirmedEmail = true;
           
-          _.Lockout.MaxFailedAccessAttempts = 5;
+          _.Lockout.MaxFailedAccessAttempts = MaxFailedAccessAttemptsBeforeLockout;
         })
         .AddEntityFrameworkStores<WorkoutDbContext>()
         .AddDefaultTokenProviders();
@@ -133,6 +136,7 @@ namespace WorkoutApp
       services.AddScoped<INotificationRepository, NotificationRepository>();
       services.AddScoped<IPostRepository, PostRepository>();
       services.AddScoped<IFeedbackRepository, FeedbackRepository>();
+      services.AddScoped<IEmailSender, EmailSender>();
     }
 
     public void Configure(IApplicationBuilder appBuilder, IWebHostEnvironment environment, WorkoutDbContext dbContext)

@@ -1,7 +1,9 @@
 export enum Resource {
+  AUTH = "auth/",
   SIGNUP = "auth/signup/",
+  RESEND_EMAIL = "auth/resend-email/",
+  EMAIL_CONFIRMATION = "auth/email-confirmation/",
   LOGIN = "auth/signin/",
-  LOGOUT = "auth/",
   USER = 'user/',
   USER_FRIENDS = 'user/friends/',
   USER_REQUEST = 'user/request/',

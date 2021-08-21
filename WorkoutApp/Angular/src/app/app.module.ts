@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './pages/nav-menu/nav-menu.component';
@@ -16,7 +16,6 @@ import {ToastrModule} from "ngx-toastr";
 import {DashboardComponent} from "./pages/dashboard/dashboard.component";
 import {WorkoutComponent} from "./pages/workout/workout.component";
 import {NewWorkoutComponent} from "./pages/new-workout/new-workout.component";
-import {EditWorkoutComponent} from "./pages/edit-workout/edit-workout.component";
 import {ProfileComponent} from "./pages/profile/profile.component";
 import {ConfirmationDialogComponent} from "./pages/confirmation-dialog/confirmation-dialog.component";
 import {GuardsModule} from "./guards.module";
@@ -36,6 +35,8 @@ import {NotificationMenuComponent} from "./pages/nav-menu/notification-menu/noti
 import {TruncatePipe} from "./pipes/truncate.pipe";
 import {FeedbackBottomSheetComponent} from "./pages/nav-menu/feedback-bottom-sheet/feedback-bottom-sheet.component";
 import {LikeModalComponent} from "./pages/dashboard/post-card/like-modal/like-modal.component";
+import {EmailConfirmationComponent} from "./pages/email-confirmation/email-confirmation.component";
+import {HttpErrorInterceptor} from "./error.interceptor";
 
 @NgModule({
   declarations: [
@@ -52,13 +53,13 @@ import {LikeModalComponent} from "./pages/dashboard/post-card/like-modal/like-mo
     WorkoutComponent,
     WorkoutCardInfoComponent,
     NewWorkoutComponent,
-    EditWorkoutComponent,
     ProfileComponent,
     FriendSearchComponent,
     FriendsComponent,
     StatisticsComponent,
     ConfirmationDialogComponent,
     FeedbackBottomSheetComponent,
+    EmailConfirmationComponent,
     DateFormatterPipe,
     IsVideoPipe,
     TruncatePipe,
@@ -77,12 +78,14 @@ import {LikeModalComponent} from "./pages/dashboard/post-card/like-modal/like-mo
     HighchartsChartModule,
     ToastrModule.forRoot({
       preventDuplicates: true,
+      progressBar: true,
       positionClass: 'toast-bottom-right',
-      timeOut: 3000
+      timeOut: 3000,
     })
   ],
   providers: [
     {provide: MAT_DATE_LOCALE, useValue: 'hu-HU'},
+    {provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true},
     DatePipe,
     DateFormatterPipe
   ],

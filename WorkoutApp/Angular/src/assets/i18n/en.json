@@ -3,8 +3,10 @@
     "MOTTO_PART_1": "Workout tracking,",
     "MOTTO_PART_2": "as you haven't done before",
     "LANGUAGE": "Language",
+    "LOGIN_AGAIN": "Please login again",
     "INFO": "Info",
     "ERROR": "Error",
+    "WARNING": "Warning",
     "SAVE": "Save",
     "EDIT": "Edit",
     "DUPLICATE": "Duplicate",
@@ -46,6 +48,7 @@
     "REGISTRATION": "Create New Account",
     "FULLNAME": "Full Name",
     "EMAIL": "Email Address",
+    "ENTER_VALID_EMAIL": "Please enter valid email address because we will send you an email!",
     "USERNAME": "User Name",
     "PASSWORD": "Password",
     "MIN_PASSWORD_LENGTH": "Minimum length",
@@ -61,10 +64,20 @@
     "ME": "Me",
     "SUCCESSFUL_SIGNUP": "Successful sign-up",
     "UNSUCCESSFUL_SIGNUP": "Unsuccessful sign-up",
+    "WRONG_USERNAME_OR_PASSWORD": "User was not found or password was invalid",
+    "NOT_CONFIRMED_EMAIL": "Email is not confirmed",
+    "RESEND_EMAIL": "Click on this window to resend email",
+    "LOCKED_OUT": "The account is locked out until {{minute}} minute(s)",
     "UNSUCCESSFUL_LOGIN": "Unsuccessful login",
     "SUCCESSFUL_UPDATE":  "Successful update",
     "UNSUCCESSFUL_UPDATE": "Unsuccessful update",
-    "SUCCESSFUL_DELETE":  "Successful delete"
+    "SUCCESSFUL_DELETE":  "Successful delete",
+    "EMAIL_CONFIRMATION": {
+      "WRONG_URL": "Wrong URL",
+      "THANKFUL_MESSAGE": "Successful email confirmation, thank you for your registration",
+      "ALREADY_CONFIRMED": "Email is already confirmed",
+      "FAILED_CONFIRMATION": "Email cannot be confirmed"
+    }
   },
   "WORKOUT": {
     "WORKOUTS": "Workouts",

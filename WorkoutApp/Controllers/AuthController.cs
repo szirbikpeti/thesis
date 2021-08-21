@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -29,6 +30,7 @@ namespace WorkoutApp.Controllers
     private readonly SignInManager<UserEntity> _signInManager;
     private readonly WorkoutDbContext _dbContext;
     private readonly RoleManager<RoleEntity> _roleManager;
+    private readonly IEmailSender _emailSender;
     private readonly ILogger<AuthController> _logger;
 
     public AuthController(
@@ -38,6 +40,7 @@ namespace WorkoutApp.Controllers
       SignInManager<UserEntity> signInManager,
       WorkoutDbContext dbContext,
       RoleManager<RoleEntity> roleManager,
+      IEmailSender emailSender,
       ILogger<AuthController> logger)
     {
       _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
@@ -46,6 +49,7 @@ namespace WorkoutApp.Controllers
       _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
       _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
       _roleManager = roleManager ?? throw new ArgumentNullException(nameof(roleManager));
+      _emailSender = emailSender ?? throw new ArgumentNullException(nameof(emailSender));
       _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
@@ -64,8 +68,12 @@ namespace WorkoutApp.Controllers
         return BadRequest(ModelState);
       }
 
+      var now = DateTimeOffset.Now;
+      
       var mappedUser = _mapper.Map<UserEntity>(newUser);
       mappedUser.About = string.Empty;
+      mappedUser.CreatedOn = now;
+      mappedUser.ModifiedOn = now;
 
       await _userManager.CreateAsync(mappedUser).ConfigureAwait(false);
 
@@ -76,12 +84,15 @@ namespace WorkoutApp.Controllers
         Roles.User,
       });
 
-      var createdUser = await _userManager
-        .FindByIdWithAdditionalDataAsync(mappedUser.Id, cancellationToken: cancellationToken)
+      var emailToken = await _userManager.GenerateEmailConfirmationTokenAsync(mappedUser)
         .ConfigureAwait(false);
+      emailToken = System.Web.HttpUtility.UrlEncode(emailToken);
+      var confirmationLink = $"{Request.Scheme}://{Request.Host.Value}/email-confirmation?userId={mappedUser.Id}&token={emailToken}";
+
+      _emailSender.SendEmail(
+        mappedUser.Email, "Confirm your email", 
+        $"<h3>Hi, {mappedUser.UserName}!</h3> <br> Please confirm your account by <a href={confirmationLink}>clicking here</a>.");
       
-      createdUser!.CreatedOn = DateTimeOffset.Now;
-      createdUser!.ModifiedOn = DateTimeOffset.Now;
 
       await _dbContext.SaveChangesAsync(cancellationToken)
         .ConfigureAwait(false);
@@ -91,19 +102,85 @@ namespace WorkoutApp.Controllers
       return Ok();
     }
 
+    [HttpGet("resend-email/{userName}")]
+    public async Task<IActionResult> ResendEmail(
+      [FromRoute] [Required] string userName)
+    {
+      var mappedUser = await _userManager.FindByNameAsync(userName)
+        .ConfigureAwait(false);
+
+      var emailToken = await _userManager.GenerateEmailConfirmationTokenAsync(mappedUser)
+        .ConfigureAwait(false);
+      emailToken = System.Web.HttpUtility.UrlEncode(emailToken);
+      var confirmationLink = $"{Request.Scheme}://{Request.Host.Value}/email-confirmation?userId={mappedUser.Id}&token={emailToken}";
+
+      _emailSender.SendEmail(
+        mappedUser.Email, "Confirm your email",
+        $"<h3>Hi, {mappedUser.UserName} again!</h3> <br> Please confirm your account by <a href={confirmationLink}>clicking here</a>.");
+
+      return Ok();
+    }
+
+    [HttpPost("email-confirmation")]
+    public async Task<IActionResult> ConfirmEmail(EmailConfirmationDto email)
+    {
+      var user = await _userManager.FindByIdAsync(email.UserId);
+
+      if (user is null) {
+        return NotFound("User was not found.");
+      }
+
+      if (user.EmailConfirmed) {
+        return BadRequest("Email is already confirmed.");
+      }
+
+      var result = await _userManager.ConfirmEmailAsync(user, email.Token);
+
+      if (!result.Succeeded) {
+        return Problem("Email cannot be confirmed.");
+      }
+
+      return Ok();
+    }
+
     [HttpPost("signin")]
     public async Task<IActionResult> SignInAsync(
       [FromBody] [Required] AccessUserDto accessUser,
       CancellationToken cancellationToken)
     {
       _logger.Log(LogLevel.Information, $"Starting sign in with name: {accessUser.UserName}");
+      
+      var isExists = await _userManager.IsUserExistsAsync(accessUser.UserName, cancellationToken);
+
+      if (!isExists) {
+        _logger.Log(LogLevel.Information, "User was not found or password was invalid.");
+        return BadRequest("User was not found or password was invalid.");
+      }
 
       var result = await _signInManager.PasswordSignInAsync(accessUser.UserName, accessUser.Password, 
         isPersistent: false, lockoutOnFailure: true);
 
       if (!result.Succeeded) {
+        var notSignedInUser = await _userManager.FindByNameAsync(accessUser.UserName)
+          .ConfigureAwait(false);
+
+        await _userManager.AccessFailedAsync(notSignedInUser)
+          .ConfigureAwait(false);
+
+        if (!notSignedInUser.EmailConfirmed) {
+          _logger.Log(LogLevel.Information, "Email is not confirmed.");
+          return Unauthorized("Email is not confirmed.");
+        }
+
+        if (notSignedInUser.LockoutEnd is not null) {
+          var lockoutEndInMinutes = (notSignedInUser.LockoutEnd - DateTimeOffset.Now).Value.Minutes + 1;
+          
+          _logger.Log(LogLevel.Information, "Account is locked out.");
+          return StatusCode(403, $"Account is locked out until {lockoutEndInMinutes} minutes. ({lockoutEndInMinutes})");
+        }
+        
         _logger.Log(LogLevel.Information, "User was not found or password was invalid.");
-        return Unauthorized("User was not found or password was invalid.");
+        return BadRequest("User was not found or password was invalid.");
       }
 
       var user = await _userManager
@@ -111,6 +188,7 @@ namespace WorkoutApp.Controllers
         .ConfigureAwait(false);
       
       user!.LastSignedInOn = DateTimeOffset.Now;
+      user!.LockoutEnd = null;
 
       await _dbContext.SaveChangesAsync(cancellationToken)
         .ConfigureAwait(false);
@@ -137,7 +215,7 @@ namespace WorkoutApp.Controllers
       return Ok(userDto);
     }
 
-    [Microsoft.AspNetCore.Authorization.Authorize]
+    [Authorize]
     [HttpDelete]
     public async Task<IActionResult> SignOutAsync()
     {

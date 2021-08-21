@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EditWorkoutComponent } from './edit-workout.component';
+import { EmailConfirmationComponent } from './email-confirmation.component';
 
-describe('EditWorkoutComponent', () => {
-  let component: EditWorkoutComponent;
-  let fixture: ComponentFixture<EditWorkoutComponent>;
+describe('EmailConfirmationComponent', () => {
+  let component: EmailConfirmationComponent;
+  let fixture: ComponentFixture<EmailConfirmationComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EditWorkoutComponent ]
+      declarations: [ EmailConfirmationComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EditWorkoutComponent);
+    fixture = TestBed.createComponent(EmailConfirmationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

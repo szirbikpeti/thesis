@@ -1,4 +1,5 @@
-<div *ngIf="friends !== undefined">
+<mat-spinner *ngIf="!friends"></mat-spinner>
+<div *ngIf="friends">
   <h1 *ngIf="friends.followerUsers.length === 0 && friends.followedUsers.length === 0">
     {{'FRIEND.NO_FRIENDS' | translate}}
   </h1>

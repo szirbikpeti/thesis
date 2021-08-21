@@ -4,7 +4,6 @@ import { HomeComponent } from "./pages/home/home.component";
 import { DashboardComponent } from "./pages/dashboard/dashboard.component";
 import {NavMenuComponent} from "./pages/nav-menu/nav-menu.component";
 import {NewWorkoutComponent} from "./pages/new-workout/new-workout.component";
-import {EditWorkoutComponent} from "./pages/edit-workout/edit-workout.component";
 import {ProfileComponent} from "./pages/profile/profile.component";
 import {SignOffGuard} from "./guards/sign-off.guard";
 import {AuthGuard} from "./guards/auth.guard";
@@ -12,12 +11,22 @@ import {FriendSearchComponent} from "./pages/friend-search/friend-search.compone
 import {FriendsComponent} from "./pages/friends/friends.component";
 import {WorkoutComponent} from "./pages/workout/workout.component";
 import {StatisticsComponent} from "./pages/statistics/statistics.component";
+import {EmailConfirmationComponent} from "./pages/email-confirmation/email-confirmation.component";
 
 const routes: Routes = [
   {
     path: '',
     redirectTo: '/home',
     pathMatch: 'full'
+  },
+  {
+    path: 'home',
+    component: HomeComponent,
+    canActivate: [SignOffGuard]
+  },
+  {
+    path: 'email-confirmation',
+    component: EmailConfirmationComponent,
   },
   {
     path: '',
@@ -61,11 +70,6 @@ const routes: Routes = [
         component: StatisticsComponent
       },
     ]
-  },
-  {
-    path: 'home',
-    component: HomeComponent,
-    canActivate: [SignOffGuard]
   },
   {
     path : '**',
