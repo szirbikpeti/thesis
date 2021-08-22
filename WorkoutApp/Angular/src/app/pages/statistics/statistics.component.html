@@ -4,10 +4,17 @@
 
 <div *ngIf="workouts">
   <mat-form-field>
-    <mat-select [(value)]="selectedWorkoutType" (valueChange)="getFirstAreaChartData($event)">
+    <mat-select [(value)]="selectedWorkoutType" (valueChange)="getSumVolumenInOneWorkoutAreaChartData($event)">
       <mat-option *ngFor="let type of workoutTypes" [value]="type">{{'WORKOUT.TYPES.' + type | uppercase | translate}}</mat-option>
     </mat-select>
   </mat-form-field>
-  <div id="area-chart" style="width: auto; margin-bottom: 30px;"></div>
-  <div id="pie-chart" style="width: auto; margin-bottom: 30px;"></div>
+  <div id="workout-type-area-chart" class="chart"></div>
+
+  <mat-form-field>
+    <mat-select [(value)]="selectedExercise" (valueChange)="getSumVolumenInOneExerciseAreaChartData($event)">
+      <mat-option *ngFor="let name of exerciseNames" [value]="name">{{name | titlecase}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <div id="exercise-area-chart" class="chart"></div>
+  <div id="distribution-pie-chart" class="chart"></div>
 </div>

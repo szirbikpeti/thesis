@@ -175,6 +175,7 @@
   },
   "STATISTICS": {
     "SUM_VOLUMEN_IN_ONE_WORKOUT": "Sum volumen in one workout",
+    "SUM_VOLUMEN_IN_ONE_EXERCISE": "Sum volumen in one exercise",
     "QUANTITY": "Quantity",
     "DISTRIBUTION_BY_WORKOUT_TYPES": "Distribution by workout types"
   }
