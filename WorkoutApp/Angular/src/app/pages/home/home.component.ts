@@ -1,10 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {TranslateService} from "@ngx-translate/core";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {StateService} from "../../services/state.service";
 import {SignUpComponent} from "../sign-up/sign-up.component";
 import {MatDialog} from "@angular/material/dialog";
-import {Toast, ToastrService} from "ngx-toastr";
+import {ToastrService} from "ngx-toastr";
 import {Router} from "@angular/router";
 import {AuthService} from "../../services/auth.service";
 import {LoginRequest} from "../../requests/LoginRequest";
@@ -15,22 +15,26 @@ import {HttpErrorResponse} from "@angular/common/http";
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent implements OnInit{
+export class HomeComponent {
   loginForm: FormGroup;
+  forgotPasswordForm: FormGroup;
+
+  isLoginFormActive: boolean = true;
 
   constructor(private fb: FormBuilder, private _auth: AuthService, private dialog: MatDialog,
               private _state: StateService, private _toast: ToastrService, private router: Router,
               public _translate: TranslateService) {
-  }
-
-  ngOnInit(): void {
     this.loginForm = this.fb.group({
       userName: ['', Validators.required],
       password: ['', Validators.required],
     });
+
+    this.forgotPasswordForm = this.fb.group({
+      userName: ['', Validators.required],
+    });
   }
 
-  submitLoginForm() {
+  submitLoginForm(): void {
     if (this.loginForm.invalid) {
       return;
     }
@@ -87,7 +91,23 @@ export class HomeComponent implements OnInit{
       });
   }
 
-  openSignUpModal() {
+  submitForgotPasswordForm(): void {
+    if (this.forgotPasswordForm.invalid) {
+      return;
+    }
+
+    this._auth.forgotPassword(this.forgotPasswordForm.value)
+      .subscribe(() => {
+        this.isLoginFormActive = true;
+
+        this._toast.success(
+          this._translate.instant('USER.RESET_PASSWORD_EMAIL'),
+          this._translate.instant('GENERAL.INFO')
+        );
+      });
+  }
+
+  openSignUpModal(): void {
     this.dialog.open(SignUpComponent, {
       width: '425px',
       height: '510px',

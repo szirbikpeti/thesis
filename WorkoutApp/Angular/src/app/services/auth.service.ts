@@ -8,6 +8,8 @@ import {UserModel} from "../models/UserModel";
 import {SignUpRequest} from "../requests/SignUpRequest";
 import {LoginRequest} from "../requests/LoginRequest";
 import {EmailConfirmationRequest} from "../requests/EmailConfirmationRequest";
+import {ForgotPasswordRequest} from "../requests/ForgotPasswordRequest";
+import {ResetPasswordRequest} from "../requests/ResetPasswordRequest";
 
 @Injectable({
   providedIn: 'root'
@@ -21,12 +23,20 @@ export class AuthService {
     return this._http.request(Resource.SIGNUP, Method.POST, request);
   }
 
-  resendEmail(userName: string) {
+  resendEmail(userName: string): Observable<any> {
     return this._http.request(Resource.RESEND_EMAIL, Method.GET, null, userName);
   }
 
-  confirmEmail(request: EmailConfirmationRequest) {
+  confirmEmail(request: EmailConfirmationRequest): Observable<any> {
     return this._http.request(Resource.EMAIL_CONFIRMATION, Method.POST, request);
+  }
+
+  forgotPassword(request: ForgotPasswordRequest): Observable<any> {
+    return this._http.request(Resource.FORGOT_PASSWORD, Method.POST, request);
+  }
+
+  resetPassword(request: ResetPasswordRequest): Observable<any> {
+    return this._http.request(Resource.RESET_PASSWORD, Method.POST, request);
   }
 
   signIn(request: LoginRequest): Observable<UserModel> {

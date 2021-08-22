@@ -12,6 +12,7 @@ import {FriendsComponent} from "./pages/friends/friends.component";
 import {WorkoutComponent} from "./pages/workout/workout.component";
 import {StatisticsComponent} from "./pages/statistics/statistics.component";
 import {EmailConfirmationComponent} from "./pages/email-confirmation/email-confirmation.component";
+import {PasswordResetComponent} from "./pages/password-reset/password-reset.component";
 
 const routes: Routes = [
   {
@@ -27,6 +28,10 @@ const routes: Routes = [
   {
     path: 'email-confirmation',
     component: EmailConfirmationComponent,
+  },
+  {
+    path: 'password-reset',
+    component: PasswordResetComponent,
   },
   {
     path: '',

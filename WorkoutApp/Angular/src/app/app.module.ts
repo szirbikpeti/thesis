@@ -37,6 +37,7 @@ import {FeedbackBottomSheetComponent} from "./pages/nav-menu/feedback-bottom-she
 import {LikeModalComponent} from "./pages/dashboard/post-card/like-modal/like-modal.component";
 import {EmailConfirmationComponent} from "./pages/email-confirmation/email-confirmation.component";
 import {HttpErrorInterceptor} from "./error.interceptor";
+import {PasswordResetComponent} from "./pages/password-reset/password-reset.component";
 
 @NgModule({
   declarations: [
@@ -60,6 +61,7 @@ import {HttpErrorInterceptor} from "./error.interceptor";
     ConfirmationDialogComponent,
     FeedbackBottomSheetComponent,
     EmailConfirmationComponent,
+    PasswordResetComponent,
     DateFormatterPipe,
     IsVideoPipe,
     TruncatePipe,

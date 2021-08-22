@@ -73,6 +73,15 @@ mat-form-field.ng-dirty.ng-invalid {
   font-size: 30px;
 }
 
+.forgot-password {
+  position: absolute;
+  bottom: -12px;
+  right: 5px;
+  color: grey;
+  font-size: 12px;
+  text-decoration: underline grey;
+}
+
 .control-pair-container {
   display: inline-flex;
   overflow: hidden;
@@ -171,5 +180,14 @@ mat-form-field.ng-dirty.ng-invalid {
   .feature-item {
     font-size: 13px;
     width: 50%;
+  }
+
+  hr {
+    position: relative;
+    margin-top: 24px;
+  }
+
+  .forgot-password {
+    bottom: -20px;
   }
 }

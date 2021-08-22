@@ -3,27 +3,27 @@
 
   <div class="control-pair-container">
     <div class="pair-left">
-      <img src="../../../assets/biceps.png" class="biceps-image">
+      <img src="assets/biceps.png" class="biceps-image">
       <div class="feature-item">{{'HOME.ADD_WORKOUTS' | translate}}</div>
     </div>
     <div class="pair-right">
-      <img src="../../../assets/biceps.png" class="biceps-image">
+      <img src="assets/biceps.png" class="biceps-image">
       <div class="feature-item">{{'HOME.POST_WORKOUTS' | translate}}</div>
     </div>
   </div>
   <div class="control-pair-container">
     <div class="pair-left">
-      <img src="../../../assets/biceps.png" class="biceps-image">
+      <img src="assets/biceps.png" class="biceps-image">
       <div class="feature-item">{{'HOME.MAKE_FRIENDS' | translate}}</div>
     </div>
     <div class="pair-right">
-      <img src="../../../assets/biceps.png" class="biceps-image">
+      <img src="assets/biceps.png" class="biceps-image">
       <div class="feature-item">{{'HOME.MAKE_STATISTICS' | translate}}</div>
     </div>
   </div>
   <div class="control-pair-container">
     <div class="pair-left">
-      <img src="../../../assets/biceps.png" class="biceps-image">
+      <img src="assets/biceps.png" class="biceps-image">
       <div class="feature-item">{{'HOME.MULTILINGUALISM' | translate}}</div>
     </div>
     <div class="pair-right">
@@ -42,26 +42,48 @@
 </div>
 
 <mat-card>
-  <h2>{{'USER.LOGIN' | translate}}</h2>
-  <form [formGroup]="loginForm" (ngSubmit)="submitLoginForm()">
-    <div class="control-container">
-      <mat-form-field appearance="standard">
-        <div class="center-input-field">
-          <input matInput placeholder="{{'USER.USERNAME' | translate}}" formControlName="userName">
-        </div>
-      </mat-form-field>
-    </div>
-    <div class="control-container">
-      <mat-form-field appearance="standard">
-        <div class="center-input-field">
-          <input matInput type="password" placeholder="{{'USER.PASSWORD' | translate}}" formControlName="password">
-        </div>
-      </mat-form-field>
-    </div>
+  <h2 *ngIf="isLoginFormActive">{{'USER.LOGIN' | translate}}</h2>
+  <h2 *ngIf="!isLoginFormActive">{{'USER.FORGOT_PASSWORD' | translate}}</h2>
+  <div class="relative-element">
+    <form *ngIf="isLoginFormActive" [formGroup]="loginForm" (ngSubmit)="submitLoginForm()">
+      <div class="control-container">
+        <mat-form-field appearance="standard">
+          <div class="center-input-field">
+            <input matInput placeholder="{{'USER.USERNAME' | translate}}" formControlName="userName">
+          </div>
+        </mat-form-field>
+      </div>
+      <div class="control-container">
+        <mat-form-field appearance="standard">
+          <div class="center-input-field">
+            <input matInput type="password" placeholder="{{'USER.PASSWORD' | translate}}" formControlName="password">
+          </div>
+        </mat-form-field>
+      </div>
 
-    <button type="submit" mat-button >{{'USER.LOGIN' | translate}}</button>
-    <hr>
-    <button type="button" mat-raised-button class="signup-button" (click)="openSignUpModal()">{{'USER.REGISTRATION' | translate}}</button>
-  </form>
+      <button type="submit" mat-button >{{'USER.LOGIN' | translate}}</button>
+    </form>
+
+    <form *ngIf="!isLoginFormActive" [formGroup]="forgotPasswordForm" (ngSubmit)="submitForgotPasswordForm()">
+      <div class="control-container">
+        <mat-form-field appearance="standard">
+          <div class="center-input-field">
+            <input matInput placeholder="{{'USER.USERNAME' | translate}}" formControlName="userName">
+          </div>
+        </mat-form-field>
+      </div>
+      <button type="submit" mat-button >{{'USER.FORGOT_PASSWORD' | translate}}</button>
+    </form>
+    <div class="forgot-password clickable" (click)="isLoginFormActive = !isLoginFormActive">
+      <span *ngIf="isLoginFormActive">
+        {{'USER.FORGOT_PASSWORD' | translate}}?
+      </span>
+      <span *ngIf="!isLoginFormActive">
+        {{'USER.LOGIN' | translate}}
+      </span>
+    </div>
+  </div>
+  <hr>
+  <button type="button" mat-raised-button class="signup-button" (click)="openSignUpModal()">{{'USER.REGISTRATION' | translate}}</button>
 </mat-card>
 <div style="color: #cfcfd6">-</div>

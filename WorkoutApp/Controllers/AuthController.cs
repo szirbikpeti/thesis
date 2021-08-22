@@ -103,28 +103,30 @@ namespace WorkoutApp.Controllers
     }
 
     [HttpGet("resend-email/{userName}")]
-    public async Task<IActionResult> ResendEmail(
+    public async Task<IActionResult> ResendConfirmationEmailAsync(
       [FromRoute] [Required] string userName)
     {
       var mappedUser = await _userManager.FindByNameAsync(userName)
         .ConfigureAwait(false);
 
-      var emailToken = await _userManager.GenerateEmailConfirmationTokenAsync(mappedUser)
+      var emailConfirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(mappedUser)
         .ConfigureAwait(false);
-      emailToken = System.Web.HttpUtility.UrlEncode(emailToken);
-      var confirmationLink = $"{Request.Scheme}://{Request.Host.Value}/email-confirmation?userId={mappedUser.Id}&token={emailToken}";
+      emailConfirmationToken = System.Web.HttpUtility.UrlEncode(emailConfirmationToken);
+      
+      var confirmationLink = $"{Request.Scheme}://{Request.Host.Value}/email-confirmation?userId={mappedUser.Id}&token={emailConfirmationToken}";
 
       _emailSender.SendEmail(
         mappedUser.Email, "Confirm your email",
         $"<h3>Hi, {mappedUser.UserName} again!</h3> <br> Please confirm your account by <a href={confirmationLink}>clicking here</a>.");
 
-      return Ok();
+      return NoContent();
     }
 
     [HttpPost("email-confirmation")]
-    public async Task<IActionResult> ConfirmEmail(EmailConfirmationDto email)
+    public async Task<IActionResult> ConfirmEmailAsync(EmailConfirmationDto email)
     {
-      var user = await _userManager.FindByIdAsync(email.UserId);
+      var user = await _userManager.FindByIdAsync(email.UserId)
+        .ConfigureAwait(false);
 
       if (user is null) {
         return NotFound("User was not found.");
@@ -134,13 +136,59 @@ namespace WorkoutApp.Controllers
         return BadRequest("Email is already confirmed.");
       }
 
-      var result = await _userManager.ConfirmEmailAsync(user, email.Token);
+      var result = await _userManager.ConfirmEmailAsync(user, email.Token)
+        .ConfigureAwait(false);
 
       if (!result.Succeeded) {
         return Problem("Email cannot be confirmed.");
       }
 
-      return Ok();
+      return NoContent();
+    }
+
+    [HttpPost("forgot-password")]
+    public async Task<IActionResult> ForgotPasswordAsync(
+      [FromBody] [Required] ForgotPasswordDto dto)
+    {
+      var user = await _userManager.FindByNameAsync(dto.UserName)
+        .ConfigureAwait(false);
+
+      if (user is null) {
+        return NotFound("User does not found");
+      }
+
+      var passwordResetToken = await _userManager.GeneratePasswordResetTokenAsync(user)
+        .ConfigureAwait(false);
+      passwordResetToken = System.Web.HttpUtility.UrlEncode(passwordResetToken);
+      
+      var passwordResetLink = $"{Request.Scheme}://{Request.Host.Value}/password-reset?userId={user.Id}&token={passwordResetToken}";
+
+      _emailSender.SendEmail(
+        user.Email, "Reset your password",
+        $"<h3>Hi, {user.UserName}!</h3> <br> You can reset your password by <a href={passwordResetLink}>clicking here</a>.");
+
+      return NoContent();
+    }
+
+    [HttpPost("reset-password")]
+    public async Task<IActionResult> ResetPasswordAsync(
+      [FromBody] [Required] ResetPasswordDto dto)
+    {
+      var user = await _userManager.FindByIdAsync(dto.UserId)
+        .ConfigureAwait(false);
+
+      if (user is null) {
+        return NotFound("User does not found");
+      }
+
+      var result = await _userManager.ResetPasswordAsync(user, dto.Token, dto.NewPassword)
+        .ConfigureAwait(false);
+
+      if (!result.Succeeded) {
+        return Problem("Password cannot be reset.");
+      }
+
+      return NoContent();
     }
 
     [HttpPost("signin")]
