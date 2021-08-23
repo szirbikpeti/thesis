@@ -1,6 +1,6 @@
 <div class="header-container">
   <div class="title">Dashboard</div>
-  <div style="display: inline-block;">
+  <div *ngIf="!_auth.isAdmin()" style="display: inline-block;">
     <button mat-raised-button class="add-raised-button" (click)="openPostCreatorModal()">{{'POST.ADD_TITLE' | translate}}</button>
     <button mat-icon-button class="add-icon-button" matTooltip="{{'POST.ADD_TITLE' | translate}}" (click)="openPostCreatorModal()">
       <img src="./assets/create-post.svg">
@@ -9,15 +9,15 @@
 </div>
 
 <mat-tab-group color="warn">
-  <mat-tab *ngIf="_auth.hasPermission('user.management')" label="{{'POST.ALL_POSTS' | translate}}">
+  <mat-tab *ngIf="_auth.isAdmin()" label="{{'POST.ALL_POSTS' | translate}}">
     <mat-spinner *ngIf="!posts"></mat-spinner>
     <app-post-card *ngIf="posts" [tabIndex]="0" [filteredPosts]="posts"></app-post-card>
   </mat-tab>
-  <mat-tab *ngIf="!_auth.hasPermission('user.management')" label="{{'POST.FRIENDS_POSTS' | translate}}">
+  <mat-tab *ngIf="!_auth.isAdmin()" label="{{'POST.FRIENDS_POSTS' | translate}}">
     <mat-spinner *ngIf="!posts"></mat-spinner>
     <app-post-card *ngIf="posts" [tabIndex]="0" [filteredPosts]="getFriendsPosts()"></app-post-card>
   </mat-tab>
-  <mat-tab *ngIf="!_auth.hasPermission('user.management')" label="{{'POST.MY_POSTS' | translate}}">
+  <mat-tab *ngIf="!_auth.isAdmin()" label="{{'POST.MY_POSTS' | translate}}">
     <mat-spinner *ngIf="!posts"></mat-spinner>
     <app-post-card *ngIf="posts" [tabIndex]="1" [filteredPosts]="getMyPosts()"></app-post-card>
   </mat-tab>

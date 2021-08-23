@@ -80,6 +80,8 @@
     "SUCCESSFUL_UPDATE":  "Successful update",
     "UNSUCCESSFUL_UPDATE": "Unsuccessful update",
     "SUCCESSFUL_DELETE":  "Successful delete",
+    "SUCCESSFUL_BLOCK":  "Successful block",
+    "SUCCESSFUL_RESTORE":  "Successful restore",
     "EMAIL_CONFIRMATION": {
       "WRONG_URL": "Wrong URL",
       "THANKFUL_MESSAGE": "Successful email confirmation, thank you for your registration",
@@ -177,6 +179,7 @@
     "SUCCESSFUL_ADDITION": "Successful feedback addition"
   },
   "STATISTICS": {
+    "NO_STATISTICS": "No enough workout data to make statistics",
     "SUM_VOLUMEN_IN_ONE_WORKOUT": "Sum volumen in one workout",
     "SUM_VOLUMEN_IN_ONE_EXERCISE": "Sum volumen in one exercise",
     "QUANTITY": "Quantity",

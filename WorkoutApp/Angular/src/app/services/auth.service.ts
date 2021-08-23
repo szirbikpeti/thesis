@@ -50,4 +50,9 @@ export class AuthService {
   hasPermission(permission: string): boolean {
     return this._state.user.value.permissions.includes(permission);
   }
+
+  isAdmin(): boolean {
+    return this.hasPermission('user.management')
+      && this.hasPermission('feedback.management');
+  }
 }

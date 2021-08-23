@@ -13,6 +13,9 @@ import {WorkoutComponent} from "./pages/workout/workout.component";
 import {StatisticsComponent} from "./pages/statistics/statistics.component";
 import {EmailConfirmationComponent} from "./pages/email-confirmation/email-confirmation.component";
 import {PasswordResetComponent} from "./pages/password-reset/password-reset.component";
+import {FeedbacksComponent} from "./pages/feedbacks/feedbacks.component";
+import {AdminGuard} from "./guards/admin.guard";
+import {UsersComponent} from "./pages/users/users.component";
 
 const routes: Routes = [
   {
@@ -73,6 +76,16 @@ const routes: Routes = [
       {
         path: 'statistics',
         component: StatisticsComponent
+      },
+      {
+        path: 'users',
+        component: UsersComponent,
+        canActivate: [AdminGuard]
+      },
+      {
+        path: 'feedbacks',
+        component: FeedbacksComponent,
+        canActivate: [AdminGuard]
       },
     ]
   },

@@ -17,4 +17,7 @@ export enum Resource {
   NOTIFICATION = "notification/",
   POST = "post/",
   FEEDBACK = "feedback/",
+  ADMIN = "admin/",
+  ADMIN_USERS = "admin/users/",
+  ADMIN_FEEDBACKS = "admin/feedbacks/",
 }

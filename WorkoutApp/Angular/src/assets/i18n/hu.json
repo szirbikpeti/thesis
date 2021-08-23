@@ -79,6 +79,8 @@
     "SUCCESSFUL_UPDATE": "Sikeres módosítás",
     "UNSUCCESSFUL_UPDATE": "Sikertelen módosítás",
     "SUCCESSFUL_DELETE":  "Sikeres törlés",
+    "SUCCESSFUL_BLOCK":  "Sikeres blokkolás",
+    "SUCCESSFUL_RESTORE":  "Sikeres helyreállítás",
     "EMAIL_CONFIRMATION": {
       "WRONG_URL": "Érvénytelen útvonal",
       "THANKFUL_MESSAGE": "Sikeres email-cím megerősítés, köszönjünk a regisztrációt!",
@@ -176,6 +178,7 @@
     "SUCCESSFUL_ADDITION": "Sikeres visszajelzés"
   },
   "STATISTICS": {
+    "NO_STATISTICS": "Nincs elég adat a statisztika készítéshez",
     "SUM_VOLUMEN_IN_ONE_WORKOUT": "Egy edzésen elvégzett összes edzésmunka",
     "SUM_VOLUMEN_IN_ONE_EXERCISE": "Egy gyakorlatból elvégzett összes edzésmunka",
     "QUANTITY": "Darabszám",

@@ -38,6 +38,8 @@ import {LikeModalComponent} from "./pages/dashboard/post-card/like-modal/like-mo
 import {EmailConfirmationComponent} from "./pages/email-confirmation/email-confirmation.component";
 import {HttpErrorInterceptor} from "./error.interceptor";
 import {PasswordResetComponent} from "./pages/password-reset/password-reset.component";
+import {FeedbacksComponent} from "./pages/feedbacks/feedbacks.component";
+import {UsersComponent} from "./pages/users/users.component";
 
 @NgModule({
   declarations: [
@@ -62,6 +64,8 @@ import {PasswordResetComponent} from "./pages/password-reset/password-reset.comp
     FeedbackBottomSheetComponent,
     EmailConfirmationComponent,
     PasswordResetComponent,
+    UsersComponent,
+    FeedbacksComponent,
     DateFormatterPipe,
     IsVideoPipe,
     TruncatePipe,

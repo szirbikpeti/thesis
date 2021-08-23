@@ -41,30 +41,30 @@
         <span [translate]="'NAV.NEW_WORKOUT'"></span>
       </a>
       <mat-divider *ngIf="_auth.hasPermission('workout.add')"></mat-divider>
-      <a *ngIf="!_auth.hasPermission('user.management')" routerLinkActive="active"
+      <a *ngIf="!_auth.isAdmin()" routerLinkActive="active"
          (click)="toggleDrawerWhenHandset()" routerLink="/friend-search" mat-list-item href="#">
         <div class="menu-icon-container">
           <img src="./assets/person-search.svg" class="menu-icon">
         </div>
         <span [translate]="'NAV.FRIEND_SEARCH'"></span>
       </a>
-      <mat-divider *ngIf="!_auth.hasPermission('user.management')"></mat-divider>
-      <a *ngIf="!_auth.hasPermission('user.management')" routerLinkActive="active"
+      <mat-divider *ngIf="!_auth.isAdmin()"></mat-divider>
+      <a *ngIf="!_auth.isAdmin()" routerLinkActive="active"
          (click)="toggleDrawerWhenHandset()" routerLink="/friends" mat-list-item href="#">
         <div class="menu-icon-container">
           <img src="./assets/person.svg" class="menu-icon">
         </div>
         <span [translate]="'NAV.FRIENDS'"></span>
       </a>
-      <mat-divider *ngIf="!_auth.hasPermission('user.management')"></mat-divider>
-      <a *ngIf="!_auth.hasPermission('user.management')" routerLinkActive="active"
+      <mat-divider *ngIf="!_auth.isAdmin()"></mat-divider>
+      <a *ngIf="!_auth.isAdmin()" routerLinkActive="active"
          (click)="toggleDrawerWhenHandset()" routerLink="/statistics" mat-list-item href="#">
         <div class="menu-icon-container">
           <img src="./assets/statistics.svg" class="menu-icon">
         </div>
         <span [translate]="'NAV.STATISTICS'"></span>
       </a>
-      <mat-divider *ngIf="!_auth.hasPermission('user.management')"></mat-divider>
+      <mat-divider *ngIf="!_auth.isAdmin()"></mat-divider>
       <a *ngIf="_auth.hasPermission('user.management')" routerLinkActive="active"
          (click)="toggleDrawerWhenHandset()" routerLink="/users" mat-list-item href="#">
         <div class="menu-icon-container">
@@ -110,8 +110,8 @@
         </mat-form-field>
       </div>
 
-      <app-notification-menu *ngIf="followNotifications && !_auth.hasPermission('user.management')" [notifications]="followNotifications" [category]="NotificationCategory.FOLLOW"></app-notification-menu>
-      <app-notification-menu *ngIf="generalNotifications && !_auth.hasPermission('user.management')" [notifications]="generalNotifications" [category]="NotificationCategory.GENERAL"></app-notification-menu>
+      <app-notification-menu *ngIf="followNotifications && !_auth.isAdmin()" [notifications]="followNotifications" [category]="NotificationCategory.FOLLOW"></app-notification-menu>
+      <app-notification-menu *ngIf="generalNotifications && !_auth.isAdmin()" [notifications]="generalNotifications" [category]="NotificationCategory.GENERAL"></app-notification-menu>
 
       <div class="username-container">
         <div class="clickable username"

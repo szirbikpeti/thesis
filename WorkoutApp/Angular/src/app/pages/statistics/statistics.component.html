@@ -2,7 +2,9 @@
 
 <mat-spinner *ngIf="!workouts"></mat-spinner>
 
-<div *ngIf="workouts">
+<div *ngIf="workouts && workouts.length < 5" class="no-stat">{{'STATISTICS.NO_STATISTICS' | translate}}</div>
+
+<div *ngIf="workouts && workouts.length >= 5">
   <mat-form-field>
     <mat-select [(value)]="selectedWorkoutType" (valueChange)="getSumVolumenInOneWorkoutAreaChartData($event)">
       <mat-option *ngFor="let type of workoutTypes" [value]="type">{{'WORKOUT.TYPES.' + type | uppercase | translate}}</mat-option>
@@ -10,11 +12,14 @@
   </mat-form-field>
   <div id="workout-type-area-chart" class="chart"></div>
 
-  <mat-form-field>
-    <mat-select [(value)]="selectedExercise" (valueChange)="getSumVolumenInOneExerciseAreaChartData($event)">
-      <mat-option *ngFor="let name of exerciseNames" [value]="name">{{name | titlecase}}</mat-option>
-    </mat-select>
-  </mat-form-field>
-  <div id="exercise-area-chart" class="chart"></div>
+  <div *ngIf="exerciseNames.length > 0">
+    <mat-form-field>
+      <mat-select [(value)]="selectedExercise" (valueChange)="getSumVolumenInOneExerciseAreaChartData($event)">
+        <mat-option *ngFor="let name of exerciseNames" [value]="name">{{name | titlecase}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div id="exercise-area-chart" class="chart"></div>
+  </div>
+
   <div id="distribution-pie-chart" class="chart"></div>
 </div>

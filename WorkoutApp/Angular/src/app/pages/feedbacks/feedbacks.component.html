@@ -1,0 +1,8 @@
+<div class="title">{{'NAV.FEEDBACKS' | translate}}</div>
+
+<mat-spinner *ngIf="!feedbacks"></mat-spinner>
+<div *ngIf="feedbacks" class="text-center">
+  <mat-card *ngFor="let feedback of feedbacks">
+    {{feedback.feedback}}
+  </mat-card>
+</div>

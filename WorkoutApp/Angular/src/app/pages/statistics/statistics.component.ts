@@ -13,7 +13,6 @@ import {ExerciseModel} from "../../models/ExerciseModel";
   styleUrls: ['./statistics.component.scss']
 })
 export class StatisticsComponent {
-
   workoutTypeAreaChart: Highcharts.Chart;
   exerciseAreaChart: Highcharts.Chart;
   pieChart: Highcharts.Chart;
@@ -43,6 +42,10 @@ export class StatisticsComponent {
   }
 
   private getAllData(isFirstCall = false): void {
+    if (this.workouts.length < 5) {
+      return;
+    }
+
     const workoutType = this.getWorkoutTypeData();
     const exerciseName = this.getExerciseNames();
 
@@ -86,7 +89,7 @@ export class StatisticsComponent {
       });
     });
 
-    return this.exerciseNames[0];
+    return this.exerciseNames[0] ?? null;
   }
 
   private setUpSumVolumenInOneWorkoutAreaChart(): void {
@@ -156,6 +159,10 @@ export class StatisticsComponent {
   }
 
   private setUpSumVolumenInOneExerciseAreaChart(): void {
+    if (!this.selectedExercise) {
+      return;
+    }
+
     const that = this;
     const data = this.getSumVolumenInOneExerciseAreaChartData(this.selectedExercise);
 
