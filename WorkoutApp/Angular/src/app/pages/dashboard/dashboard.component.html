@@ -9,11 +9,15 @@
 </div>
 
 <mat-tab-group color="warn">
-  <mat-tab label="{{'POST.FRIENDS_POSTS' | translate}}">
+  <mat-tab *ngIf="_auth.hasPermission('user.management')" label="{{'POST.ALL_POSTS' | translate}}">
+    <mat-spinner *ngIf="!posts"></mat-spinner>
+    <app-post-card *ngIf="posts" [tabIndex]="0" [filteredPosts]="posts"></app-post-card>
+  </mat-tab>
+  <mat-tab *ngIf="!_auth.hasPermission('user.management')" label="{{'POST.FRIENDS_POSTS' | translate}}">
     <mat-spinner *ngIf="!posts"></mat-spinner>
     <app-post-card *ngIf="posts" [tabIndex]="0" [filteredPosts]="getFriendsPosts()"></app-post-card>
   </mat-tab>
-  <mat-tab label="{{'POST.MY_POSTS' | translate}}">
+  <mat-tab *ngIf="!_auth.hasPermission('user.management')" label="{{'POST.MY_POSTS' | translate}}">
     <mat-spinner *ngIf="!posts"></mat-spinner>
     <app-post-card *ngIf="posts" [tabIndex]="1" [filteredPosts]="getMyPosts()"></app-post-card>
   </mat-tab>

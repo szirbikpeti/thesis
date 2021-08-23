@@ -37,7 +37,9 @@
     "FRIENDS": "Friends",
     "STATISTICS": "Statistics",
     "FOLLOWS": "Follows",
-    "NOTIFICATIONS": "Notifications"
+    "NOTIFICATIONS": "Notifications",
+    "USERS": "Users",
+    "FEEDBACKS": "Feedbacks"
   },
   "PAGE": {
     "PROFILE": "Profile"
@@ -153,6 +155,7 @@
     "EXISTS": "Already exists",
     "NO_POST": "No post to show",
     "NO_UNPOSTED_WORKOUT": "No workout to post",
+    "ALL_POSTS": "All posts",
     "FRIENDS_POSTS": "Friends posts",
     "MY_POSTS": "My posts",
     "POST": "Post",

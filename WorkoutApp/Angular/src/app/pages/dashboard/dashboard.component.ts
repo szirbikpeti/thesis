@@ -5,6 +5,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {NewPostComponent} from "./new-post/new-post.component";
 import {UserModel} from "../../models/UserModel";
 import {StateService} from "../../services/state.service";
+import {AuthService} from "../../services/auth.service";
 
 @Component({
   selector: 'app-dashboard',
@@ -17,7 +18,8 @@ export class DashboardComponent {
 
   posts: PostModel[];
 
-  constructor(private _post: PostService, private _state: StateService, private dialog: MatDialog) {
+  constructor(private _post: PostService, private _state: StateService,
+              private dialog: MatDialog, public _auth: AuthService) {
     this.currentUser = _state.user.value;
 
     _post.list().subscribe(posts => this.posts = posts);

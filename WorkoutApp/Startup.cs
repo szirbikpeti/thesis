@@ -109,17 +109,28 @@ namespace WorkoutApp
         options.AddPolicy(Policies.ManageUsers, 
           _ => _.RequireClaim(Claims.Type, Claims.UserManagementPermission));
         
-        options.AddPolicy(Policies.ListPosts, 
-          _ => _.RequireClaim(Claims.Type, Claims.PostListPermission));
-        
+        options.AddPolicy(Policies.ManageFeedbacks, 
+          _ => _.RequireClaim(Claims.Type, Claims.FeedbackManagementPermission));
+
         options.AddPolicy(Policies.ManageWorkouts, 
-          _ => _.RequireClaim(Claims.Type, Claims.WorkoutManagementPermission));
+          _ => _.RequireClaim(Claims.Type,
+            Claims.WorkoutListPermission,
+            Claims.WorkoutAddPermission,
+            Claims.WorkoutUpdatePermission,
+            Claims.WorkoutDeletePermission));
         
         options.AddPolicy(Policies.ManagePosts, 
-          _ => _.RequireClaim(Claims.Type, Claims.PostManagementPermission));
+          _ => _.RequireClaim(Claims.Type, 
+            Claims.PostListPermission,
+            Claims.PostAddPermission,
+            Claims.PostUpdatePermission,
+            Claims.PostDeletePermission));
 
-        options.AddPolicy(Policies.AddCommentsToPost,
-          _ => _.RequireClaim(Claims.Type, Claims.CommentAddPermission));
+        options.AddPolicy(Policies.ManageComments,
+          _ => _.RequireClaim(Claims.Type, 
+            Claims.CommentAddPermission,
+            Claims.CommentUpdatePermission,
+            Claims.CommentDeletePermission));
           
         options.AddPolicy(Policies.SendMessages, 
           _ => _.RequireClaim(Claims.Type, Claims.MessageSendPermission));
@@ -129,6 +140,7 @@ namespace WorkoutApp
       services.AddCors();
       services.AddHttpContextAccessor();
       services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+      
       services.AddScoped<IAdminRepository, AdminRepository>();
       services.AddScoped<IUserRepository, UserRepository>();
       services.AddScoped<IFileRepository, FileRepository>();

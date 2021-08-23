@@ -24,37 +24,15 @@ namespace WorkoutApp.Controllers
     private readonly IMapper _mapper;
     private readonly UserManager<UserEntity> _userManager;
     private readonly IFeedbackRepository _feedback;
-    private readonly IFileRepository _file;
 
     public FeedbackController(
       IMapper mapper,
       UserManager<UserEntity> userManager,
-      IFeedbackRepository feedback,
-      IFileRepository file)
+      IFeedbackRepository feedback)
     {
       _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
       _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
       _feedback = feedback ?? throw new ArgumentNullException(nameof(feedback));
-      _file = file ?? throw new ArgumentNullException(nameof(file));
-    }
-    
-    [HttpGet]
-    [Authorize(Claims.UserManagementPermission)]
-    public async Task<ActionResult<ICollection<GetFeedbackDto>>> ListAsync(CancellationToken cancellationToken)
-    {
-      var feedbacks = await _feedback
-        .DoListAsync(cancellationToken)
-        .ConfigureAwait(false);
-      
-      foreach (var feedback in feedbacks) {
-        feedback.User.ProfilePicture = await _file
-          .DoGetAsync(feedback.User.ProfilePictureId, cancellationToken)
-          .ConfigureAwait(false);
-      }
-      
-      var feedbackListDto = feedbacks.Select(_ => _mapper.Map<GetFeedbackDto>(_));
-
-      return Ok(feedbackListDto);
     }
     
     [HttpPost]

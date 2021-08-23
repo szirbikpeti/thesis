@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -37,8 +38,8 @@ namespace WorkoutApp.Controllers
       return Ok(fileDto);
     }
 
-    [Microsoft.AspNetCore.Authorization.Authorize]
     [HttpPatch]
+    [Authorize]
     public async Task<ActionResult<GetFileDto>> UpdateAsync(IFormFile file, CancellationToken cancellationToken)
     {
       var currentUser = await _userManager.GetUserAsync(HttpContext.User)

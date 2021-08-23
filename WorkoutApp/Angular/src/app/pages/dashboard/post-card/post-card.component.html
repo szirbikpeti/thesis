@@ -1,6 +1,6 @@
 <h2 *ngIf="posts.length === 0">{{'POST.NO_POST' | translate}}</h2>
 <mat-card *ngFor="let post of posts; index as index">
-  <button *ngIf="tabIndex === 1" mat-icon-button class="more-button" [matMenuTriggerFor]="moreMenu">
+  <button *ngIf="tabIndex === 1 || _auth.hasPermission('user.management')" mat-icon-button class="more-button" [matMenuTriggerFor]="moreMenu">
     <mat-icon>more_vert</mat-icon>
   </button>
   <mat-menu #moreMenu="matMenu" xPosition="before">

@@ -44,7 +44,7 @@ namespace WorkoutApp.Repositories
         .ConfigureAwait(false);
 
       var newlyFetchedUser = await _userManager.FindByIdWithAdditionalDataAsync(
-          currentUser.Id, includesFollowsData: false, cancellationToken: cancellationToken)
+          currentUser.Id, includesFollowsData: false, includesProfilePicture: true, cancellationToken: cancellationToken)
         .ConfigureAwait(false);
 
       return newlyFetchedUser;

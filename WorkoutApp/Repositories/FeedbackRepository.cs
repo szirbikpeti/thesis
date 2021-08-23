@@ -23,6 +23,8 @@ namespace WorkoutApp.Repositories
     public async Task<ICollection<FeedbackEntity>> DoListAsync(CancellationToken cancellationToken)
     {
       return await _dbContext.Feedbacks
+        .Include(_ => _.User)
+        .ThenInclude(_ => _.ProfilePicture)
         .OrderByDescending(_ => _.CreatedOn)
         .ToListAsync(cancellationToken)
         .ConfigureAwait(false);

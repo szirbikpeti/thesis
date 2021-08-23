@@ -10,6 +10,8 @@ namespace WorkoutApp.Abstractions
   {
     Task<ICollection<UserEntity>> ListAsync(CancellationToken cancellationToken);
     
-    Task<GetUserDto> BlockUserAsync(CancellationToken cancellationToken);
+    Task<bool> DoBlockUserAsync(UserEntity user, CancellationToken cancellationToken);
+    
+    Task<bool> DoRestoreUserAsync(UserEntity user, CancellationToken cancellationToken);
   }
 }

@@ -6,6 +6,8 @@ export interface UserModel {
   userName: string,
   email: string,
   about: string,
+  isBlocked: boolean
+  roles: string[],
   permissions: string[],
   profilePicture: FileModel,
   birthday?: Date,

@@ -9,7 +9,6 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using WorkoutApp.Abstractions;
 using WorkoutApp.Dto;
 using WorkoutApp.Entities;
@@ -17,47 +16,53 @@ using WorkoutApp.Extensions;
 
 namespace WorkoutApp.Controllers
 {
-  [Authorize(Policies.ManagePosts)]
+  [Authorize]
   [ApiController]
   [Route("api/post")]
   public class PostController : ControllerBase
   {
     
     private readonly IMapper _mapper;
+    private readonly IAuthorizationService _authorizationService;
     private readonly UserManager<UserEntity> _userManager;
     private readonly IPostRepository _post;
     private readonly INotificationRepository _notification;
-    private readonly IFileRepository _file;
 
     public PostController(
       IMapper mapper,
+      IAuthorizationService authorizationService,
       UserManager<UserEntity> userManager,
       IPostRepository post,
-      INotificationRepository notification,
-      IFileRepository file)
+      INotificationRepository notification)
     {
       _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+      _authorizationService = authorizationService ?? throw new ArgumentNullException(nameof(authorizationService));
       _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
       _post = post ?? throw new ArgumentNullException(nameof(post));
       _notification = notification ?? throw new ArgumentNullException(nameof(notification));
-      _file = file ?? throw new ArgumentNullException(nameof(file));
     }
 
     [HttpGet]
+    [Authorize(Policies.ManagePosts)]
     public async Task<ActionResult<ICollection<GetPostDto>>> ListAsync(
       CancellationToken cancellationToken)
     {
       var currentUserId = _userManager.GetUserIdAsInt(HttpContext.User);
-      
-      var fetchedPosts = await _post.DoListAsync(currentUserId, cancellationToken)
+
+      var isAdministrator = await _authorizationService
+        .AuthorizeAsync(HttpContext.User, Policies.ManageUsers)
         .ConfigureAwait(false);
 
-      var postDtoList = fetchedPosts.Select(post => CreatePostDto(post, cancellationToken).Result);
+      var fetchedPosts = await _post.DoListAsync(currentUserId, isAdministrator.Succeeded, cancellationToken)
+        .ConfigureAwait(false);
+
+      var postDtoList = fetchedPosts.Select(CreatePostDto);
 
       return Ok(postDtoList);
     }
     
     [HttpGet("{id}")]
+    [Authorize(Policies.ManagePosts)]
     public async Task<ActionResult<GetPostDto>> GetAsync(
       [FromRoute] [Required]int id,
       CancellationToken cancellationToken)
@@ -69,10 +74,11 @@ namespace WorkoutApp.Controllers
         return BadRequest($"There is no post with this id ({id})");
       }
 
-      return Ok(CreatePostDto(fetchedPost, cancellationToken).Result);
+      return Ok(CreatePostDto(fetchedPost));
     }
 
     [HttpPost]
+    [Authorize(Policies.ManagePosts)]
     public async Task<IActionResult> AddAsync(
       [FromBody] [Required] PostAdditionDto newPostDto,
       CancellationToken cancellationToken)
@@ -94,6 +100,7 @@ namespace WorkoutApp.Controllers
     }
 
     [HttpPost("{postId}/comment")]
+    [Authorize(Policies.ManageComments)]
     public async Task<IActionResult> AddCommentAsync(
       [FromRoute] [Required] int postId,
       [FromBody] [Required] CommentAdditionDto newCommentDto,
@@ -112,7 +119,7 @@ namespace WorkoutApp.Controllers
       var updatedPost = await _post.DoAddCommentAsync(postId, mappedComment, cancellationToken)
         .ConfigureAwait(false);
       
-      return Ok(CreatePostDto(updatedPost!, cancellationToken).Result);
+      return Ok(CreatePostDto(updatedPost!));
     }
 
     [HttpPost("like")]
@@ -143,10 +150,11 @@ namespace WorkoutApp.Controllers
       await _notification.DoBroadcastFollowNotifications(updatedPost!.UserId)
         .ConfigureAwait(false);
 
-      return Ok(CreatePostDto(updatedPost!, cancellationToken).Result);
+      return Ok(CreatePostDto(updatedPost!));
     }
 
     [HttpPut("{commentId}")]
+    [Authorize(Policies.ManageComments)]
     public async Task<IActionResult> UpdateCommentAsync(
       [FromRoute] [Required] int commentId,
       [FromBody] [Required] CommentModificationDto updatedCommentDto,
@@ -159,7 +167,7 @@ namespace WorkoutApp.Controllers
         return NotFound();
       }
 
-      return Ok(CreatePostDto(post, cancellationToken).Result);
+      return Ok(CreatePostDto(post));
     }
 
     [HttpDelete("{postId}")]
@@ -167,12 +175,24 @@ namespace WorkoutApp.Controllers
       [FromRoute] [Required] int postId,
       CancellationToken cancellationToken)
     {
-      var currentUserId = _userManager.GetUserIdAsInt(HttpContext.User);
+      var isPostManager = await _authorizationService
+        .AuthorizeAsync(HttpContext.User, Policies.ManagePosts)
+        .ConfigureAwait(false);
       
+      var isAdministrator = await _authorizationService
+        .AuthorizeAsync(HttpContext.User, Policies.ManageUsers)
+        .ConfigureAwait(false);
+
+      if (!(isPostManager.Succeeded || isAdministrator.Succeeded)) {
+        return Unauthorized("Required policy is missing");
+      }
+      
+      var currentUserId = _userManager.GetUserIdAsInt(HttpContext.User);
+
       var post = await _post.DoGetAsync(postId, cancellationToken)
         .ConfigureAwait(false);
 
-      if (post!.UserId != currentUserId) {
+      if (post!.UserId != currentUserId && !isAdministrator.Succeeded) {
         return Unauthorized("Cannot be delete other's post");
       }
       
@@ -187,6 +207,7 @@ namespace WorkoutApp.Controllers
     }
     
     [HttpDelete("{postId}/comment/{commentId}")]
+    [Authorize(Policies.ManageComments)]
     public async Task<IActionResult> DeleteCommentAsync(
       [FromRoute] [Required] int postId,
       [FromRoute] [Required] int commentId,
@@ -199,7 +220,7 @@ namespace WorkoutApp.Controllers
         return NotFound($"Comment is not found with id: {commentId}");
       }
       
-      return Ok(CreatePostDto(updatedPost!, cancellationToken).Result);
+      return Ok(CreatePostDto(updatedPost!));
     }
 
     [HttpDelete("like")]
@@ -217,22 +238,17 @@ namespace WorkoutApp.Controllers
       var updatedPost = await _post.DoDeleteLikeAsync(likeEntity, cancellationToken)
         .ConfigureAwait(false);
 
-      return Ok(CreatePostDto(updatedPost!, cancellationToken).Result);
+      return Ok(CreatePostDto(updatedPost!));
     }
 
-    private async Task<GetPostDto> CreatePostDto(PostEntity post, CancellationToken cancellationToken)
+    private GetPostDto CreatePostDto(PostEntity post)
     {
       var postDto = _mapper.Map<GetPostDto>(post);
 
       postDto.Files = post.FileRelationEntities
         .Select(relation => _mapper.Map<GetFileDto>(relation.File))
         .ToImmutableList();
-      
-      foreach (var likingUser in post.LikingUsers) {
-        likingUser.User.ProfilePicture = await _file.DoGetAsync(likingUser.User.ProfilePictureId, cancellationToken)
-          .ConfigureAwait(false);
-      }
-      
+
       postDto.LikingUsers = post.LikingUsers
         .Select(relation => _mapper.Map<GetUserDto>(relation.User))
         .ToImmutableList();

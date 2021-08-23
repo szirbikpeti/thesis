@@ -25,20 +25,17 @@ namespace WorkoutApp.Controllers
     private readonly IMapper _mapper;
     private readonly UserManager<UserEntity> _userManager;
     private readonly IUserRepository _user;
-    private readonly IFileRepository _file;
     private readonly INotificationRepository _notification;
 
     public UserController(
       IMapper mapper,
       UserManager<UserEntity> userManager,
       IUserRepository user,
-      IFileRepository file,
       INotificationRepository notification)
     {
       _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
       _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
       _user = user ?? throw new ArgumentNullException(nameof(user));
-      _file = file ?? throw new ArgumentNullException(nameof(file));
       _notification = notification ?? throw new ArgumentNullException(nameof(notification));
     }
 
@@ -52,11 +49,6 @@ namespace WorkoutApp.Controllers
       var foundedUsers = await _userManager
         .ListByUserAndFullNameAsync(currentUserId, name, cancellationToken)
         .ConfigureAwait(false);
-      
-      foreach (var foundedUser in foundedUsers) {
-        foundedUser!.ProfilePicture = await _file.DoGetAsync(foundedUser.ProfilePictureId, cancellationToken)
-          .ConfigureAwait(false);
-      }
 
       var userDtoList = foundedUsers
         .Select(user => _mapper.Map<GetUserDto>(user));
@@ -82,16 +74,6 @@ namespace WorkoutApp.Controllers
 
       followerUsers = followerUsers.Except(followedUsers, userEqualityComparer).ToImmutableList();
       
-      foreach (var friend in followerUsers) {
-        friend!.ProfilePicture = await _file.DoGetAsync(friend.ProfilePictureId, cancellationToken)
-          .ConfigureAwait(false);
-      }
-
-      foreach (var friend in followedUsers) {
-        friend!.ProfilePicture = await _file.DoGetAsync(friend.ProfilePictureId, cancellationToken)
-          .ConfigureAwait(false);
-      }
-
       var followerListDto = followerUsers
         .Select(user => _mapper.Map<GetUserDto>(user)).ToImmutableList();
 
@@ -146,9 +128,6 @@ namespace WorkoutApp.Controllers
       }
 
       var updatedUser = await _user.DoUpdateAsync(currentUser, updateUserDto, cancellationToken)
-        .ConfigureAwait(false);
-
-      updatedUser!.ProfilePicture = await _file.DoGetAsync(updatedUser.ProfilePictureId, cancellationToken)
         .ConfigureAwait(false);
 
       var userDto = CreateUserDto(updatedUser!);

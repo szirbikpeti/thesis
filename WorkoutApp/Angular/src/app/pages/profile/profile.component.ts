@@ -21,8 +21,6 @@ export class ProfileComponent implements OnInit {
 
   @ViewChild('fileInput') fileInput: ElementRef;
 
-  wrong_old_pw: string = '';  // TODO
-
   userForm: FormGroup;
 
   currentUser: UserModel;

@@ -37,7 +37,9 @@
     "FRIENDS": "Barátok",
     "STATISTICS": "Statisztika",
     "FOLLOWS": "Követések",
-    "NOTIFICATIONS": "Értesítések"
+    "NOTIFICATIONS": "Értesítések",
+    "USERS": "Felhasználók",
+    "FEEDBACKS": "Visszajelzések"
   },
   "PAGE": {
     "PROFILE": "Profil adatok"
@@ -152,6 +154,7 @@
     "EXISTS": "Már létezik",
     "NO_POST": "Nincs megjelenítendő poszt",
     "NO_UNPOSTED_WORKOUT": "Nincs rögzített edzés, ami posztolható",
+    "ALL_POSTS": "Össszes poszt",
     "FRIENDS_POSTS": "Barátok posztjai",
     "MY_POSTS": "Saját posztjai",
     "POST": "Posztolás",

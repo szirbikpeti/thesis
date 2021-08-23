@@ -37,6 +37,7 @@ namespace WorkoutApp.Repositories
       return await _dbContext.Notifications
         .Where(_ => _.ReceivedUserId == id)
         .Include(_ => _.SentByUser)
+        .ThenInclude(_ => _.ProfilePicture)
         .Include(_ => _.ReceivedUser)
         .OrderByDescending(_ => _.TriggeredOn)
         .ToListAsync(cancellationToken)

@@ -20,6 +20,7 @@ namespace WorkoutApp.Extensions
       int id,
       bool includesRoles = true,
       bool includesFollowsData = true,
+      bool includesProfilePicture = false,
       CancellationToken cancellationToken = default)
     {
       var fetchedUser = userManager.Users
@@ -41,6 +42,11 @@ namespace WorkoutApp.Extensions
           .Include(_ => _.FollowedUsers);
       }
 
+      if (includesProfilePicture) {
+        fetchedUser = fetchedUser
+          .Include(_ => _.ProfilePicture);
+      }
+
       return await fetchedUser
         .FirstOrDefaultAsync(cancellationToken)
         .ConfigureAwait(false);
@@ -55,6 +61,7 @@ namespace WorkoutApp.Extensions
       
       return await userManager.Users
         .AsSplitQuery()
+        .Include(_ => _.ProfilePicture)
         .Include(_ => _.Roles)
         .ThenInclude(_ => _.Role)
         .ThenInclude(_ => _.Claims)
@@ -80,6 +87,7 @@ namespace WorkoutApp.Extensions
            || _.NormalizedUserName.Contains(normalizedName)) 
           && _.Id != currentUserId 
           && _.DeletedOn == null)
+        .Include(_ => _.ProfilePicture)
         .ToListAsync(cancellationToken)
         .ConfigureAwait(false);
     }
@@ -94,6 +102,7 @@ namespace WorkoutApp.Extensions
         .Where(_ =>_.Id == currentUserId 
                    && _.DeletedOn == null)
         .Include(_ => _.FollowerUsers)
+        .ThenInclude(_ => _.FollowerUser.ProfilePicture)
         .SelectMany(_ => _.FollowerUsers)
         .Select(_ => _.FollowerUser)
         .ToListAsync(cancellationToken)
@@ -110,6 +119,7 @@ namespace WorkoutApp.Extensions
         .Where(_ =>_.Id == currentUserId 
           && _.DeletedOn == null)
         .Include(_ => _.FollowedUsers)
+        .ThenInclude(_ => _.FollowedUser.ProfilePicture)
         .SelectMany(_ => _.FollowedUsers)
         .Select(_ => _.FollowedUser)
         .ToListAsync(cancellationToken)

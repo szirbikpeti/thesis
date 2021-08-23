@@ -10,7 +10,9 @@ namespace WorkoutApp.Data
         {
             CreateMap<UserAdditionDto, UserEntity>();
             CreateMap<UpdateUserDto, UserEntity>();
-            CreateMap<UserEntity, GetUserDto>();
+            CreateMap<UserEntity, GetUserDto>()
+                .ForMember(_ => _.IsBlocked,
+                    config => config.MapFrom(source => source.LockoutEnd != null));
             CreateMap<WorkoutAdditionDto, WorkoutEntity>();
             CreateMap<WorkoutModificationDto, WorkoutEntity>();
             CreateMap<WorkoutEntity, GetWorkoutDto>();
@@ -25,7 +27,8 @@ namespace WorkoutApp.Data
             CreateMap<NotificationEntity, GetNotificationDto>();
             CreateMap<PostAdditionDto, PostEntity>();
             CreateMap<PostEntity, GetPostDto>()
-                .ForMember(_ => _.LikingUsers, option => option.Ignore());
+                .ForMember(_ => _.LikingUsers,
+                    config => config.Ignore());
             CreateMap<CommentAdditionDto, CommentEntity>();
             CreateMap<CommentModificationDto, CommentEntity>();
             CreateMap<CommentEntity, GetCommentDto>();

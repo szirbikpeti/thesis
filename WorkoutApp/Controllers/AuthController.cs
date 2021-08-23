@@ -25,7 +25,6 @@ namespace WorkoutApp.Controllers
   public class AuthController : ControllerBase
   {
     private readonly IMapper _mapper;
-    private readonly IFileRepository _file;
     private readonly UserManager<UserEntity> _userManager;
     private readonly SignInManager<UserEntity> _signInManager;
     private readonly WorkoutDbContext _dbContext;
@@ -35,7 +34,6 @@ namespace WorkoutApp.Controllers
 
     public AuthController(
       IMapper mapper,
-      IFileRepository file,
       UserManager<UserEntity> userManager,
       SignInManager<UserEntity> signInManager,
       WorkoutDbContext dbContext,
@@ -44,7 +42,6 @@ namespace WorkoutApp.Controllers
       ILogger<AuthController> logger)
     {
       _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-      _file = file ?? throw new ArgumentNullException(nameof(file));
       _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
       _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
       _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
@@ -81,18 +78,20 @@ namespace WorkoutApp.Controllers
         .ConfigureAwait(false);
 
       await _userManager.AddToRolesAsync(mappedUser, new List<string> {
-        Roles.User,
+        Roles.WorkoutManager,
+        Roles.PostManager,
+        Roles.CommentManager,
+        Roles.MessageSender,
       });
 
       var emailToken = await _userManager.GenerateEmailConfirmationTokenAsync(mappedUser)
         .ConfigureAwait(false);
       emailToken = System.Web.HttpUtility.UrlEncode(emailToken);
       var confirmationLink = $"{Request.Scheme}://{Request.Host.Value}/email-confirmation?userId={mappedUser.Id}&token={emailToken}";
-
+      
       _emailSender.SendEmail(
         mappedUser.Email, "Confirm your email", 
         $"<h3>Hi, {mappedUser.UserName}!</h3> <br> Please confirm your account by <a href={confirmationLink}>clicking here</a>.");
-      
 
       await _dbContext.SaveChangesAsync(cancellationToken)
         .ConfigureAwait(false);
@@ -212,8 +211,10 @@ namespace WorkoutApp.Controllers
         var notSignedInUser = await _userManager.FindByNameAsync(accessUser.UserName)
           .ConfigureAwait(false);
 
-        await _userManager.AccessFailedAsync(notSignedInUser)
-          .ConfigureAwait(false);
+        if (notSignedInUser.LockoutEnabled) {
+          await _userManager.AccessFailedAsync(notSignedInUser)
+            .ConfigureAwait(false);
+        }
 
         if (!notSignedInUser.EmailConfirmed) {
           _logger.Log(LogLevel.Information, "Email is not confirmed.");
@@ -243,9 +244,6 @@ namespace WorkoutApp.Controllers
 
       HttpContext.User = await _signInManager.CreateUserPrincipalAsync(user)
         .ConfigureAwait(false);
-      
-      user!.ProfilePicture = await _file.DoGetAsync(user.ProfilePictureId, cancellationToken)
-        .ConfigureAwait(false);
 
       var userDto = _mapper.Map<GetUserDto>(user);
 
@@ -263,8 +261,8 @@ namespace WorkoutApp.Controllers
       return Ok(userDto);
     }
 
-    [Authorize]
     [HttpDelete]
+    [Authorize]
     public async Task<IActionResult> SignOutAsync()
     {
       _logger.Log(LogLevel.Information, "Starting sign out");

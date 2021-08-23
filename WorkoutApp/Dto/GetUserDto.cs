@@ -10,6 +10,8 @@ namespace WorkoutApp.Dto
 
         public string About { get; set; } = null!;
 
+        public bool IsBlocked { get; set; }
+
         public GetFileDto ProfilePicture { get; set; } = null!;
         
         public DateTimeOffset LastSignedInOn { get; set; }

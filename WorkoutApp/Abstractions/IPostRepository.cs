@@ -8,7 +8,7 @@ namespace WorkoutApp.Abstractions
 {
   public interface IPostRepository
   {
-    Task<ICollection<PostEntity>> DoListAsync(int currentUserId, CancellationToken cancellationToken);
+    Task<ICollection<PostEntity>> DoListAsync(int currentUserId, bool isAdministrator, CancellationToken cancellationToken);
     
     Task<PostEntity?> DoGetAsync(int postId, CancellationToken cancellationToken);
     

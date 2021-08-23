@@ -11,6 +11,7 @@ import {CommentModel} from "../../../models/CommentModel";
 import {ConfirmationDialogComponent} from "../../confirmation-dialog/confirmation-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
 import {LikeModalComponent} from "./like-modal/like-modal.component";
+import {AuthService} from "../../../services/auth.service";
 
 @Component({
   selector: 'app-post-card',
@@ -32,7 +33,7 @@ export class PostCardComponent implements OnInit {
   commentAdditionData = new Map<string, boolean>();
 
   constructor(public sanitizer: DomSanitizer, public _state: StateService,
-              private _post: PostService, private dialog: MatDialog) {
+              public _auth: AuthService, private _post: PostService, private dialog: MatDialog) {
     this.currentUser = _state.user.value;
   }
 

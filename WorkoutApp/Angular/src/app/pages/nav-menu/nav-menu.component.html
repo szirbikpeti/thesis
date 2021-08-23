@@ -17,56 +17,70 @@
              (click)="editProfile()">
           {{currentUser.userName}}</div>
       </div>
-      <a (click)="toggleDrawerWhenHandset()" routerLink="/dashboard" mat-list-item
+      <a *ngIf="_auth.hasPermission('post.list')" (click)="toggleDrawerWhenHandset()" routerLink="/dashboard" mat-list-item
          href="#" routerLinkActive="active">
         <div class="menu-icon-container">
           <img src="./assets/dashboard.svg" class="menu-icon">
         </div>
         <span [translate]="'NAV.DASHBOARD'"></span>
       </a>
-      <mat-divider *ngIf="_auth.hasPermission('workout.management')"></mat-divider>
-      <a (click)="toggleDrawerWhenHandset()" routerLink="/my-workouts" mat-list-item
+      <mat-divider *ngIf="_auth.hasPermission('post.list')"></mat-divider>
+      <a *ngIf="_auth.hasPermission('workout.list')" (click)="toggleDrawerWhenHandset()" routerLink="/my-workouts" mat-list-item
          href="#" routerLinkActive="active">
         <div class="menu-icon-container">
           <img src="./assets/dumbell.png" class="menu-icon">
         </div>
         <span [translate]="'NAV.MY_WORKOUTS'"></span>
       </a>
-      <mat-divider *ngIf="_auth.hasPermission('workout.management')"></mat-divider>
-      <a *ngIf="_auth.hasPermission('workout.management')" (click)="toggleDrawerWhenHandset()" routerLink="/new-workout"
+      <mat-divider *ngIf="_auth.hasPermission('workout.list')"></mat-divider>
+      <a *ngIf="_auth.hasPermission('workout.add')" (click)="toggleDrawerWhenHandset()" routerLink="/new-workout"
          mat-list-item href="#" routerLinkActive="active">
         <div class="menu-icon-container">
           <img src="./assets/new-workout.svg" class="menu-icon">
         </div>
         <span [translate]="'NAV.NEW_WORKOUT'"></span>
       </a>
-<!--      <mat-divider *ngIf="_auth.hasPermission('options.management')"></mat-divider>-->
-      <mat-divider></mat-divider>
-<!--      <a *ngIf="_auth.hasPermission('options.management')" routerLinkActive="active"-->
-      <a routerLinkActive="active"
+      <mat-divider *ngIf="_auth.hasPermission('workout.add')"></mat-divider>
+      <a *ngIf="!_auth.hasPermission('user.management')" routerLinkActive="active"
          (click)="toggleDrawerWhenHandset()" routerLink="/friend-search" mat-list-item href="#">
         <div class="menu-icon-container">
           <img src="./assets/person-search.svg" class="menu-icon">
         </div>
         <span [translate]="'NAV.FRIEND_SEARCH'"></span>
       </a>
-      <mat-divider></mat-divider>
-      <a routerLinkActive="active"
+      <mat-divider *ngIf="!_auth.hasPermission('user.management')"></mat-divider>
+      <a *ngIf="!_auth.hasPermission('user.management')" routerLinkActive="active"
          (click)="toggleDrawerWhenHandset()" routerLink="/friends" mat-list-item href="#">
         <div class="menu-icon-container">
           <img src="./assets/person.svg" class="menu-icon">
         </div>
         <span [translate]="'NAV.FRIENDS'"></span>
       </a>
-      <mat-divider></mat-divider>
-      <a routerLinkActive="active"
+      <mat-divider *ngIf="!_auth.hasPermission('user.management')"></mat-divider>
+      <a *ngIf="!_auth.hasPermission('user.management')" routerLinkActive="active"
          (click)="toggleDrawerWhenHandset()" routerLink="/statistics" mat-list-item href="#">
         <div class="menu-icon-container">
           <img src="./assets/statistics.svg" class="menu-icon">
         </div>
         <span [translate]="'NAV.STATISTICS'"></span>
       </a>
-      <mat-divider class="last-divider"></mat-divider>
+      <mat-divider *ngIf="!_auth.hasPermission('user.management')"></mat-divider>
+      <a *ngIf="_auth.hasPermission('user.management')" routerLinkActive="active"
+         (click)="toggleDrawerWhenHandset()" routerLink="/users" mat-list-item href="#">
+        <div class="menu-icon-container">
+          <img src="./assets/people_black.svg" class="menu-icon">
+        </div>
+        <span [translate]="'NAV.USERS'"></span>
+      </a>
+      <mat-divider *ngIf="_auth.hasPermission('user.management')"></mat-divider>
+      <a *ngIf="_auth.hasPermission('feedback.management')" routerLinkActive="active"
+         (click)="toggleDrawerWhenHandset()" routerLink="/feedbacks" mat-list-item href="#">
+        <div class="menu-icon-container">
+          <img src="./assets/feedback.svg" class="menu-icon">
+        </div>
+        <span [translate]="'NAV.FEEDBACKS'"></span>
+      </a>
+      <mat-divider *ngIf="_auth.hasPermission('feedback.management')"></mat-divider>
     </mat-nav-list>
 
     <div class="feedback clickable" (click)="openFeedbackBottomSheet()">{{'FEEDBACK.FEEDBACK' | translate}}</div>
@@ -96,8 +110,8 @@
         </mat-form-field>
       </div>
 
-      <app-notification-menu *ngIf="followNotifications" [notifications]="followNotifications" [category]="NotificationCategory.FOLLOW"></app-notification-menu>
-      <app-notification-menu *ngIf="generalNotifications" [notifications]="generalNotifications" [category]="NotificationCategory.GENERAL"></app-notification-menu>
+      <app-notification-menu *ngIf="followNotifications && !_auth.hasPermission('user.management')" [notifications]="followNotifications" [category]="NotificationCategory.FOLLOW"></app-notification-menu>
+      <app-notification-menu *ngIf="generalNotifications && !_auth.hasPermission('user.management')" [notifications]="generalNotifications" [category]="NotificationCategory.GENERAL"></app-notification-menu>
 
       <div class="username-container">
         <div class="clickable username"

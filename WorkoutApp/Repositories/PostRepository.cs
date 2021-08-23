@@ -27,7 +27,7 @@ namespace WorkoutApp.Repositories
       _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
     }
     
-    public async Task<ICollection<PostEntity>> DoListAsync(int currentUserId, CancellationToken cancellationToken)
+    public async Task<ICollection<PostEntity>> DoListAsync(int currentUserId, bool isAdministrator, CancellationToken cancellationToken)
     {
       var followedUserIds = await _userManager
         .ListFollowedUserIdsAsync(currentUserId, cancellationToken)
@@ -36,7 +36,8 @@ namespace WorkoutApp.Repositories
       return await _dbContext.Posts
         .AsNoTracking()
         .AsSplitQuery()
-        .Where(_ => _.UserId == currentUserId || followedUserIds.Contains(_.UserId))
+        .Where(_ => _.UserId == currentUserId || followedUserIds.Contains(_.UserId) || isAdministrator)
+        .OrderByDescending(_ => _.PostedOn)
         .Include(_ => _.User)
         .ThenInclude(_ => _.ProfilePicture)
         .Include(_ => _.Workout)
@@ -69,6 +70,7 @@ namespace WorkoutApp.Repositories
         .ThenInclude(_ => _.User)
         .Include(_ => _.LikingUsers)
         .ThenInclude(_ => _.User)
+        .ThenInclude(_ => _.ProfilePicture)
         .FirstOrDefaultAsync(cancellationToken)
         .ConfigureAwait(false);
     }
