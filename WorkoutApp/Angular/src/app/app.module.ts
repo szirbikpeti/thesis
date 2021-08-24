@@ -40,6 +40,7 @@ import {HttpErrorInterceptor} from "./error.interceptor";
 import {PasswordResetComponent} from "./pages/password-reset/password-reset.component";
 import {FeedbacksComponent} from "./pages/feedbacks/feedbacks.component";
 import {UsersComponent} from "./pages/users/users.component";
+import {CacheInterceptor} from "./cache.interceptor";
 
 @NgModule({
   declarations: [
@@ -92,6 +93,7 @@ import {UsersComponent} from "./pages/users/users.component";
   providers: [
     {provide: MAT_DATE_LOCALE, useValue: 'hu-HU'},
     {provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: CacheInterceptor, multi: true},
     DatePipe,
     DateFormatterPipe
   ],
