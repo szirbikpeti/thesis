@@ -107,6 +107,8 @@
     "SET_REPS": "Reps",
     "SET_WEIGHT": "Weight",
     "ATTACHMENTS": "Attachments",
+    "TOO_BIG_FILE": "Maximum file size is 256MB",
+    "WAITING_FOR_BIG_FILE_UPLOAD": "It takes a few minutes due to big file upload",
     "ADD": "Add workout",
     "MODIFY": "Modify workout",
     "DELETE": "Delete workout",

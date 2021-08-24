@@ -96,7 +96,6 @@
         </div>
       </div>
       <div>
-        <mat-error>{{wrong_old_pw}}</mat-error>
         <mat-error *ngIf="userForm.invalid">{{'GENERAL.INVALID_FORM' | translate}}</mat-error>
         <button type="button" (click)="deleteUser()" class="delete-button" mat-button>
           {{'GENERAL.DELETE' | translate}}

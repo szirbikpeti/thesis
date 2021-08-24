@@ -28,10 +28,15 @@ namespace WorkoutApp.Controllers
     }
 
     [HttpPost]
+    [RequestSizeLimit(256000000)]
     public async Task<ActionResult<GetFileDto>> AddAsync(IFormFile file, CancellationToken cancellationToken)
     {
       var fileEntity = await _file.DoAddAsync(file, cancellationToken)
         .ConfigureAwait(false);
+
+      if (fileEntity is null) {
+        return BadRequest("Maximum file size is 256MB");
+      }
 
       var fileDto = _mapper.Map<GetFileDto>(fileEntity);
 

@@ -106,6 +106,8 @@
     "SET_REPS": "Ismétlés szám",
     "SET_WEIGHT": "Súly",
     "ATTACHMENTS": "Csatolmányok",
+    "TOO_BIG_FILE": "A maximum fájl méret 256MB",
+    "WAITING_FOR_BIG_FILE_UPLOAD": "Nagy fájl feltöltése miatt ez néhány percet is igénybe vehet",
     "ADD": "Edzés hozzáadása",
     "MODIFY": "Edzés módosítása",
     "DELETE": "Edzés törlése",

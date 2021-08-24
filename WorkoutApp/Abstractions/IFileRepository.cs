@@ -9,7 +9,7 @@ namespace WorkoutApp.Abstractions
   {
     Task<FileEntity> DoGetAsync(int fileId, CancellationToken cancellationToken);
     
-    Task<FileEntity> DoAddAsync(IFormFile file, CancellationToken cancellationToken);
+    Task<FileEntity?> DoAddAsync(IFormFile file, CancellationToken cancellationToken);
     
     Task<FileEntity> DoUpdateAsync(int fileId, IFormFile file, CancellationToken cancellationToken);
   }

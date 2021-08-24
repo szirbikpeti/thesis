@@ -28,7 +28,7 @@ namespace WorkoutApp.Repositories
         .ConfigureAwait(false);
     }
 
-    public async Task<FileEntity> DoAddAsync(IFormFile file, CancellationToken cancellationToken)
+    public async Task<FileEntity?> DoAddAsync(IFormFile file, CancellationToken cancellationToken)
     {
       var fileData = new byte[file.Length];
 
@@ -44,6 +44,12 @@ namespace WorkoutApp.Repositories
         UploadedOn = DateTimeOffset.Now
       };
       
+      var fileSizeInMegaByte = fileEntity.Size * 0.001 * 0.001;
+
+      if (fileSizeInMegaByte > 256) {
+        return null;
+      }
+
       await _dbContext.Files
         .AddAsync(fileEntity, cancellationToken)
         .ConfigureAwait(false);

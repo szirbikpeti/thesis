@@ -174,8 +174,9 @@
 
     <div class="submit-button-container">
       <mat-error *ngIf="workoutForm.invalid">{{'GENERAL.INVALID_FORM' | translate}}</mat-error>
-      <button mat-button type="submit" class="submit-button">
-        {{'WORKOUT.' + (feature === WorkoutFeature.ADD ? 'ADD' : 'MODIFY') | translate}}
+      <button mat-button type="submit" class="submit-button" [disabled]="isSubmittingForm">
+        <span *ngIf="!isSubmittingForm">{{'WORKOUT.' + (feature === WorkoutFeature.ADD ? 'ADD' : 'MODIFY') | translate}}</span>
+        <mat-spinner *ngIf="isSubmittingForm" style="margin: 4px auto" diameter="28" color="warn" strokeWidth="4"></mat-spinner>
       </button>
     </div>
   </form>

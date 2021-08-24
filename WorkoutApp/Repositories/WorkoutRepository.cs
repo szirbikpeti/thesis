@@ -47,7 +47,8 @@ namespace WorkoutApp.Repositories
         .Include(_ => _.Post)
         .Include(_ => _.Exercises)
         .ThenInclude(_ => _.Sets)
-        .Include(_ => _.FileRelationEntities)
+        .Include(_ => _.FileRelationEntities
+          .Where(__ => __.File.Size * 0.001 * 0.001 < 6))
         .ThenInclude(_ => _.File)
         .OrderByDescending(_ => _.Date)
         .ToListAsync(cancellationToken)

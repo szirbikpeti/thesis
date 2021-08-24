@@ -17,6 +17,7 @@ import {ConfirmationDialogComponent} from "../confirmation-dialog/confirmation-d
 import {MatDialog} from "@angular/material/dialog";
 import {getPicture, isNull} from "../../utility";
 import {DomSanitizer} from "@angular/platform-browser";
+import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-new-workout',
@@ -46,6 +47,8 @@ export class NewWorkoutComponent {
   previousWorkoutType = WorkoutType.GYM;
 
   getPicture = getPicture;
+
+  isSubmittingForm: boolean;
 
   constructor(private fb: FormBuilder, private _workout: WorkoutService, public sanitizer: DomSanitizer,
               private _file: FileService, private _translate: TranslateService, private dialog: MatDialog,
@@ -151,24 +154,29 @@ export class NewWorkoutComponent {
 
     if (this.feature === WorkoutFeature.EDIT) {
       this._workout.update(this.workout.id, workoutRequest).subscribe(() => {
+        this.isSubmittingForm = false;
+
         this._toast.success(
           this._translate.instant('WORKOUT.SUCCESSFUL_MODIFICATION'),
           this._translate.instant( 'GENERAL.INFO'));
 
         this.router.navigate(['/my-workouts']);
       }, () => {
+        this.isSubmittingForm = false;
         this._toast.error(
           this._translate.instant('WORKOUT.UNSUCCESSFUL_MODIFICATION'),
           this._translate.instant( 'GENERAL.ERROR'));
       });
     } else {
       this._workout.create(workoutRequest).subscribe(() => {
+        this.isSubmittingForm = false;
+
         this._toast.success(
           this._translate.instant('WORKOUT.SUCCESSFUL_ADDITION'),
           this._translate.instant( 'GENERAL.INFO'));
-
         this.router.navigate(['/my-workouts']);
       }, () => {
+        this.isSubmittingForm = false;
         this._toast.error(
           this._translate.instant('WORKOUT.UNSUCCESSFUL_ADDITION'),
           this._translate.instant( 'GENERAL.ERROR'));
@@ -219,6 +227,8 @@ export class NewWorkoutComponent {
       return;
     }
 
+    this.isSubmittingForm = true;
+
     const uploadCalls$: Observable<FileModel>[] = [];
 
     const newFiles = this.selectedFiles.filter(file => !isNull(file.file));
@@ -233,16 +243,35 @@ export class NewWorkoutComponent {
     Object.keys(filesToUpload).forEach(key => {
       const currentFile: FileTableModel = filesToUpload[key];
 
+      const fileSizeInMegaBytes = currentFile.file.size * 0.001 * 0.001;
+
+      if (fileSizeInMegaBytes > 25) {
+        this._toast.info(
+          this._translate.instant('WORKOUT.WAITING_FOR_BIG_FILE_UPLOAD'),
+          this._translate.instant('GENERAL.INFO'), {
+            timeOut: 25000
+          }
+        );
+      }
+
       uploadCalls$.push(this._file.upload(currentFile.file));
     });
 
     zip(...uploadCalls$).subscribe((uploadedFiles: FileModel[]) => {
       const fileIds = uploadedFiles.map(file => file.id);
       this.submitWorkoutForm(fileIds);
+    }, (error: HttpErrorResponse) => {
+      this.isSubmittingForm = false;
+      if (error.status === 400) {
+        this._toast.error(
+          this._translate.instant('WORKOUT.TOO_BIG_FILE'),
+          this._translate.instant('GENERAL.ERROR')
+        );
+      }
     });
   }
 
-  formatDurationInput(control: AbstractControl) {
+  formatDurationInput(control: AbstractControl): void {
     if (control.invalid) {
       return;
     }
@@ -305,7 +334,7 @@ export class NewWorkoutComponent {
     this.getSets(exerciseIndex).push(this.createNewSet());
   }
 
-  addAttachment() {
+  addAttachment(): void {
     const e: HTMLElement = this.fileInput.nativeElement;
     e.click();
   }
@@ -336,6 +365,17 @@ export class NewWorkoutComponent {
 
     Object.keys(files).forEach(key => {
       const currentFile: File = files[key];
+
+      const fileSizeInMegaBytes = currentFile.size * 0.001 * 0.001;
+
+      if (fileSizeInMegaBytes > 256) {
+        this._toast.warning(
+          this._translate.instant('WORKOUT.TOO_BIG_FILE'),
+          this._translate.instant('GENERAL.WARNING')
+        );
+
+        return;
+      }
 
       let reader = new FileReader();
       reader.readAsDataURL(currentFile);
