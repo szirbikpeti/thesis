@@ -98,8 +98,10 @@ export class NewWorkoutComponent {
   }
 
   private setUpWorkoutForm(): void {
+    const today = new Date(new Date().setHours(0, 0, 0, 0));
+
     this.workoutForm = this.fb.group({
-      date: [new Date(), Validators.required],
+      date: [today, Validators.required],
       type: [WorkoutType.GYM, Validators.required],
       exercises: this.fb.array([])
     });

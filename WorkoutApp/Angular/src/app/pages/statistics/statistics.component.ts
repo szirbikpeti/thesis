@@ -55,7 +55,7 @@ export class StatisticsComponent {
     }
 
     this.setUpSumVolumenInOneWorkoutAreaChart();
-    this.setUpSumVolumenInOneExerciseAreaChart();
+    setTimeout(() => this.setUpSumVolumenInOneExerciseAreaChart(), 500);
     this.setUpDistributionByWorkoutTypesPieChart();
   }
 
@@ -263,7 +263,6 @@ export class StatisticsComponent {
     const data = [];
 
     this.workouts.forEach(workout => {
-
       workout.exercises.forEach(exercise => {
         let volumen = 0;
         if (exercise.name.toLowerCase() !== exerciseName.toLowerCase()) {
