@@ -148,6 +148,7 @@ namespace WorkoutApp
       services.AddScoped<INotificationRepository, NotificationRepository>();
       services.AddScoped<IPostRepository, PostRepository>();
       services.AddScoped<IFeedbackRepository, FeedbackRepository>();
+      services.AddScoped<IMessageRepository, MessageRepository>();
       services.AddScoped<IEmailSender, EmailSender>();
     }
 
@@ -182,7 +183,8 @@ namespace WorkoutApp
 
       appBuilder.UseEndpoints(endpoints => {
         endpoints.MapControllers();
-        endpoints.MapHub<NotificationHub>("/notify");
+        endpoints.MapHub<HubClient>("/notify");
+        endpoints.MapHub<HubClient>("/notify-message");
       });
 
       appBuilder.UseSpa(spa => {

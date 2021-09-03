@@ -16,6 +16,10 @@ export class UserService {
   constructor(private _http: HttpService) {
   }
 
+  getById(userId: string): Observable<UserModel> {
+    return this._http.request(Resource.USER, Method.GET, null, userId);
+  }
+
   update(userData: UserEditRequest): Observable<UserModel> {
     return this._http.request(Resource.USER, Method.PUT, userData);
   }
@@ -29,7 +33,7 @@ export class UserService {
   }
 
   search(name: string): Observable<UserModel[]> {
-    return this._http.request(Resource.USER, Method.GET, null, name);
+    return this._http.request(Resource.USER_SEARCH, Method.GET, null, name);
   }
 
   followRequest(id: string): Observable<FollowRequestAndFollowModel> {

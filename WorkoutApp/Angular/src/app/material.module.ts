@@ -30,6 +30,7 @@ import {MatRippleModule} from "@angular/material/core";
 import {MatPasswordStrengthModule} from '@angular-material-extensions/password-strength';
 import {MatBottomSheetModule} from "@angular/material/bottom-sheet";
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
+import {MatGridListModule} from '@angular/material/grid-list';
 
 @NgModule({
   declarations: [],
@@ -67,6 +68,7 @@ import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
     MatRippleModule,
     MatPasswordStrengthModule,
     NgbModule,
+    MatGridListModule,
   ],
   exports: [
     MatToolbarModule,
@@ -101,6 +103,7 @@ import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
     MatRippleModule,
     MatPasswordStrengthModule,
     NgbModule,
+    MatGridListModule,
   ]
 })
 

@@ -7,9 +7,9 @@ namespace WorkoutApp.Abstractions
 {
   public interface INotificationRepository
   {
-    Task DoBroadcastFollowNotifications(int receivedUserId);
+    Task DoBroadcastNotifications(int receivedUserId);
     
-    Task DoBroadcastFollowNotifications(IEnumerable<string> userIds);
+    Task DoBroadcastNotifications(IEnumerable<string> userIds);
     
     Task DoAddAsync(NotificationEntity notification, CancellationToken cancellationToken);
     

@@ -1,0 +1,48 @@
+<mat-grid-list cols="4" rowHeight="490px">
+  <mat-grid-tile colspan="1">
+    <mat-spinner *ngIf="!users"></mat-spinner>
+    <div *ngIf="users" class="mat-grid-content user-grid-content">
+      <div *ngFor="let user of users" class="user-container" matRipple (click)="switchUser(user.id)">
+        <img class="profile-picture" [src]="getPicture(user.profilePicture.data)">
+        <span class="side-username" [ngStyle]="{'font-weight': user.id == triggeredUserId ? 'bolder' : 'normal'}">
+          {{user.userName | truncate: 12}}
+        </span>
+        <hr>
+      </div>
+    </div>
+  </mat-grid-tile>
+  <mat-grid-tile colspan="3" class="relative-element">
+    <mat-spinner *ngIf="!messages"></mat-spinner>
+    <div id="messages" class="mat-grid-content" *ngIf="messages">
+      <div *ngIf="messages.length === 0">
+        <span *ngIf="users?.length === 0">
+          Még nem chatelt senkivel
+        </span>
+        <span *ngIf="users?.length > 0">
+          Még nem üzengettetek egymásnak
+        </span>
+      </div>
+      <div *ngFor="let message of messages" class="message-container">
+        <div *ngIf="isCurrentUserMessage(message.senderUser.id)" class="right" align="end">
+          {{message.message}}
+          <img class="profile-picture" [src]="getPicture(message.senderUser.profilePicture.data)">
+        </div>
+        <div *ngIf="!isCurrentUserMessage(message.senderUser.id)" class="left">
+          <img class="profile-picture" [src]="getPicture(message.senderUser.profilePicture.data)">
+          {{message.message}}
+        </div>
+      </div>
+    </div>
+
+    <div class="input-container">
+      <mat-form-field appearance="standard">
+        <div class="center-input-field">
+          <input #message matInput placeholder="Write..." (keyup.enter)="sendMessage(message)">
+          <button mat-icon-button class="send-button" (click)="sendMessage(message)">
+            <img src="assets/send-message.png">
+          </button>
+        </div>
+      </mat-form-field>
+    </div>
+  </mat-grid-tile>
+</mat-grid-list>

@@ -112,6 +112,7 @@
 
       <app-notification-menu *ngIf="followNotifications && !_auth.isAdmin()" [notifications]="followNotifications" [category]="NotificationCategory.FOLLOW"></app-notification-menu>
       <app-notification-menu *ngIf="generalNotifications && !_auth.isAdmin()" [notifications]="generalNotifications" [category]="NotificationCategory.GENERAL"></app-notification-menu>
+      <app-notification-menu *ngIf="generalNotifications && !_auth.isAdmin()" [notifications]="messageNotifications" [category]="NotificationCategory.MESSAGE"></app-notification-menu>
 
       <div class="username-container">
         <div class="clickable username"

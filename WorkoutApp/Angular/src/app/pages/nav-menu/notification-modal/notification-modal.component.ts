@@ -6,6 +6,7 @@ import {TranslateService} from "@ngx-translate/core";
 import {DomSanitizer} from "@angular/platform-browser";
 import {NotificationType} from "../../../enums/notification";
 import {getPicture} from "../../../utility";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-notification-modal',
@@ -24,21 +25,26 @@ export class NotificationModalComponent  {
 
   constructor(@Inject(MAT_DIALOG_DATA) private data: any,
               private dialogRef: MatDialogRef<NotificationModalComponent>,
-              private _translate: TranslateService, public sanitizer: DomSanitizer) {
+              private _translate: TranslateService, private router: Router,
+              public sanitizer: DomSanitizer) {
     this.currentLanguage = data.language;
     this.notification = data.notification;
     this.sentByUser = this.notification.sentByUser;
   }
 
-  accept() {
+  accept(): void {
     this.data.acceptCallback();
   }
 
-  decline() {
+  decline(): void {
     this.data.declineCallback();
   }
 
-  markAsRead() {
+  markAsRead(): void {
     this.data.markAsReadCallback();
+  }
+
+  sendMessage(): void {
+    this.router.navigate(['messages', this.sentByUser.id]);
   }
 }

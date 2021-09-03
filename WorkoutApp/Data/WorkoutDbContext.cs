@@ -26,6 +26,7 @@ namespace WorkoutApp.Data
         public DbSet<PostEntity> Posts { get; set; } = null!;
         public DbSet<CommentEntity> Comments { get; set; } = null!;
         public DbSet<FeedbackEntity> Feedbacks { get; set; } = null!;
+        public DbSet<MessageEntity> Messages { get; set; } = null!;
         
         public DbSet<WorkoutFileRelationEntity> WorkoutFileRelations { get; set; } = null!;
         public DbSet<FollowRequestEntity> FollowRequests { get; set; } = null!;
@@ -57,6 +58,7 @@ namespace WorkoutApp.Data
             modelBuilder.ApplyConfiguration(new PostFileRelationConfiguration());
             modelBuilder.ApplyConfiguration(new NotificationConfiguration());
             modelBuilder.ApplyConfiguration(new LikeConfiguration());
+            modelBuilder.ApplyConfiguration(new MessageConfiguration());
 
             modelBuilder.Entity<UserEntity>()
                 .HasQueryFilter(_ => _.DeletedOn == null);

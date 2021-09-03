@@ -49,6 +49,7 @@ namespace WorkoutApp.Repositories
         .ThenInclude(_ => _.User)
         .Include(_ => _.LikingUsers)
         .ThenInclude(_ => _.User)
+        .ThenInclude(_ => _.ProfilePicture)
         .ToListAsync(cancellationToken)
         .ConfigureAwait(false);
     }

@@ -8,6 +8,7 @@ import {NotificationService} from "../../../services/notification.service";
 import {NotificationCategory, NotificationType} from "../../../enums/notification";
 import {getPicture} from '../../../utility';
 import {DomSanitizer} from "@angular/platform-browser";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-notification-menu',
@@ -24,7 +25,7 @@ export class NotificationMenuComponent {
   NotificationType = NotificationType;
 
   constructor(public sanitizer: DomSanitizer, private dialog: MatDialog, private _state: StateService,
-              private _user: UserService, private _notification: NotificationService) { }
+              private _user: UserService, private _notification: NotificationService, private router: Router) { }
 
   acceptRequest(id: string): void {
     this._user.acceptFollowRequest(id)
@@ -58,6 +59,10 @@ export class NotificationMenuComponent {
         }
       }
     });
+  }
+
+  openMessages(): void {
+    this.router.navigateByUrl('messages');
   }
 
   getNotificationType(type: NotificationType): string {

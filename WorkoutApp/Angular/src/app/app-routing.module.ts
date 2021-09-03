@@ -16,6 +16,7 @@ import {PasswordResetComponent} from "./pages/password-reset/password-reset.comp
 import {FeedbacksComponent} from "./pages/feedbacks/feedbacks.component";
 import {AdminGuard} from "./guards/admin.guard";
 import {UsersComponent} from "./pages/users/users.component";
+import {MessageComponent} from "./pages/message/message.component";
 
 const routes: Routes = [
   {
@@ -76,6 +77,14 @@ const routes: Routes = [
       {
         path: 'statistics',
         component: StatisticsComponent
+      },
+      {
+        path: 'messages',
+        component: MessageComponent
+      },
+      {
+        path: 'messages/:id',
+        component: MessageComponent
       },
       {
         path: 'users',

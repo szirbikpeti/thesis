@@ -10,5 +10,6 @@
     DeclineFollowRequest = 5,
     UnFollow = 6,
     AddLike = 10,
+    AddMessage = 20,
   }
 }

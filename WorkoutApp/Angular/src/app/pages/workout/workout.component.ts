@@ -3,7 +3,6 @@ import {WorkoutModel} from "../../models/WorkoutModel";
 import {WorkoutService} from "../../services/workout.service";
 import {StateService} from "../../services/state.service";
 import {TranslateService} from "@ngx-translate/core";
-import {isNull} from "../../utility";
 import {DateFormatterPipe} from "../../pipes/date-formatter.pipe";
 
 @Component({
@@ -13,8 +12,6 @@ import {DateFormatterPipe} from "../../pipes/date-formatter.pipe";
 })
 export class WorkoutComponent {
   workouts: WorkoutModel[];
-
-  isNull = isNull;
 
   constructor(private _workout: WorkoutService, private _state: StateService,
               private _translate: TranslateService, private customDatePipe: DateFormatterPipe) {

@@ -36,10 +36,11 @@
     "FRIEND_SEARCH": "Friend search",
     "FRIENDS": "Friends",
     "STATISTICS": "Statistics",
+    "USERS": "Users",
+    "FEEDBACKS": "Feedbacks",
     "FOLLOWS": "Follows",
     "NOTIFICATIONS": "Notifications",
-    "USERS": "Users",
-    "FEEDBACKS": "Feedbacks"
+    "MESSAGES": "Messages"
   },
   "PAGE": {
     "PROFILE": "Profile"
@@ -82,6 +83,7 @@
     "SUCCESSFUL_DELETE":  "Successful delete",
     "SUCCESSFUL_BLOCK":  "Successful block",
     "SUCCESSFUL_RESTORE":  "Successful restore",
+    "SEND_MESSAGE": "Send message",
     "EMAIL_CONFIRMATION": {
       "WRONG_URL": "Wrong URL",
       "THANKFUL_MESSAGE": "Successful email confirmation, thank you for your registration",
@@ -152,7 +154,9 @@
     "ACCEPT": "Accept",
     "DECLINE": "Decline",
     "MARK_AS_READ": "Mark as read",
-    "ADD_LIKE": "Like a post"
+    "ADD_LIKE": "Like a post",
+    "ADD_MESSAGE": "Sent a message",
+    "ALL_MESSAGES": "All messages"
   },
   "POST": {
     "ADD_TITLE": "Create new post",

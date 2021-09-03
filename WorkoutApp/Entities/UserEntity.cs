@@ -55,5 +55,9 @@ namespace WorkoutApp.Entities
         public ICollection<CommentEntity> Comments { get; set; } = null!;
         
         public ICollection<FeedbackEntity> Feedbacks { get; set; } = null!;
+
+        public ICollection<MessageEntity> SentMessages { get; set; } = null!;
+
+        public ICollection<MessageEntity> ReceivedMessages { get; set; } = null!;
     }
 }

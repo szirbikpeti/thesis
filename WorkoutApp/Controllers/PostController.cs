@@ -147,7 +147,7 @@ namespace WorkoutApp.Controllers
       await _notification.DoAddAsync(notification, cancellationToken)
         .ConfigureAwait(false);
       
-      await _notification.DoBroadcastFollowNotifications(updatedPost!.UserId)
+      await _notification.DoBroadcastNotifications(updatedPost!.UserId)
         .ConfigureAwait(false);
 
       return Ok(CreatePostDto(updatedPost!));

@@ -41,6 +41,7 @@ import {PasswordResetComponent} from "./pages/password-reset/password-reset.comp
 import {FeedbacksComponent} from "./pages/feedbacks/feedbacks.component";
 import {UsersComponent} from "./pages/users/users.component";
 import {CacheInterceptor} from "./cache.interceptor";
+import {MessageComponent} from "./pages/message/message.component";
 
 @NgModule({
   declarations: [
@@ -67,6 +68,7 @@ import {CacheInterceptor} from "./cache.interceptor";
     PasswordResetComponent,
     UsersComponent,
     FeedbacksComponent,
+    MessageComponent,
     DateFormatterPipe,
     IsVideoPipe,
     TruncatePipe,

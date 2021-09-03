@@ -30,16 +30,17 @@
   },
   "NAV": {
     "LOG_OUT": "Kijelentkezés",
-    "DASHBOARD": "Dashboard",
+    "DASHBOARD": "Vezérlőpult",
     "MY_WORKOUTS": "Edzéseim",
     "NEW_WORKOUT": "Új edzés felvétel",
     "FRIEND_SEARCH": "Barát keresés",
     "FRIENDS": "Barátok",
     "STATISTICS": "Statisztika",
+    "USERS": "Felhasználók",
+    "FEEDBACKS": "Visszajelzések",
     "FOLLOWS": "Követések",
     "NOTIFICATIONS": "Értesítések",
-    "USERS": "Felhasználók",
-    "FEEDBACKS": "Visszajelzések"
+    "MESSAGES": "Üzenetek"
   },
   "PAGE": {
     "PROFILE": "Profil adatok"
@@ -81,6 +82,7 @@
     "SUCCESSFUL_DELETE":  "Sikeres törlés",
     "SUCCESSFUL_BLOCK":  "Sikeres blokkolás",
     "SUCCESSFUL_RESTORE":  "Sikeres helyreállítás",
+    "SEND_MESSAGE": "Üzenet küldés",
     "EMAIL_CONFIRMATION": {
       "WRONG_URL": "Érvénytelen útvonal",
       "THANKFUL_MESSAGE": "Sikeres email-cím megerősítés, köszönjünk a regisztrációt!",
@@ -151,7 +153,9 @@
     "ACCEPT": "Elfogad",
     "DECLINE": "Elutasít",
     "MARK_AS_READ": "Olvasottként jelöl",
-    "ADD_LIKE": "Lájkolt egy posztot"
+    "ADD_LIKE": "Lájkolt egy posztot",
+    "ADD_MESSAGE": "Üzenetet küldött",
+    "ALL_MESSAGES": "Összes üzenet"
   },
   "POST": {
     "ADD_TITLE": "Új poszt létrehozása",

@@ -64,7 +64,7 @@ namespace WorkoutApp.Controllers
     
     [HttpGet("feedbacks")]
     [Authorize(Policies.ManageFeedbacks)]
-    public async Task<ActionResult<ICollection<GetFeedbackDto>>> ListAsync(CancellationToken cancellationToken)
+    public async Task<ActionResult<ICollection<GetFeedbackDto>>> ListFeedbacksAsync(CancellationToken cancellationToken)
     {
       var feedbacks = await _feedback
         .DoListAsync(cancellationToken)

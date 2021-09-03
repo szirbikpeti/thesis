@@ -41,6 +41,7 @@ export class NavMenuComponent {
 
   followNotifications: NotificationModel[];
   generalNotifications: NotificationModel[];
+  messageNotifications: NotificationModel[];
 
   constructor(private breakpointObserver: BreakpointObserver, public _auth: AuthService, private _notification: NotificationService,
               private _user: UserService, private _translate: TranslateService, @Inject('BASE_URL') baseUrl: string,
@@ -55,10 +56,10 @@ export class NavMenuComponent {
       .build();
 
     connection.start()
-      .then(() => console.log('SignalR connected!'))
+      .then(null)
       .catch(err => console.error(err.toString()));
 
-    connection.on("BroadcastFollowNotifications", () => this.getNotifications());
+    connection.on("BroadcastNotifications", () => this.getNotifications());
   }
 
   private getNotifications(): void {
@@ -70,7 +71,11 @@ export class NavMenuComponent {
           && isNull(_.deletedOn));
 
       this.generalNotifications = notis
-        .filter(_ => !this.getNotificationType(_.type).toLowerCase().includes('follow'));
+        .filter(_ => !this.getNotificationType(_.type).toLowerCase().includes('follow')
+          && !this.getNotificationType(_.type).toLowerCase().includes('message'));
+
+      this.messageNotifications = notis
+        .filter(_ => this.getNotificationType(_.type).toLowerCase().includes('message'));
     });
   }
 
@@ -78,7 +83,7 @@ export class NavMenuComponent {
     return this._state.language.value;
   }
 
-  switchLanguage(language: any): void {
+  switchLanguage(language: string): void {
     this._translate.use(language);
     this._state.language = language;
   }
@@ -111,14 +116,6 @@ export class NavMenuComponent {
 
   isSideNavOpened(): boolean {
     return this.sideNav?.opened ?? window.innerWidth > 960;
-  }
-
-  getFollowNotificationCount(): number {
-    return this.followNotifications?.length ?? 0;
-  }
-
-  getNotificationCount(): number {
-    return this.generalNotifications?.length ?? 0;
   }
 
   getNotificationType(type: NotificationType): string {

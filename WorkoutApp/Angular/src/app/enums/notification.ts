@@ -7,6 +7,7 @@
   DECLINE_FOLLOW_REQUEST = 5,
   UNFOLLOW = 6,
   ADD_LIKE = 10,
+  ADD_MESSAGE = 20,
 }
 
 export enum NotificationCategory {

@@ -3,7 +3,7 @@ using WorkoutApp.Abstractions;
 
 namespace WorkoutApp.Hubs
 {
-  public class NotificationHub : Hub<IHubClient>
+  public class HubClient : Hub<IHubClient>
   {
     
   }

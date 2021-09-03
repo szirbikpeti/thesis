@@ -9,6 +9,11 @@
     <img *ngIf="notifications.length > 0" class="notification-icon-with-badge clickable" src="assets/notifications_active.svg" [matMenuTriggerFor]="notificationMenu">
   </span>
 
+  <img *ngIf="category === NotificationCategory.MESSAGE" src="assets/message.svg" [matMenuTriggerFor]="notificationMenu"
+       [ngClass]="notifications.length > 0
+                ? 'notification-icon-with-badge clickable'
+                : 'clickable'">
+
   <div *ngIf="notifications.length > 0"
        class="red-circle clickable text-center" [matMenuTriggerFor]="notificationMenu">
     {{notifications.length}}
@@ -54,5 +59,11 @@
         </span>
       </div>
     </div>
+    <span *ngIf="category === NotificationCategory.MESSAGE">
+      <hr>
+      <div class="text-center clickable" matRipple (click)="openMessages()">
+        {{'NOTIFICATION.ALL_MESSAGES' | translate}}
+      </div>
+    </span>
   </mat-menu>
 </div>

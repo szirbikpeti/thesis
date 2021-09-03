@@ -13,13 +13,18 @@
     <p>{{'NOTIFICATION.TRIGGERED_ON' | translate}}: {{notification.triggeredOn | dateFormatter: currentLanguage}}</p>
     <p>{{'NOTIFICATION.TYPE' | translate}}: {{'NOTIFICATION.' + NotificationType[notification.type].toUpperCase() | translate}}</p>
   </mat-dialog-content>
-  <mat-dialog-actions align="end">
-    <span *ngIf="notification.type === 0">
-    <button mat-button mat-dialog-close (click)="decline()">{{'NOTIFICATION.DECLINE' | translate}}</button>
-    <button mat-button [mat-dialog-close]="true" (click)="accept()" cdkFocusInitial>{{'NOTIFICATION.ACCEPT' | translate}}</button>
-    </span>
-    <span *ngIf="notification.type !== 0">
-    <button mat-button [mat-dialog-close]="true" (click)="markAsRead()" cdkFocusInitial>{{'NOTIFICATION.MARK_AS_READ' | translate}}</button>
+  <mat-dialog-actions class="relative-element">
+    <button mat-button [mat-dialog-close]="true" matTooltip="{{'USER.SEND_MESSAGE' | translate}}" (click)="sendMessage()">
+      <img src="assets/chat.svg">
+    </button>
+    <span style="position:absolute; bottom: 16px; right: 0">
+      <span *ngIf="notification.type === 0">
+        <button mat-button mat-dialog-close (click)="decline()">{{'NOTIFICATION.DECLINE' | translate}}</button>
+        <button mat-button [mat-dialog-close]="true" (click)="accept()" cdkFocusInitial>{{'NOTIFICATION.ACCEPT' | translate}}</button>
+      </span>
+      <span *ngIf="notification.type !== 0">
+        <button mat-button [mat-dialog-close]="true" (click)="markAsRead()" cdkFocusInitial>{{'NOTIFICATION.MARK_AS_READ' | translate}}</button>
+      </span>
     </span>
   </mat-dialog-actions>
 </div>

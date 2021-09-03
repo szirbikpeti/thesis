@@ -39,7 +39,26 @@ namespace WorkoutApp.Controllers
       _notification = notification ?? throw new ArgumentNullException(nameof(notification));
     }
 
-    [HttpGet("{name}")]
+    [Authorize(Policies.SendMessages)]
+    [HttpGet("{id}")]
+    public async Task<ActionResult<GetUserDto>> GetByIdAsync(
+      [FromRoute] [Required] int id,
+      CancellationToken cancellationToken)
+    {
+      var foundedUser = await _userManager
+        .FindByIdWithAdditionalDataAsync(id, includesRoles: false, includesFollowsData:false, includesProfilePicture: true, cancellationToken)
+        .ConfigureAwait(false);
+
+      if (foundedUser is null) {
+        return NotFound("User was not found");
+      }
+
+      var userDto = _mapper.Map<GetUserDto>(foundedUser);
+      
+      return Ok(userDto);
+    }
+
+    [HttpGet("search/{name}")]
     public async Task<ActionResult<ICollection<GetUserDto>>> ListByNameAsync(
       [FromRoute] [Required] string name,
       CancellationToken cancellationToken)
@@ -123,7 +142,7 @@ namespace WorkoutApp.Controllers
           .ConfigureAwait(false);
 
         if (!result.Succeeded) {
-          return Unauthorized();
+          return BadRequest("Old password is incorrect.");
         }
       }
 
@@ -155,7 +174,7 @@ namespace WorkoutApp.Controllers
       await _notification.DoAddAsync(notification, cancellationToken)
         .ConfigureAwait(false);
       
-      await _notification.DoBroadcastFollowNotifications(id)
+      await _notification.DoBroadcastNotifications(id)
         .ConfigureAwait(false);
       
       var newlyFetchedCurrentUser = await _userManager
@@ -205,7 +224,7 @@ namespace WorkoutApp.Controllers
       await _notification.DoAddAsync(notification, cancellationToken)
         .ConfigureAwait(false);
       
-      await _notification.DoBroadcastFollowNotifications(new []{id.ToString(), currentUserId.ToString()})
+      await _notification.DoBroadcastNotifications(new []{id.ToString(), currentUserId.ToString()})
         .ConfigureAwait(false);
 
       var newlyFetchedCurrentUser = await _userManager
@@ -241,7 +260,7 @@ namespace WorkoutApp.Controllers
       await _notification.DoAddAsync(notification, cancellationToken)
         .ConfigureAwait(false);
 
-      await _notification.DoBroadcastFollowNotifications(new []{id.ToString(), currentUserId.ToString()})
+      await _notification.DoBroadcastNotifications(new []{id.ToString(), currentUserId.ToString()})
         .ConfigureAwait(false);
       
       var newlyFetchedCurrentUser = await _userManager
@@ -277,7 +296,7 @@ id, currentUserId, NotificationType.FollowRequest, cancellationToken)
       await _notification.DoAddAsync(notification, cancellationToken)
         .ConfigureAwait(false);
       
-      await _notification.DoBroadcastFollowNotifications(new []{id.ToString(), currentUserId.ToString()})
+      await _notification.DoBroadcastNotifications(new []{id.ToString(), currentUserId.ToString()})
         .ConfigureAwait(false);
       
       var newlyFetchedCurrentUser = await _userManager
@@ -309,7 +328,7 @@ id, currentUserId, NotificationType.FollowRequest, cancellationToken)
       await _notification.DoAddAsync(notification, cancellationToken)
         .ConfigureAwait(false);
       
-      await _notification.DoBroadcastFollowNotifications(id)
+      await _notification.DoBroadcastNotifications(id)
         .ConfigureAwait(false);
       
       var newlyFetchedCurrentUser = await _userManager

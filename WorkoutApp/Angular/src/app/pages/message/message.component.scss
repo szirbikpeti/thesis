@@ -1,0 +1,85 @@
+::ng-deep .mat-form-field-underline {
+  display: none;
+}
+
+mat-grid-tile {
+  border: 1px solid black;
+}
+
+.mat-grid-content {
+  position: absolute;
+  top: 0;
+  height: 90%;
+  width: 100%;
+  overflow-y: scroll;
+}
+
+.user-grid-content {
+  position: static;
+  height: 100%;
+}
+
+.user-container {
+  height: 55px;
+  padding: 10px;
+  user-select: none;
+}
+
+.message-container {
+  padding: 10px;
+}
+
+.profile-picture {
+  border-radius: 50%;
+  height: 35px;
+  width: 35px;
+  margin-left: 8px;
+  margin-right: 8px;
+}
+
+.input-container {
+  position: absolute;
+  bottom: 8px;
+  width: 100%;
+}
+
+mat-form-field {
+  background-color: #fff;
+  border: 1px solid #4742425b;
+  border-radius: 3px;
+  margin-left: 10px;
+  font-size: 14px;
+  height: 35px;
+  max-height: 35px;
+  width: 95%;
+}
+
+.center-input-field {
+  margin-top: -20px;
+  margin-left: 10px;
+}
+
+input {
+  width: 92%;
+}
+
+.send-button {
+  position:absolute;
+  top: -26px;
+  right: 0;
+}
+
+hr {
+  width: 90%;
+  margin-top: 9px;
+}
+
+@media screen and (max-width: 630px) {
+  input {
+    width: 85%;
+  }
+
+  .side-username {
+    display: none;
+  }
+}

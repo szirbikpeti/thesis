@@ -33,7 +33,9 @@ namespace WorkoutApp.Data
             CreateMap<CommentModificationDto, CommentEntity>();
             CreateMap<CommentEntity, GetCommentDto>();
             CreateMap<FeedbackAdditionDto, FeedbackEntity>();
-            CreateMap<FeedbackEntity, GetFeedbackDto>();
+            CreateMap<FeedbackEntity, GetFeedbackDto>();;
+            CreateMap<MessageAdditionDto, MessageEntity>();
+            CreateMap<MessageEntity, GetMessageDto>();
         }
     }
 }

@@ -59,7 +59,7 @@ namespace WorkoutApp.Controllers
       await _notification.DoDeleteAsync(id, cancellationToken)
         .ConfigureAwait(false);
 
-      await _notification.DoBroadcastFollowNotifications(currentUserId)
+      await _notification.DoBroadcastNotifications(currentUserId)
         .ConfigureAwait(false);
       
       return Ok();

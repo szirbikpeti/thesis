@@ -15,22 +15,22 @@ namespace WorkoutApp.Repositories
   public class NotificationRepository : INotificationRepository
   {
     private readonly WorkoutDbContext _dbContext;
-    private readonly IHubContext<NotificationHub, IHubClient> _hubContext; 
+    private readonly IHubContext<HubClient, IHubClient> _hubContext; 
     
     public NotificationRepository(
       WorkoutDbContext dbContext,
-      IHubContext<NotificationHub, IHubClient> hubContext)
+      IHubContext<HubClient, IHubClient> hubContext)
     {
       _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
       _hubContext = hubContext ?? throw new ArgumentNullException(nameof(hubContext));
     }
 
-    public async Task DoBroadcastFollowNotifications(IEnumerable<string> userIds) => 
-      await _hubContext.Clients.Users(userIds).BroadcastFollowNotifications();
+    public async Task DoBroadcastNotifications(IEnumerable<string> userIds) => 
+      await _hubContext.Clients.Users(userIds).BroadcastNotifications();
     
 
-    public async Task DoBroadcastFollowNotifications(int receiverUserId) => 
-      await _hubContext.Clients.User(receiverUserId.ToString()).BroadcastFollowNotifications();
+    public async Task DoBroadcastNotifications(int receiverUserId) => 
+      await _hubContext.Clients.User(receiverUserId.ToString()).BroadcastNotifications();
     
     public async Task<ICollection<NotificationEntity>> DoListAsync(int id, CancellationToken cancellationToken)
     {
@@ -62,7 +62,11 @@ namespace WorkoutApp.Repositories
         .FirstOrDefaultAsync(cancellationToken)
         .ConfigureAwait(false);
       
-      notification!.DeletedOn = DateTimeOffset.Now;
+      if (notification is null) {
+        return;
+      }
+      
+      notification.DeletedOn = DateTimeOffset.Now;
       
       await _dbContext
         .SaveChangesAsync(cancellationToken)
@@ -77,8 +81,12 @@ namespace WorkoutApp.Repositories
                     && _.Type == type)
         .FirstOrDefaultAsync(cancellationToken)
         .ConfigureAwait(false);
+
+      if (notification is null) {
+        return;
+      }
       
-      notification!.DeletedOn = DateTimeOffset.Now;
+      notification.DeletedOn = DateTimeOffset.Now;
       
       await _dbContext
         .SaveChangesAsync(cancellationToken)
