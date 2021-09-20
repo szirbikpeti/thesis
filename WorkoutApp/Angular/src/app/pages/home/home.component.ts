@@ -76,11 +76,13 @@ export class HomeComponent {
           const openBracketIndex = errorMessage.indexOf('(');
           const closeBracketIndex = errorMessage.indexOf(')');
 
-          const minute = errorMessage.substring(openBracketIndex + 1, closeBracketIndex);
+          const minutes = errorMessage.substring(openBracketIndex + 1, closeBracketIndex);
 
-          this._toast.error(
-            this._translate.instant('USER.LOCKED_OUT', { minute: minute }),
-            this._translate.instant('GENERAL.ERROR'));
+          const message = minutes === '-1'
+            ? this._translate.instant('USER.LOCKED_OUT')
+            : this._translate.instant('USER.LOCKED_OUT_WITH_MINUTES', { minutes: minutes });
+
+            this._toast.error(message, this._translate.instant('GENERAL.ERROR'));
 
           return;
         }

@@ -74,7 +74,8 @@
     "WRONG_USERNAME_OR_PASSWORD": "User was not found or password was invalid",
     "NOT_CONFIRMED_EMAIL": "Email is not confirmed",
     "RESEND_EMAIL": "Click on this window to resend email",
-    "LOCKED_OUT": "The account is locked out until {{minute}} minute(s)",
+    "LOCKED_OUT": "The account is locked out by an admin",
+    "LOCKED_OUT_WITH_MINUTES": "The account is locked out until {{minutes}} minute(s)",
     "SUCCESSFUL_PASSWORD_RESET": "Successful password reset",
     "UNSUCCESSFUL_PASSWORD_RESET": "Unsuccessful password reset",
     "UNSUCCESSFUL_LOGIN": "Unsuccessful login",
@@ -84,6 +85,8 @@
     "SUCCESSFUL_BLOCK":  "Successful block",
     "SUCCESSFUL_RESTORE":  "Successful restore",
     "SEND_MESSAGE": "Send message",
+    "BLOCK": "Block",
+    "RESTORE": "Restore",
     "EMAIL_CONFIRMATION": {
       "WRONG_URL": "Wrong URL",
       "THANKFUL_MESSAGE": "Successful email confirmation, thank you for your registration",

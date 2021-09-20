@@ -224,6 +224,12 @@ namespace WorkoutApp.Controllers
         if (notSignedInUser.LockoutEnd is not null) {
           var lockoutEndInMinutes = (notSignedInUser.LockoutEnd - DateTimeOffset.Now).Value.Minutes + 1;
           
+          var lockoutEndForever = new DateTime(2099, 12, 31, 23, 59, 59, DateTimeKind.Utc);
+
+          if (notSignedInUser.LockoutEnd.Value == lockoutEndForever) {
+            lockoutEndInMinutes = -1;
+          }
+          
           _logger.Log(LogLevel.Information, "Account is locked out.");
           return StatusCode(403, $"Account is locked out until {lockoutEndInMinutes} minutes. ({lockoutEndInMinutes})");
         }

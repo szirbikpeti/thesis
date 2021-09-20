@@ -1,1 +1,43 @@
-<p>users works!</p>
+<div class="title">{{'NAV.USERS' | translate}}</div>
+
+<mat-spinner *ngIf="!userDataSource"></mat-spinner>
+<table mat-table *ngIf="userDataSource"
+       [dataSource]="userDataSource" multiTemplateDataRows
+       class="mat-elevation-z8">
+
+  <ng-container matColumnDef="{{column}}" *ngFor="let column of displayedColumns; index as index">
+      <span *ngIf="index === 0">
+        <th mat-header-cell *matHeaderCellDef>#</th>
+        <td mat-cell *matCellDef="let element">
+          <img class="profile-picture" [src]="getPicture(element[column].data)">
+        </td>
+      </span>
+    <span *ngIf="index === displayedColumns.length - 1">
+        <th mat-header-cell *matHeaderCellDef> {{'GENERAL.' + column.toUpperCase() | translate}} </th>
+        <td mat-cell *matCellDef="let element">
+        <button *ngIf="!element.isBlocked" mat-icon-button matTooltip="{{'USER.BLOCK' | translate}}" matTooltipPosition="right"
+                (click)="blockUser(element.id);">
+          <mat-icon>block</mat-icon>
+        </button>
+        <button *ngIf="element.isBlocked" mat-icon-button matTooltip="{{'USER.RESTORE' | translate}}" matTooltipPosition="right"
+                (click)="restoreUser(element.id);">
+          <mat-icon>restore_from_trash</mat-icon>
+        </button>
+        </td>
+      </span>
+    <span *ngIf="index !== 0 && index !== displayedColumns.length - 1">
+        <th mat-header-cell *matHeaderCellDef> {{'USER.' + column.toUpperCase() | translate}} </th>
+        <td mat-cell *matCellDef="let element;">
+          <span *ngIf="isDate(element[column])">
+            {{element[column] | dateFormatter : _state.language.value}}
+          </span>
+          <span *ngIf="!isDate(element[column])">
+            {{element[column]}}
+          </span>
+        </td>
+      </span>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
