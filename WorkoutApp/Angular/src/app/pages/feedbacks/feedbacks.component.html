@@ -1,8 +1,19 @@
 <div class="title">{{'NAV.FEEDBACKS' | translate}}</div>
 
 <mat-spinner *ngIf="!feedbacks"></mat-spinner>
-<div *ngIf="feedbacks" class="text-center">
+<div *ngIf="feedbacks">
   <mat-card *ngFor="let feedback of feedbacks">
-    {{feedback.feedback}}
+    <div class="user-data-container">
+      <img class="profile-picture" [src]="getPicture(feedback.user.profilePicture.data)">
+    </div>
+    <div class="username-container">{{feedback.user.userName}}
+      <span class="date-in-card-title">
+        - {{feedback.createdOn | dateFormatter : _state.language.value : false}}
+      </span>
+    </div>
+    <hr>
+    <div class="text-center feedback-message">
+      {{feedback.feedback}}
+    </div>
   </mat-card>
 </div>

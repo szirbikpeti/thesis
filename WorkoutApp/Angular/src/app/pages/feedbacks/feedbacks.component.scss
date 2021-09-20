@@ -5,7 +5,32 @@
 }
 
 mat-card {
-  margin-bottom: 20px;
+  width: 75%;
+  margin: 0 auto 20px auto;
+}
+
+.user-data-container {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.profile-picture {
+  border-radius: 50%;
+  height: 45px;
+  width: 45px;
+}
+
+.username-container {
+  display: inline-block;
+  font-weight: bolder;
+}
+
+.date-in-card-title {
+  font-weight: normal;
+}
+
+.feedback-message {
+  word-wrap: break-word;
 }
 
 @media screen and (max-width: 600px) {

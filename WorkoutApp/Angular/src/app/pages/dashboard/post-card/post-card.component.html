@@ -17,7 +17,7 @@
     </span>
   </div>
   <hr>
-  <div style="position: relative">
+  <div class="relative-element">
     <img class="post-file" [src]="getPicture(post.files[postAdditionData[index].currentFileNumber].data)">
     <img *ngIf="postAdditionData[index].currentFileNumber !== 0"
          (click)="setCurrentFileNumber(index, '--')" class="arrow-img left-arrow-img" src="assets/left-pagination.png">

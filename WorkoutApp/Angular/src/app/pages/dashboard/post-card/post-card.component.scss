@@ -8,9 +8,15 @@ mat-card {
   width: 700px;
 }
 
-.profile-picture-container{
+.profile-picture-container {
   display: inline-block;
   margin-right: 10px;
+}
+
+.profile-picture {
+  border-radius: 50%;
+  height: 45px;
+  width: 45px;
 }
 
 .username-container {
@@ -20,12 +26,6 @@ mat-card {
 
 .post-title {
   font-weight: normal;
-}
-
-.profile-picture {
-  border-radius: 50%;
-  height: 45px;
-  width: 45px;
 }
 
 .more-button {
