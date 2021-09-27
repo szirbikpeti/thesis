@@ -39,7 +39,7 @@
         <div class="center-input-field">
           <input #message matInput placeholder="Write..." (keyup.enter)="sendMessage(message)">
           <button mat-icon-button class="send-button" (click)="sendMessage(message)">
-            <img src="assets/send-message.png">
+            <mat-icon [ngStyle]="{'color':'red'}">send</mat-icon>
           </button>
         </div>
       </mat-form-field>

@@ -1,4 +1,4 @@
-import {Component, HostListener} from '@angular/core';
+import {AfterViewInit, Component, HostListener, ViewChild} from '@angular/core';
 import {AdminService} from "../../services/admin.service";
 import {UserModel} from "../../models/UserModel";
 import {ToastrService} from "ngx-toastr";
@@ -7,15 +7,20 @@ import {MatTableDataSource} from "@angular/material/table";
 import {getPicture} from "../../utility";
 import {StateService} from "../../services/state.service";
 import {DomSanitizer} from "@angular/platform-browser";
+import {MatSort} from "@angular/material/sort";
+import {MatPaginator} from "@angular/material/paginator";
 
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.scss']
 })
-export class UsersComponent {
+export class UsersComponent implements AfterViewInit {
 
-  userDataSource: MatTableDataSource<UserModel>;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+
+  userDataSource: MatTableDataSource<UserModel> = new MatTableDataSource<UserModel>();
 
   displayedColumns: string[];
 
@@ -27,8 +32,12 @@ export class UsersComponent {
     this.displayedColumns = UsersComponent.getColumnsToDisplay();
 
     _admin.listUsers()
-      .subscribe(users =>
-        this.userDataSource = new MatTableDataSource<UserModel>(users));
+      .subscribe(users => this.userDataSource.data = users);
+  }
+
+  ngAfterViewInit(): void {
+    this.userDataSource.paginator = this.paginator;
+    this.userDataSource.sort = this.sort;
   }
 
   isDate(cellValue: string) {
