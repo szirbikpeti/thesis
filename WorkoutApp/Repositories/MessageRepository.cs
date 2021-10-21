@@ -35,6 +35,7 @@ namespace WorkoutApp.Repositories
       var users = new List<UserEntity>();
       
       var senderUsers = await _dbContext.Messages
+        .IgnoreQueryFilters()
         .Where(_ => _.TriggeredUserId == currentUserId)
         .Include(_ => _.SenderUser)
         .ThenInclude(_ => _.ProfilePicture)
@@ -44,6 +45,7 @@ namespace WorkoutApp.Repositories
         .ConfigureAwait(false);
       
       var triggeredUsers = await _dbContext.Messages
+        .IgnoreQueryFilters()
         .Where(_ => _.SenderUserId == currentUserId)
         .Include(_ => _.TriggeredUser)
         .ThenInclude(_ => _.ProfilePicture)
@@ -66,6 +68,7 @@ namespace WorkoutApp.Repositories
       CancellationToken cancellationToken)
     {
       return await _dbContext.Messages
+        .IgnoreQueryFilters()
         .Where(_ => (_.SenderUserId == senderUserId && _.TriggeredUserId == triggeredUserId)
                       || (_.SenderUserId == triggeredUserId && _.TriggeredUserId == senderUserId))
         .Include(_ => _.SenderUser)

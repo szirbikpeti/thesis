@@ -21,12 +21,12 @@ namespace WorkoutApp.Configurations
       builder.HasOne(_ => _.SenderUser)
         .WithMany(_ => _.SentMessages)
         .HasForeignKey(_ => _.SenderUserId)
-        .OnDelete(DeleteBehavior.Restrict); // TODO - no action
+        .OnDelete(DeleteBehavior.NoAction); // TODO - no action
 
       builder.HasOne(_ => _.TriggeredUser)
         .WithMany(_ => _.ReceivedMessages)
         .HasForeignKey(_ => _.TriggeredUserId)
-        .OnDelete(DeleteBehavior.Restrict);
+        .OnDelete(DeleteBehavior.NoAction);
     }
   }
 }

@@ -15,8 +15,7 @@ namespace WorkoutApp.Configurations
 
       builder.HasOne(_ => _.User)
         .WithMany(_ => _.Feedbacks)
-        .HasForeignKey(_ => _.UserId)
-        .OnDelete(DeleteBehavior.Restrict); // TODO - no action
+        .HasForeignKey(_ => _.UserId);
     }
   }
 }
