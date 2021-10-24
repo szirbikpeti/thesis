@@ -30,7 +30,7 @@
       <button *ngIf="!isLikedPost(post)" mat-icon-button (click)="like(post.id)">
         <img src="assets/like-dumbell.png">
       </button>
-      <button *ngIf="isLikedPost(post)" mat-icon-button (click)="unlike(post.id)">
+      <button *ngIf="isLikedPost(post)" mat-icon-button (click)="dislike(post.id)">
         <img src="assets/liked-dumbell.png">
       </button>
       <button class="comment-button" mat-icon-button (click)="comment.focus()">

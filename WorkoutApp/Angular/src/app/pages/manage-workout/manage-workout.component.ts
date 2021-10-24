@@ -20,11 +20,11 @@ import {DomSanitizer} from "@angular/platform-browser";
 import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({
-  selector: 'app-new-workout',
-  templateUrl: './new-workout.component.html',
-  styleUrls: ['./new-workout.component.scss']
+  selector: 'app-manage-workout',
+  templateUrl: './manage-workout.component.html',
+  styleUrls: ['./manage-workout.component.scss']
 })
-export class NewWorkoutComponent {
+export class ManageWorkoutComponent {
   private readonly DURATION_REGEX = '[[0-9]*[h]{0,1}]{0,1}[ ]{0,1}[[0-9]*[m]{0,1}]{0,1}[ ]{0,1}[[0-9]*[s]{0,1}]{0,1}';
 
   @ViewChild('fileInput') fileInput: ElementRef;
@@ -53,7 +53,7 @@ export class NewWorkoutComponent {
   constructor(private fb: FormBuilder, private _workout: WorkoutService, public sanitizer: DomSanitizer,
               private _file: FileService, private _translate: TranslateService, private dialog: MatDialog,
               private _toast: ToastrService, private router: Router, private route: ActivatedRoute) {
-    this.displayedColumns = NewWorkoutComponent.getColumnsToDisplay();
+    this.displayedColumns = ManageWorkoutComponent.getColumnsToDisplay();
     this.setUpWorkoutForm();
 
     const editedWorkoutId = route.snapshot.paramMap.get('editedWorkoutId');
@@ -134,6 +134,11 @@ export class NewWorkoutComponent {
 
       this.workoutForm.patchValue(fetchedWorkout);
 
+      if (this.feature === WorkoutFeature.DUPLICATE) {
+        const today = new Date(new Date().setHours(0, 0, 0, 0));
+        this.workoutForm.get('date').setValue(today);
+      }
+
       if (this.feature === WorkoutFeature.EDIT) {
         let i = 1;
         for(let file of this.workout.files) {
@@ -203,6 +208,10 @@ export class NewWorkoutComponent {
   }
 
   private deleteWorkout(): void {
+    if (this.feature !== WorkoutFeature.EDIT) {
+      return;
+    }
+
     this._workout.delete(this.workout.id)
       .subscribe(() => {
         this._toast.success(
@@ -312,9 +321,9 @@ export class NewWorkoutComponent {
     const resultMinutes = Math.floor((allSeconds - resultHours*60*60)/60);
     const resultSeconds = Math.floor(allSeconds - resultHours*60*60 - resultMinutes*60);
 
-    const result = (NewWorkoutComponent.getSpecifiedTime(resultHours, 'h') + NewWorkoutComponent.getSpace(resultMinutes)
-      + NewWorkoutComponent.getSpecifiedTime(resultMinutes, 'm') + NewWorkoutComponent.getSpace(resultMinutes)
-      + NewWorkoutComponent.getSpecifiedTime(resultSeconds, 's')).trim();
+    const result = (ManageWorkoutComponent.getSpecifiedTime(resultHours, 'h') + ManageWorkoutComponent.getSpace(resultMinutes)
+      + ManageWorkoutComponent.getSpecifiedTime(resultMinutes, 'm') + ManageWorkoutComponent.getSpace(resultMinutes)
+      + ManageWorkoutComponent.getSpecifiedTime(resultSeconds, 's')).trim();
 
     control.setValue(result);
   }
@@ -438,7 +447,7 @@ export class NewWorkoutComponent {
 
   @HostListener('window:resize')
   onResize(): void {
-    this.displayedColumns = NewWorkoutComponent.getColumnsToDisplay();
+    this.displayedColumns = ManageWorkoutComponent.getColumnsToDisplay();
   }
 
   @HostListener('window:beforeunload')

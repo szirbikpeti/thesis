@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from "./pages/home/home.component";
 import { DashboardComponent } from "./pages/dashboard/dashboard.component";
 import {NavMenuComponent} from "./pages/nav-menu/nav-menu.component";
-import {NewWorkoutComponent} from "./pages/new-workout/new-workout.component";
+import {ManageWorkoutComponent} from "./pages/manage-workout/manage-workout.component";
 import {ProfileComponent} from "./pages/profile/profile.component";
 import {SignOffGuard} from "./guards/sign-off.guard";
 import {AuthGuard} from "./guards/auth.guard";
@@ -56,15 +56,15 @@ const routes: Routes = [
       },
       {
         path: 'new-workout',
-        component: NewWorkoutComponent
+        component: ManageWorkoutComponent
       },
       {
         path: 'new-workout/:duplicatedWorkoutId',
-        component: NewWorkoutComponent
+        component: ManageWorkoutComponent
       },
       {
         path: 'edit-workout/:editedWorkoutId',
-        component: NewWorkoutComponent
+        component: ManageWorkoutComponent
       },
       {
         path: 'friend-search',

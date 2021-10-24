@@ -71,7 +71,7 @@ export class PostCardComponent implements OnInit {
     }, () => this.removeLike(postId));
   }
 
-  unlike(postId: string): void {
+  dislike(postId: string): void {
     this.removeLike(postId);
 
     const likeRequest: LikeRequest = {postId: postId};

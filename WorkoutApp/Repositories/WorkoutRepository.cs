@@ -150,16 +150,23 @@ namespace WorkoutApp.Repositories
       fetchedWorkout.ModifiedOn = DateTimeOffset.Now;
       _dbContext.Workouts.Update(fetchedWorkout);
 
-      var removedFileIds = fetchedWorkout.FileRelationEntities.Select(_ => _.FileId).Except(workoutDto.FileIds);
+      var removedFileIds = fetchedWorkout.FileRelationEntities
+        .Select(_ => _.FileId).Except(workoutDto.FileIds);
+      
       var removedEntities = fetchedWorkout.FileRelationEntities
-        .Where(_ => _.WorkoutId == fetchedWorkout.Id && removedFileIds.Contains(_.FileId)); 
+        .Where(_ => _.WorkoutId == fetchedWorkout.Id 
+                    && removedFileIds.Contains(_.FileId)); 
       
       _dbContext.WorkoutFileRelations.RemoveRange(removedEntities);
 
-      var newFileIds = workoutDto.FileIds.Except(fetchedWorkout.FileRelationEntities.Select(_ => _.FileId));
-      var newEntities = newFileIds.Select(_ => new WorkoutFileRelationEntity {
-        WorkoutId = fetchedWorkout.Id,
-        FileId = _
+      var newFileIds = workoutDto.FileIds
+        .Except(fetchedWorkout.FileRelationEntities
+          .Select(_ => _.FileId));
+      
+      var newEntities = newFileIds
+        .Select(_ => new WorkoutFileRelationEntity {
+          WorkoutId = fetchedWorkout.Id, 
+          FileId = _
       });
       
       await _dbContext.WorkoutFileRelations

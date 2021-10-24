@@ -1,4 +1,4 @@
-<div class="title">{{'WORKOUT.' +  (feature === WorkoutFeature.ADD ? 'ADD' : 'MODIFY') + '_TITLE' | translate}}
+<div class="title">{{'WORKOUT.' +  (feature !== WorkoutFeature.EDIT ? 'ADD' : 'MODIFY') + '_TITLE' | translate}}
   <button *ngIf="feature === WorkoutFeature.EDIT" mat-icon-button type="button"
           class="delete-set-button" (click)="openConfirmationDialogToDelete()">
     <mat-icon>delete_forever</mat-icon>
@@ -175,7 +175,7 @@
     <div class="submit-button-container">
       <mat-error *ngIf="workoutForm.invalid">{{'GENERAL.INVALID_FORM' | translate}}</mat-error>
       <button mat-button type="submit" class="submit-button" [disabled]="isSubmittingForm">
-        <span *ngIf="!isSubmittingForm">{{'WORKOUT.' + (feature === WorkoutFeature.ADD ? 'ADD' : 'MODIFY') | translate}}</span>
+        <span *ngIf="!isSubmittingForm">{{'WORKOUT.' + (feature !== WorkoutFeature.EDIT ? 'ADD' : 'MODIFY') | translate}}</span>
         <mat-spinner *ngIf="isSubmittingForm" style="margin: 4px auto" diameter="28" color="warn" strokeWidth="4"></mat-spinner>
       </button>
     </div>

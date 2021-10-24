@@ -15,7 +15,7 @@ import {MAT_DATE_LOCALE} from "@angular/material/core";
 import {ToastrModule} from "ngx-toastr";
 import {DashboardComponent} from "./pages/dashboard/dashboard.component";
 import {WorkoutComponent} from "./pages/workout/workout.component";
-import {NewWorkoutComponent} from "./pages/new-workout/new-workout.component";
+import {ManageWorkoutComponent} from "./pages/manage-workout/manage-workout.component";
 import {ProfileComponent} from "./pages/profile/profile.component";
 import {ConfirmationDialogComponent} from "./pages/confirmation-dialog/confirmation-dialog.component";
 import {GuardsModule} from "./guards.module";
@@ -57,7 +57,7 @@ import {MessageComponent} from "./pages/message/message.component";
     NewPostComponent,
     WorkoutComponent,
     WorkoutCardInfoComponent,
-    NewWorkoutComponent,
+    ManageWorkoutComponent,
     ProfileComponent,
     FriendSearchComponent,
     FriendsComponent,
