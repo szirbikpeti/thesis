@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,7 +14,7 @@ using WorkoutApp.Extensions;
 
 namespace WorkoutApp.Repositories
 {
-  public class UserRepository : IUserRepository // TODO - delete and extend user manager instead
+  public class UserRepository : IUserRepository
   {
     private readonly UserManager<UserEntity> _userManager;
     private readonly WorkoutDbContext _dbContext;
@@ -48,6 +49,34 @@ namespace WorkoutApp.Repositories
         .ConfigureAwait(false);
 
       return newlyFetchedUser;
+    }
+
+    public async Task<ICollection<UserEntity>> DoListFollowedUsersAsync(
+      int currentUserId,
+      CancellationToken cancellationToken)
+    {
+      return await _dbContext.Follows
+        .AsNoTracking()
+        .Where(_ => _.FollowerId == currentUserId)
+        .Include(_ => _.FollowedUser)
+        .ThenInclude(_ => _.ProfilePicture)
+        .Select(_ => _.FollowedUser)
+        .ToListAsync(cancellationToken)
+        .ConfigureAwait(false);
+    }
+
+    public async Task<ICollection<UserEntity>> DoListFollowerUsersAsync(
+      int currentUserId,
+      CancellationToken cancellationToken)
+    {
+      return await _dbContext.Follows
+        .AsNoTracking()
+        .Where(_ => _.FollowedId == currentUserId)
+        .Include(_ => _.FollowerUser)
+        .ThenInclude(_ => _.ProfilePicture)
+        .Select(_ => _.FollowerUser)
+        .ToListAsync(cancellationToken)
+        .ConfigureAwait(false);
     }
 
     public async Task DoAddFollowRequestAsync(int currentUserId, int requestedUserId, CancellationToken cancellationToken)

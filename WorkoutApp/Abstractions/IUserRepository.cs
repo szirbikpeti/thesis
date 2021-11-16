@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using WorkoutApp.Dto;
 using WorkoutApp.Entities;
@@ -9,6 +10,10 @@ namespace WorkoutApp.Abstractions
   {
     Task<UserEntity?> DoUpdateAsync(UserEntity currentUser,  UpdateUserDto updateUserDto, CancellationToken cancellationToken);
 
+    Task<ICollection<UserEntity>> DoListFollowedUsersAsync(int currentUserId, CancellationToken cancellationToken);
+    
+    Task<ICollection<UserEntity>> DoListFollowerUsersAsync(int currentUserId, CancellationToken cancellationToken);
+    
     Task DoAddFollowRequestAsync(int currentUserId, int requestedUserId, CancellationToken cancellationToken);
     
     Task DoAcceptFollowRequestAsync(int currentUserId, int followerId, CancellationToken cancellationToken);

@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using WorkoutApp.Abstractions;
 using WorkoutApp.Entities;
 
 namespace WorkoutApp.Extensions
@@ -85,47 +86,13 @@ namespace WorkoutApp.Extensions
         .Where(_ =>
           (_.FullName.ToUpper().Contains(normalizedName) 
            || _.NormalizedUserName.Contains(normalizedName)) 
-          && _.Id != currentUserId 
-          && _.DeletedOn == null)
+          && _.Id != currentUserId
+          && _.LockoutEnabled)
         .Include(_ => _.ProfilePicture)
         .ToListAsync(cancellationToken)
         .ConfigureAwait(false);
     }
-    
-    public static async Task<ICollection<UserEntity>> ListFollowerUsersAsync(
-      this UserManager<UserEntity> userManager,
-      int currentUserId,
-      CancellationToken cancellationToken)
-    {
-      return await userManager.Users
-        .AsNoTracking()
-        .Where(_ =>_.Id == currentUserId 
-                   && _.DeletedOn == null)
-        .Include(_ => _.FollowerUsers)
-        .ThenInclude(_ => _.FollowerUser.ProfilePicture)
-        .SelectMany(_ => _.FollowerUsers)
-        .Select(_ => _.FollowerUser)
-        .ToListAsync(cancellationToken)
-        .ConfigureAwait(false);
-    }
-    
-    public static async Task<ICollection<UserEntity>> ListFollowedUsersAsync(
-      this UserManager<UserEntity> userManager,
-      int currentUserId,
-      CancellationToken cancellationToken)
-    {
-      return await userManager.Users
-        .AsNoTracking()
-        .Where(_ =>_.Id == currentUserId 
-          && _.DeletedOn == null)
-        .Include(_ => _.FollowedUsers)
-        .ThenInclude(_ => _.FollowedUser.ProfilePicture)
-        .SelectMany(_ => _.FollowedUsers)
-        .Select(_ => _.FollowedUser)
-        .ToListAsync(cancellationToken)
-        .ConfigureAwait(false);
-    }
-    
+
     public static async Task<ICollection<int>> ListFollowedUserIdsAsync(
       this UserManager<UserEntity> userManager,
       int currentUserId,

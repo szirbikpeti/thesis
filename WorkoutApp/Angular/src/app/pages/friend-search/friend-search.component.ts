@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {UserService} from "../../services/user.service";
 import {UserModel} from "../../models/UserModel";
@@ -15,7 +15,7 @@ import {Observable} from "rxjs";
   templateUrl: './friend-search.component.html',
   styleUrls: ['./friend-search.component.scss']
 })
-export class FriendSearchComponent implements OnInit {
+export class FriendSearchComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   dataSource: MatTableDataSource<UserModel>;
   users: Observable<UserModel[]>;
@@ -32,8 +32,9 @@ export class FriendSearchComponent implements OnInit {
       .subscribe(foundedUsers => {
         this.dataSource = new MatTableDataSource<UserModel>(foundedUsers);
         this.dataSource.paginator = this.paginator;
+
         this.users = this.dataSource.connect();
-      }); // TODO - delete
+      });
 
     this._user.getFollowRequestsAndFollows()
       .subscribe(frf => this.currentFollowRequestsAndFollows = frf);
@@ -43,6 +44,12 @@ export class FriendSearchComponent implements OnInit {
     this.friendSearchForm = this.fb.group({
       name: ['', Validators.required]
     });
+  }
+
+  ngOnDestroy() {
+    if (this.dataSource) {
+      this.dataSource.disconnect();
+    }
   }
 
   submitFriendSearchForm(): void {

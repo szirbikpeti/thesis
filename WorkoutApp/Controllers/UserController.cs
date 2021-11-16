@@ -9,7 +9,9 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using WorkoutApp.Abstractions;
+using WorkoutApp.Data;
 using WorkoutApp.Dto;
 using WorkoutApp.Entities;
 using WorkoutApp.Extensions;
@@ -26,17 +28,19 @@ namespace WorkoutApp.Controllers
     private readonly UserManager<UserEntity> _userManager;
     private readonly IUserRepository _user;
     private readonly INotificationRepository _notification;
+    private readonly WorkoutDbContext _dbContext;
 
     public UserController(
       IMapper mapper,
       UserManager<UserEntity> userManager,
       IUserRepository user,
-      INotificationRepository notification)
+      INotificationRepository notification, WorkoutDbContext dbContext)
     {
       _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
       _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
       _user = user ?? throw new ArgumentNullException(nameof(user));
       _notification = notification ?? throw new ArgumentNullException(nameof(notification));
+      _dbContext = dbContext;
     }
 
     [Authorize(Policies.SendMessages)]
@@ -80,18 +84,19 @@ namespace WorkoutApp.Controllers
       CancellationToken cancellationToken)
     {
       var currentUserId = _userManager.GetUserIdAsInt(HttpContext.User);
-      
-      var followerUsers = await _userManager
-        .ListFollowerUsersAsync(currentUserId, cancellationToken)
+
+      var followedUsers = await _user
+        .DoListFollowedUsersAsync(currentUserId, cancellationToken)
         .ConfigureAwait(false);
       
-      var followedUsers = await _userManager
-        .ListFollowedUsersAsync(currentUserId, cancellationToken)
+      var followerUsers = await _user
+        .DoListFollowerUsersAsync(currentUserId, cancellationToken)
         .ConfigureAwait(false);
 
       var userEqualityComparer = new IdEqualityComparer<UserEntity>();
-
-      followerUsers = followerUsers.Except(followedUsers, userEqualityComparer).ToImmutableList();
+      followerUsers = followerUsers
+        .Except(followedUsers, userEqualityComparer)
+        .ToImmutableList();
       
       var followerListDto = followerUsers
         .Select(user => _mapper.Map<GetUserDto>(user)).ToImmutableList();

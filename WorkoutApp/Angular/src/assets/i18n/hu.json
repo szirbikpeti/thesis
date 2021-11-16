@@ -73,7 +73,7 @@
     "WRONG_USERNAME_OR_PASSWORD": "Hibás felhasználónév vagy jelszó",
     "NOT_CONFIRMED_EMAIL": "Nincs megerősítve az email-cím",
     "RESEND_EMAIL": "Kattintson erre az ablakra az újraküldéshez",
-    "LOCKED_OUT": "A fiók zárolva lett egy admin által",
+    "LOCKED_OUT": "A fiókot egy adminisztrátor felhasználó zárolta",
     "LOCKED_OUT_WITH_MINUTES": "A fiók zárolva van még {{minutes}} percig",
     "SUCCESSFUL_PASSWORD_RESET": "Sikeres jelszó módosítás",
     "UNSUCCESSFUL_PASSWORD_RESET": "Sikertelen jelszó módosítás",
